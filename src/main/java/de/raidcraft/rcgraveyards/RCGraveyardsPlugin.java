@@ -3,7 +3,7 @@ package de.raidcraft.rcgraveyards;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
-import de.raidcraft.rcgraveyards.commands.Commands;
+import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
 import de.raidcraft.rcgraveyards.managers.GraveyardManager;
 import de.raidcraft.rcgraveyards.managers.PlayerManager;
@@ -26,7 +26,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
 
         registerEvents(new PlayerListener());
-        registerCommands(Commands.class);
+        registerCommands(GraveyardsCommands.class);
 
         // init managers
         graveyardManager = new GraveyardManager(this);

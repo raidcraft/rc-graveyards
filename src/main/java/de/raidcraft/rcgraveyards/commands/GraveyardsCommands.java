@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 /**
  * @author Philip Urban
  */
-public class Commands {
+public class GraveyardsCommands {
 
-    public Commands(RCGraveyardsPlugin module) {
+    public GraveyardsCommands(RCGraveyardsPlugin module) {
 
     }
 
@@ -26,7 +26,7 @@ public class Commands {
     public void rcg(CommandContext context, CommandSender sender) throws CommandException {
     }
 
-    public class NestedCommands {
+    public static class NestedCommands {
 
         private final RCGraveyardsPlugin module;
 
