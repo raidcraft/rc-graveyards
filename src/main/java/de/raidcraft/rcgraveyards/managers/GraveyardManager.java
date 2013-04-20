@@ -4,9 +4,12 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
+import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,5 +69,44 @@ public class GraveyardManager {
     public Graveyard getGraveyard(String name) {
 
         return graveyardsByName.get(name);
+    }
+
+    public Graveyard getGraveyard(Location location) {
+
+        String worldName = location.getWorld().getName();
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        if(sortedGraveyards.containsKey(worldName)) {
+            if(sortedGraveyards.get(worldName).containsKey(x)) {
+                if(sortedGraveyards.get(worldName).get(x).containsKey(y)) {
+                    if(sortedGraveyards.get(worldName).get(x).get(y).containsKey(z)) {
+                        return sortedGraveyards.get(worldName).get(x).get(y).get(z);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public List<Graveyard> getPlayerGraveyards(String player) {
+
+        List<Graveyard> graveyards = new ArrayList<>();
+        List<String> graveyardNames = RaidCraft.getTable(PlayerGraveyardsTable.class).getPlayerAssignments(player);
+        for(String graveyardName : graveyardNames) {
+
+            Graveyard graveyard = getGraveyard(graveyardName);
+            if(graveyard != null) {
+                graveyards.add(graveyard);
+            }
+        }
+        for(Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
+            if(entry.getValue().isMain() && !graveyards.contains(entry.getValue())) {
+                graveyards.add(entry.getValue());
+            }
+        }
+
+        return graveyards;
     }
 }

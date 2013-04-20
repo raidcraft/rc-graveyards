@@ -4,6 +4,7 @@ import de.raidcraft.api.BasePlugin;
 import de.raidcraft.rcgraveyards.commands.Commands;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
 import de.raidcraft.rcgraveyards.managers.GraveyardManager;
+import de.raidcraft.rcgraveyards.managers.PlayerManager;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 
@@ -13,6 +14,7 @@ import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 public class RCGraveyardsPlugin extends BasePlugin {
 
     private GraveyardManager graveyardManager;
+    private PlayerManager playerManager;
 
     @Override
     public void enable() {
@@ -25,6 +27,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
         // init managers
         graveyardManager = new GraveyardManager(this);
+        playerManager = new PlayerManager(this);
 
         reload();
     }
@@ -42,5 +45,10 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public GraveyardManager getGraveyardManager() {
 
         return graveyardManager;
+    }
+
+    public PlayerManager getPlayerManager() {
+
+        return playerManager;
     }
 }

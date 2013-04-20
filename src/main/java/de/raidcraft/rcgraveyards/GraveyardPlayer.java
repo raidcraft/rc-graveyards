@@ -2,10 +2,10 @@ package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,13 +19,35 @@ public class GraveyardPlayer {
     public GraveyardPlayer(Player player) {
 
         this.player = player;
-        List<String> graveyardNames = RaidCraft.getTable(PlayerGraveyardsTable.class).getPlayerAssignments(player.getName());
-        for(String graveyardName : graveyardNames) {
+        for(Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getPlayerGraveyards(player.getName())) {
+            graveyards.put(graveyard.getName(), graveyard);
+        }
+    }
 
-            Graveyard graveyard = RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getGraveyard(graveyardName);
-            if(graveyard != null) {
-                graveyards.put(graveyard.getName(), graveyard);
+    public Graveyard getClosestGraveyard(Location location) {
+
+        double distance = 0;
+        Graveyard closestGraveyard = null;
+        for(Map.Entry<String, Graveyard> entry : graveyards.entrySet()) {
+            if(closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance) {
+                closestGraveyard = entry.getValue();
+                distance = entry.getValue().getLocation().distance(location);
             }
         }
+        return closestGraveyard;
+    }
+
+    public boolean knowGraveyard(Graveyard graveyard) {
+
+        if(graveyards.containsKey(graveyard.getName())) {
+            return true;
+        }
+        return false;
+    }
+
+    public void addGraveyard(Graveyard graveyard) {
+
+        graveyards.put(graveyard.getName(), graveyard);
+        RaidCraft.getTable(PlayerGraveyardsTable.class).addAssignment(player.getName(), graveyard);
     }
 }
