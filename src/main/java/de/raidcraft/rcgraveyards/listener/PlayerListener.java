@@ -54,7 +54,7 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Graveyard graveyard = plugin.getPlayerManager().getGraveyardPlayer(event.getPlayer().getName()).getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
-        event.getPlayer().teleport(graveyard.getLocation());
+        event.setRespawnLocation(graveyard.getLocation());
     }
 
     @EventHandler
