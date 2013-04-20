@@ -121,6 +121,7 @@ public class GraveyardManager {
     public void registerNewGraveyard(Graveyard graveyard) {
 
         RaidCraft.getTable(GraveyardsTable.class).createGraveyard(graveyard);
+        plugin.getDynmapManager().addGraveyardMarker(graveyard);
         reload();
     }
 

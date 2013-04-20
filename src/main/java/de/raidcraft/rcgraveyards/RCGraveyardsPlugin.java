@@ -9,6 +9,7 @@ import de.raidcraft.rcgraveyards.managers.GraveyardManager;
 import de.raidcraft.rcgraveyards.managers.PlayerManager;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import de.raidcraft.rcgraveyards.managers.DynmapManager;
 
 /**
  * @author Philip Urban
@@ -18,6 +19,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
     private LocalConfiguration config;
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;
+    private DynmapManager dynmapManager;
 
     @Override
     public void enable() {
@@ -31,6 +33,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         // init managers
         graveyardManager = new GraveyardManager(this);
         playerManager = new PlayerManager(this);
+        dynmapManager = new DynmapManager();
 
         reload();
     }
@@ -70,5 +73,10 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public PlayerManager getPlayerManager() {
 
         return playerManager;
+    }
+
+    public DynmapManager getDynmapManager() {
+
+        return dynmapManager;
     }
 }

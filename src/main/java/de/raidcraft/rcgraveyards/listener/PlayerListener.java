@@ -58,7 +58,7 @@ public class PlayerListener implements Listener {
         Graveyard graveyard = plugin.getPlayerManager().getGraveyardPlayer(player.getName()).getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
         event.setRespawnLocation(graveyard.getLocation());
-        player.sendMessage(ChatColor.DARK_GRAY + "Du bist im Friedhof '" + ChatColor.GOLD + graveyard.getName() + ChatColor.DARK_GRAY + "' respawned.");
+        player.sendMessage(ChatColor.DARK_GRAY + "Du bist im Friedhof '" + ChatColor.GOLD + graveyard.getFriendlyName() + ChatColor.DARK_GRAY + "' respawned.");
     }
 
     @EventHandler
@@ -78,6 +78,6 @@ public class PlayerListener implements Listener {
         }
 
         graveyardPlayer.addGraveyard(graveyard);
-        event.getPlayer().sendMessage(ChatColor.GREEN + "Du hast den Friedhof " + ChatColor.YELLOW + graveyard.getName() + ChatColor.GREEN + " gefunden!");
+        event.getPlayer().sendMessage(ChatColor.GREEN + "Du hast den Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.GREEN + " gefunden!");
     }
 }
