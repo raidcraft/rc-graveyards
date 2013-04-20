@@ -117,4 +117,10 @@ public class GraveyardManager {
 
         return graveyards;
     }
+
+    public void registerNewGraveyard(Graveyard graveyard) {
+
+        RaidCraft.getTable(GraveyardsTable.class).createGraveyard(graveyard);
+        reload();
+    }
 }
