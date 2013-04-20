@@ -38,7 +38,7 @@ public class GraveyardManager {
         for(World world : Bukkit.getWorlds()) {
             List<Graveyard> graveyards = RaidCraft.getTable(GraveyardsTable.class).getAll(world.getName());
             for(Graveyard graveyard : graveyards) {
-                graveyardsByName.put(graveyard.getName(), graveyard);
+                graveyardsByName.put(graveyard.getName().toLowerCase(), graveyard);
 
                 int x, y, z;
                 int xDiff = graveyard.getSize();
@@ -76,7 +76,7 @@ public class GraveyardManager {
 
     public Graveyard getGraveyard(String name) {
 
-        return graveyardsByName.get(name);
+        return graveyardsByName.get(name.toLowerCase());
     }
 
     public Graveyard getGraveyard(Location location) {

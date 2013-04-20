@@ -7,6 +7,7 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -48,13 +49,16 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
 
-        Location deathLocation = playersDeathLocation.remove(event.getPlayer().getName());
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = event.getPlayer();
+
+        Location deathLocation = playersDeathLocation.remove(player.getName());
         if(deathLocation == null) return;
 
-        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Graveyard graveyard = plugin.getPlayerManager().getGraveyardPlayer(event.getPlayer().getName()).getClosestGraveyard(deathLocation);
+        Graveyard graveyard = plugin.getPlayerManager().getGraveyardPlayer(player.getName()).getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
         event.setRespawnLocation(graveyard.getLocation());
+        player.sendMessage(ChatColor.DARK_GRAY + "Du bist im Friedhof '" + ChatColor.GOLD + graveyard.getName() + ChatColor.DARK_GRAY + "' respawned.");
     }
 
     @EventHandler
@@ -69,7 +73,9 @@ public class PlayerListener implements Listener {
         Graveyard graveyard = plugin.getGraveyardManager().getGraveyard(event.getPlayer().getLocation());
         if(graveyard == null) return;
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getPlayer().getName());
-        if(graveyardPlayer.knowGraveyard(graveyard)) return;
+        if(graveyardPlayer.knowGraveyard(graveyard)) {
+            return;
+        }
 
         graveyardPlayer.addGraveyard(graveyard);
         event.getPlayer().sendMessage(ChatColor.GREEN + "Du hast den Friedhof " + ChatColor.YELLOW + graveyard.getName() + ChatColor.GREEN + " gefunden!");
