@@ -94,4 +94,15 @@ public class GraveyardsTable extends Table {
         }
         return graveyards;
     }
+
+    public void delete(String name) {
+
+        try {
+            executeUpdate(
+                    "DELETE FROM " + getTableName() + " WHERE name = '" + name + "'");
+        } catch (SQLException e) {
+            RaidCraft.LOGGER.warning(e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

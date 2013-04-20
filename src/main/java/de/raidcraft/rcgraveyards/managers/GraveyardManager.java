@@ -123,4 +123,9 @@ public class GraveyardManager {
         RaidCraft.getTable(GraveyardsTable.class).createGraveyard(graveyard);
         reload();
     }
+
+    public void deleteGraveyard(Graveyard graveyard) {
+        RaidCraft.getTable(GraveyardsTable.class).delete(graveyard.getName());
+        reload();
+    }
 }

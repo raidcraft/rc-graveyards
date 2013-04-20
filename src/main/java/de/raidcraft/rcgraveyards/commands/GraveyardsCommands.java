@@ -79,6 +79,25 @@ public class GraveyardsCommands {
         }
 
         @Command(
+                aliases = {"delete", "remove"},
+                desc = "Delete graveyard",
+                min = 1
+        )
+        @CommandPermissions("rcgraveyards.delete")
+        public void delete(CommandContext context, CommandSender sender) throws CommandException {
+
+            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+
+            String name = context.getString(0);
+            Graveyard graveyard = plugin.getGraveyardManager().getGraveyard(name);
+            if(graveyard == null) {
+                throw new CommandException("Es gibt keinen Friedhof mit diesem Namen!");
+            }
+
+            plugin.getGraveyardManager().deleteGraveyard(graveyard);
+        }
+
+        @Command(
                 aliases = {"tp", "warp", "teleport"},
                 desc = "Warp to graveyard",
                 min = 1
