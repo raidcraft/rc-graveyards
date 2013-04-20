@@ -70,8 +70,8 @@ public class GraveyardManager {
                     }
                 }
             }
-            RaidCraft.LOGGER.info("[RCG] Loaded " + sortedGraveyards.size() + " graveyards!");
         }
+        RaidCraft.LOGGER.info("[RCG] Loaded " + graveyardsByName.size() + " graveyards!");
     }
 
     public Graveyard getGraveyard(String name) {
