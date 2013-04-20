@@ -27,6 +27,14 @@ public class GraveyardManager {
     public GraveyardManager(RCGraveyardsPlugin plugin) {
 
         this.plugin = plugin;
+        reload();
+    }
+
+    public void reload() {
+
+        sortedGraveyards.clear();
+        graveyardsByName.clear();
+
         for(World world : Bukkit.getWorlds()) {
             List<Graveyard> graveyards = RaidCraft.getTable(GraveyardsTable.class).getAll(world.getName());
             for(Graveyard graveyard : graveyards) {

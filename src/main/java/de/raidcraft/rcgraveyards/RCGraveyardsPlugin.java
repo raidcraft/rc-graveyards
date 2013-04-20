@@ -34,7 +34,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     @Override
     public void reload() {
-
+        graveyardManager.reload();
     }
 
     @Override
