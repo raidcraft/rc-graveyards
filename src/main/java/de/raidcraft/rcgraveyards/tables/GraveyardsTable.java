@@ -61,7 +61,7 @@ public class GraveyardsTable extends Table {
                     "'" + graveyard.getCreationDate() + "'" +
                     ");";
 
-            executeQuery(query);
+            executeUpdate(query);
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
             e.printStackTrace();

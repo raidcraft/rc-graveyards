@@ -47,7 +47,7 @@ public class PlayerGraveyardsTable extends Table {
                     "'" + DateUtil.getCurrentDateString() + "'" +
                     ");";
 
-            executeQuery(query);
+            executeUpdate(query);
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
             e.printStackTrace();
