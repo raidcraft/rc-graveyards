@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
  */
 public class Commands {
 
-    public Commands(RCGraveyardsPlugin plugin) {
+    public Commands(RCGraveyardsPlugin module) {
 
     }
 
@@ -28,11 +28,11 @@ public class Commands {
 
     public class NestedCommands {
 
-        private final RCGraveyardsPlugin dummyPlugin;
+        private final RCGraveyardsPlugin module;
 
-        public NestedCommands(RCGraveyardsPlugin dummyPlugin) {
+        public NestedCommands(RCGraveyardsPlugin module) {
 
-            this.dummyPlugin = dummyPlugin;
+            this.module = module;
         }
 
         @Command(
