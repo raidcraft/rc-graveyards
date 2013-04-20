@@ -77,5 +77,31 @@ public class GraveyardsCommands {
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
             sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name +  ChatColor.GREEN + " wurde erstellt!");
         }
+
+        @Command(
+                aliases = {"tp", "warp", "teleport"},
+                desc = "Warp to graveyard",
+                min = 1
+        )
+        @CommandPermissions("rcgraveyards.warp")
+        public void warp(CommandContext context, CommandSender sender) throws CommandException {
+
+            if(sender instanceof ConsoleCommandSender) {
+                sender.sendMessage("Player context required!");
+                return;
+            }
+
+            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+            Player player = (Player)sender;
+
+            String name = context.getString(0);
+            Graveyard graveyard = plugin.getGraveyardManager().getGraveyard(name);
+            if(graveyard == null) {
+                throw new CommandException("Es gibt keinen Friedhof mit diesem Namen!");
+            }
+
+            player.teleport(graveyard.getLocation());
+            player.sendMessage(ChatColor.GREEN + "Zum Friedhof " + ChatColor.YELLOW + graveyard.getName() + ChatColor.GREEN + " teleportiert.");
+        }
     }
 }
