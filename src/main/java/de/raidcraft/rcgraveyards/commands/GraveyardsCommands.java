@@ -95,6 +95,7 @@ public class GraveyardsCommands {
             }
 
             plugin.getGraveyardManager().deleteGraveyard(graveyard);
+            sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name +  ChatColor.GREEN + " wurde gelöscht!");
         }
 
         @Command(
