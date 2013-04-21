@@ -3,4 +3,5 @@ main: de.raidcraft.rcgraveyards.RCGraveyardsPlugin
 version: ${project.version}#${build.number}
 author: Strasse36
 website: www.raid-craft.de
-depend: [Dynmap, RaidCraft-API]
+depend: [RaidCraft-API]
+softdepend: [Dynmap]
