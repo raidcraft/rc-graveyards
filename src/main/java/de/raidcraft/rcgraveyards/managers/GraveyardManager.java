@@ -127,6 +127,7 @@ public class GraveyardManager {
 
     public void deleteGraveyard(Graveyard graveyard) {
         RaidCraft.getTable(GraveyardsTable.class).delete(graveyard.getName());
+        plugin.getDynmapManager().removeMarker(graveyard);
         reload();
     }
 }
