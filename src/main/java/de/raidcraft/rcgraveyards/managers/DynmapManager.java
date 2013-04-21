@@ -26,10 +26,6 @@ public class DynmapManager {
         }
         markerAPI = api.getMarkerAPI();
         graveyardSet = markerAPI.getMarkerSet("friedhoefe");
-        if(graveyardSet == null) {
-            markerAPI.createMarkerSet("friedhoefe", "Friedhöfe", markerAPI.getMarkerIcons(), true);
-            graveyardSet = markerAPI.getMarkerSet("friedhoefe");
-        }
     }
 
     public void addGraveyardMarker(Graveyard graveyard) {
