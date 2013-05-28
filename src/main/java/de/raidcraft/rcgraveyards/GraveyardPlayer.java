@@ -73,6 +73,7 @@ public class GraveyardPlayer {
             plugin.getGhostManager().setGhost(player, true);
             // backup inventory
             for(ItemStack itemStack : player.getInventory().getContents()) {
+                if(itemStack == null || itemStack.getType() == Material.AIR) continue;
                 deathInventory.add(itemStack.clone());
             }
             // clear inventory
