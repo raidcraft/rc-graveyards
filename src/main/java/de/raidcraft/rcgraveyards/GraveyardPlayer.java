@@ -3,9 +3,12 @@ package de.raidcraft.rcgraveyards;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,6 +20,7 @@ public class GraveyardPlayer {
     private Map<String, Graveyard> graveyards = new HashMap<>();
     private boolean ghost = false;
     private Location lastDeathLocation;
+    private List<ItemStack> deathInventory;
 
     public GraveyardPlayer(Player player) {
 
@@ -65,8 +69,18 @@ public class GraveyardPlayer {
 
         // set player opacity
         if(ghost) {
+            // set as ghost
             plugin.getGhostManager().setGhost(player, true);
+            // backup inventory
+            for(ItemStack itemStack : player.getInventory().getContents()) {
+                deathInventory.add(itemStack.clone());
+            }
+            // clear inventory
+            player.getInventory().clear();
+            // set compass target
             player.setCompassTarget(lastDeathLocation);
+            // give compass
+            player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
