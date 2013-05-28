@@ -90,7 +90,7 @@ public class GhostManager {
         validateState();
         if (!ghostTeam.hasPlayer(player)) {
             ghostTeam.addPlayer(player);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15));
+            addPotionEffects(player);
         }
     }
 
@@ -125,7 +125,7 @@ public class GhostManager {
 
         if (isGhost) {
             ghosts.add(player.getName());
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15));
+            addPotionEffects(player);
         } else if (!isGhost) {
             ghosts.remove(player.getName());
             player.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -193,5 +193,19 @@ public class GhostManager {
         if (closed) {
             throw new IllegalStateException("Ghost factory has closed. Cannot reuse instances.");
         }
+    }
+
+    private void addPotionEffects(Player player) {
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Integer.MAX_VALUE, 1));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15));
+    }
+
+    private void removePotionEffects(Player player) {
+
+        player.removePotionEffect(PotionEffectType.SPEED);
+        player.removePotionEffect(PotionEffectType.WITHER);
+        player.removePotionEffect(PotionEffectType.INVISIBILITY);
     }
 }

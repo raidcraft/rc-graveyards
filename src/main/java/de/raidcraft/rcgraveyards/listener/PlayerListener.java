@@ -16,15 +16,10 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author Philip Urban
  */
 public class PlayerListener implements Listener {
-
-    private Map<String, Location> playersDeathLocation = new HashMap<>();
 
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
@@ -45,7 +40,9 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
 
-        playersDeathLocation.put(event.getEntity().getName(), event.getEntity().getLocation());
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getEntity().getName());
+        graveyardPlayer.setLastDeathLocation(event.getEntity().getLocation());
     }
 
     @EventHandler
@@ -53,11 +50,11 @@ public class PlayerListener implements Listener {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
-        Location deathLocation = playersDeathLocation.remove(player.getName());
+        Location deathLocation = graveyardPlayer.getLastDeathLocation();
         if(deathLocation == null) return;
 
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
         event.setRespawnLocation(graveyard.getLocation());

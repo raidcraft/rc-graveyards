@@ -4,8 +4,6 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +16,7 @@ public class GraveyardPlayer {
     private Player player;
     private Map<String, Graveyard> graveyards = new HashMap<>();
     private boolean ghost = false;
+    private Location lastDeathLocation;
 
     public GraveyardPlayer(Player player) {
 
@@ -66,14 +65,20 @@ public class GraveyardPlayer {
 
         // set player opacity
         if(ghost) {
-            player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
-            player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Integer.MAX_VALUE, 1));
             plugin.getGhostManager().setGhost(player, true);
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
-            player.removePotionEffect(PotionEffectType.SPEED);
-            player.removePotionEffect(PotionEffectType.WITHER);
         }
+    }
+
+    public Location getLastDeathLocation() {
+
+        return lastDeathLocation;
+    }
+
+    public void setLastDeathLocation(Location lastDeathLocation) {
+
+        this.lastDeathLocation = lastDeathLocation;
     }
 }
