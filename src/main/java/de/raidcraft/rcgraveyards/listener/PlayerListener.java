@@ -12,8 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -102,18 +100,6 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onPlayerDamage(EntityDamageEvent event) {
-
-        if(event.getEntityType() != EntityType.PLAYER) return;
-
-        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = (Player)event.getEntity();
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
-
-        if(graveyardPlayer.isGhost()) event.setCancelled(true);
-    }
-
-    @EventHandler(ignoreCancelled = true)
     public void onItemDrop(PlayerDropItemEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
@@ -125,25 +111,15 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onPlayerDamage(EntityDamageEvent event) {
+
+        if(event.getEntityType() != EntityType.PLAYER) return;
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = event.getPlayer();
+        Player player = (Player)event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
-        player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Blöcke setzen!");
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onBlockBreak(BlockBreakEvent event) {
-
-        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = event.getPlayer();
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
-
-        if(graveyardPlayer.isGhost()) event.setCancelled(true);
-        player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Blöcke abbauen!");
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)

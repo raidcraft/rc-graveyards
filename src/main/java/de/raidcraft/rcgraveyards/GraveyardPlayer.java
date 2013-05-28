@@ -2,7 +2,6 @@ package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -67,16 +66,14 @@ public class GraveyardPlayer {
 
         // set player opacity
         if(ghost) {
-            plugin.getGhostManager().setGhost(player, true);
             player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
             player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Integer.MAX_VALUE, 1));
-            player.setDisplayName(ChatColor.DARK_RED + "† " + ChatColor.GRAY + player.getName() + ChatColor.DARK_RED + " †");
+            plugin.getGhostManager().setGhost(player, true);
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
             player.removePotionEffect(PotionEffectType.SPEED);
             player.removePotionEffect(PotionEffectType.WITHER);
-            player.setDisplayName(player.getName());
         }
     }
 }
