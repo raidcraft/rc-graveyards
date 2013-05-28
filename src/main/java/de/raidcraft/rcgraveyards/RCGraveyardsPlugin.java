@@ -5,6 +5,7 @@ import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
+import de.raidcraft.rcgraveyards.managers.GhostManager;
 import de.raidcraft.rcgraveyards.managers.GraveyardManager;
 import de.raidcraft.rcgraveyards.managers.PlayerManager;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
@@ -20,6 +21,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;
     private DynmapManager dynmapManager;
+    private GhostManager ghostManager;
 
     @Override
     public void enable() {
@@ -34,6 +36,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         graveyardManager = new GraveyardManager(this);
         playerManager = new PlayerManager(this);
         dynmapManager = new DynmapManager();
+        ghostManager = new GhostManager(this);
 
         reload();
     }
@@ -78,5 +81,10 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public DynmapManager getDynmapManager() {
 
         return dynmapManager;
+    }
+
+    public GhostManager getGhostManager() {
+
+        return ghostManager;
     }
 }

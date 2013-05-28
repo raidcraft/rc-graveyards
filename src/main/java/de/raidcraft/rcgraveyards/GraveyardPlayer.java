@@ -15,6 +15,7 @@ public class GraveyardPlayer {
 
     private Player player;
     private Map<String, Graveyard> graveyards = new HashMap<>();
+    private boolean ghost = false;
 
     public GraveyardPlayer(Player player) {
 
@@ -49,5 +50,24 @@ public class GraveyardPlayer {
 
         graveyards.put(graveyard.getName(), graveyard);
         RaidCraft.getTable(PlayerGraveyardsTable.class).addAssignment(player.getName(), graveyard);
+    }
+
+    public boolean isGhost() {
+
+        return ghost;
+    }
+
+    public void setGhost(boolean ghost) {
+
+        this.ghost = ghost;
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+
+        // set player opacity
+        if(ghost) {
+            plugin.getGhostManager().addGhost(player);
+        }
+        else {
+            plugin.getGhostManager().removeGhost(player);
+        }
     }
 }
