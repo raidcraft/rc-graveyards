@@ -11,6 +11,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -30,6 +31,7 @@ public class PlayerListener implements Listener {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         plugin.getPlayerManager().login(event.getPlayer());
+        plugin.getGhostManager().addPlayer(event.getPlayer());
     }
 
     @EventHandler
@@ -37,6 +39,7 @@ public class PlayerListener implements Listener {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         plugin.getPlayerManager().logout(event.getPlayer().getName());
+        plugin.getGhostManager().removePlayer(event.getPlayer());
     }
 
     @EventHandler
@@ -116,5 +119,17 @@ public class PlayerListener implements Listener {
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Items droppen!");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockPlace(BlockPlaceEvent event) {
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = event.getPlayer();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+
+        if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Blöcke setzen!");
     }
 }

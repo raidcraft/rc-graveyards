@@ -64,10 +64,10 @@ public class GraveyardPlayer {
 
         // set player opacity
         if(ghost) {
-            plugin.getGhostManager().addGhost(player);
+            plugin.getGhostManager().setGhost(player, true);
         }
         else {
-            plugin.getGhostManager().removeGhost(player);
+            plugin.getGhostManager().setGhost(player, false);
         }
     }
 }
