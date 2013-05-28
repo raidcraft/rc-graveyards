@@ -10,7 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -131,5 +133,27 @@ public class PlayerListener implements Listener {
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
         player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Blöcke setzen!");
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakEvent event) {
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = event.getPlayer();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+
+        if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Blöcke abbauen!");
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onInteract(PlayerInteractEvent event) {
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = event.getPlayer();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+
+        if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
     }
 }
