@@ -81,8 +81,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        graveyardPlayer.addGraveyard(graveyard);
-        event.getPlayer().sendMessage(ChatColor.DARK_GREEN + "Du hast den Friedhof " + ChatColor.GOLD + graveyard.getFriendlyName() + ChatColor.DARK_GREEN + " gefunden!");
+        if(!graveyardPlayer.isGhost()) {
+            graveyardPlayer.addGraveyard(graveyard);
+            event.getPlayer().sendMessage(ChatColor.DARK_GREEN + "Du hast den Friedhof " + ChatColor.GOLD + graveyard.getFriendlyName() + ChatColor.DARK_GREEN + " gefunden!");
+        }
     }
 
     /*
