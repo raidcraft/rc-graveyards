@@ -66,6 +66,7 @@ public class GraveyardPlayer {
         // set player opacity
         if(ghost) {
             plugin.getGhostManager().setGhost(player, true);
+            player.setCompassTarget(lastDeathLocation);
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
