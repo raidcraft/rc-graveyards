@@ -83,11 +83,11 @@ public class GraveyardPlayer {
             player.setCompassTarget(lastDeathLocation);
             // give compass
             player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
-            player.sendMessage("***********************************************************");
+            player.sendMessage("*********************************************************************");
             player.sendMessage(ChatColor.DARK_RED + "Du bist nun ein Geist!");
             player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
             player.sendMessage(ChatColor.GOLD + "Oder nutze den Geisterheiler hier auf dem Friedhof und verliere dadurch Items.");
-            player.sendMessage("***********************************************************");
+            player.sendMessage("*********************************************************************");
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
