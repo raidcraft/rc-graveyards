@@ -34,4 +34,10 @@ public class PlayerManager {
 
         return players.get(player);
     }
+
+    public long getLastDeath(String player) {
+
+        //TODO get date from db
+        return 0;
+    }
 }

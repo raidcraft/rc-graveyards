@@ -66,6 +66,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     public class LocalConfiguration extends ConfigurationBase<RCGraveyardsPlugin> {
 
+        @Setting("corpse-exist-duration") public int corpseDuration = 432000; // in seconds
+
         public LocalConfiguration(RCGraveyardsPlugin plugin) {
 
             super(plugin, "config.yml");

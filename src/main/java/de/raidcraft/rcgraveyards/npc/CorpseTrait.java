@@ -63,8 +63,6 @@ public class CorpseTrait extends Trait {
 
         npc.spawn(location);
 
-        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().registerCorpse(npc);
-
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCitizens().storeNPCs(new CommandContext(new String[]{}));
     }
 }
