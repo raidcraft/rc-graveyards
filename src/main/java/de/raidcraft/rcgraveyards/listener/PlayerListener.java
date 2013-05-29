@@ -42,7 +42,9 @@ public class PlayerListener implements Listener {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getEntity().getName());
-        graveyardPlayer.setLastDeathLocation(event.getEntity().getLocation());
+
+        graveyardPlayer.getLastDeath().setLocation(event.getEntity().getLocation());
+        graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
     }
 
     @EventHandler
@@ -52,13 +54,17 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
-        Location deathLocation = graveyardPlayer.getLastDeathLocation();
+        Location deathLocation = graveyardPlayer.getLastDeath().getLocation();
         if(deathLocation == null) return;
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
         event.setRespawnLocation(graveyard.getLocation());
-        player.sendMessage(ChatColor.DARK_GREEN + "Du bist am Friedhof " + ChatColor.GOLD + graveyard.getFriendlyName() + ChatColor.DARK_GREEN + " respawned.");
+        player.sendMessage("*********************************************************************");
+        player.sendMessage(ChatColor.DARK_GREEN + "Du bist am Friedhof " + ChatColor.GOLD + graveyard.getFriendlyName() + ChatColor.DARK_GREEN + " als Geist respawned.");
+        player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
+        player.sendMessage(ChatColor.GOLD + "Oder nutze den Geisterheiler hier auf dem Friedhof und verliere dadurch Items.");
+        player.sendMessage("*********************************************************************");
         graveyardPlayer.setGhost(true);
     }
 
