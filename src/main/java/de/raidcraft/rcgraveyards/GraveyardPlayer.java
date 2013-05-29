@@ -27,6 +27,9 @@ public class GraveyardPlayer {
         for(Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getPlayerGraveyards(player.getName())) {
             graveyards.put(graveyard.getName(), graveyard);
         }
+
+        // load from database
+        //TODO implement
     }
 
     public Graveyard getClosestGraveyard(Location location) {
@@ -84,11 +87,17 @@ public class GraveyardPlayer {
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
+            plugin.getGhostManager().removePlayer(player);
         }
     }
 
     public Death getLastDeath() {
 
         return lastDeath;
+    }
+
+    public void save() {
+
+        //TODO implement
     }
 }

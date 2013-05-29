@@ -1,16 +1,21 @@
 package de.raidcraft.rcgraveyards;
 
+import de.raidcraft.RaidCraft;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
+import de.raidcraft.rcconversations.actions.ActionManager;
+import de.raidcraft.rcconversations.npc.NPCListener;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
+import de.raidcraft.rcgraveyards.conversations.ReviveGhostAction;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
-import de.raidcraft.rcgraveyards.managers.GhostManager;
-import de.raidcraft.rcgraveyards.managers.GraveyardManager;
-import de.raidcraft.rcgraveyards.managers.PlayerManager;
+import de.raidcraft.rcgraveyards.managers.*;
+import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
-import de.raidcraft.rcgraveyards.managers.DynmapManager;
+import net.citizensnpcs.Citizens;
+import net.citizensnpcs.api.trait.TraitInfo;
+import org.bukkit.Bukkit;
 
 /**
  * @author Philip Urban
@@ -22,6 +27,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
     private PlayerManager playerManager;
     private DynmapManager dynmapManager;
     private GhostManager ghostManager;
+    private CorpseManager corpseManager;
+    private Citizens citizens;
 
     @Override
     public void enable() {
@@ -32,12 +39,16 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerEvents(new PlayerListener());
         registerCommands(GraveyardsCommands.class);
 
+        ActionManager.registerAction(new ReviveGhostAction());
+
         // init managers
         graveyardManager = new GraveyardManager(this);
         playerManager = new PlayerManager(this);
         dynmapManager = new DynmapManager();
         ghostManager = new GhostManager(this);
+        corpseManager = new CorpseManager(this);
 
+        loadCitizens();
         reload();
     }
 
@@ -63,6 +74,17 @@ public class RCGraveyardsPlugin extends BasePlugin {
         @Setting("default-graveyard-size") public int defaultSize = 10;
     }
 
+    private void loadCitizens() {
+
+        try {
+            registerEvents(new NPCListener());
+            citizens = (Citizens) Bukkit.getPluginManager().getPlugin("Citizens");
+            citizens.getTraitFactory().registerTrait(TraitInfo.create(CorpseTrait.class).withName("rcgraveyards"));
+        } catch (Exception e) {
+            RaidCraft.LOGGER.warning("[RCConv] Can't load NPC stuff! Citizens not found!");
+        }
+    }
+
     public LocalConfiguration getConfig() {
 
         return config;
@@ -86,5 +108,15 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public GhostManager getGhostManager() {
 
         return ghostManager;
+    }
+
+    public CorpseManager getCorpseManager() {
+
+        return corpseManager;
+    }
+
+    public Citizens getCitizens() {
+
+        return citizens;
     }
 }

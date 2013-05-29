@@ -4,6 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -26,7 +27,6 @@ public class PlayerListener implements Listener {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         plugin.getPlayerManager().login(event.getPlayer());
-        plugin.getGhostManager().addPlayer(event.getPlayer());
     }
 
     @EventHandler
@@ -34,17 +34,18 @@ public class PlayerListener implements Listener {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         plugin.getPlayerManager().logout(event.getPlayer().getName());
-        plugin.getGhostManager().removePlayer(event.getPlayer());
     }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getEntity().getName());
+        Player player = event.getEntity();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
-        graveyardPlayer.getLastDeath().setLocation(event.getEntity().getLocation().clone());
+        graveyardPlayer.getLastDeath().setLocation(player.getLocation().clone());
         graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
+        CorpseTrait.create(player, player.getLocation());
     }
 
     @EventHandler
