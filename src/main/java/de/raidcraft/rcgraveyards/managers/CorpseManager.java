@@ -1,8 +1,10 @@
 package de.raidcraft.rcgraveyards.managers;
 
+import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -51,6 +53,28 @@ public class CorpseManager {
 
     public void checkReviver(Player player, String corpseName) {
 
-        //TODO implement
+        if(player.getName().equalsIgnoreCase(corpseName)) {
+                reviveGhost(player);
+        }
+        else {
+            lootCorpse(player);
+        }
+    }
+
+    private void reviveGhost(Player player) {
+
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        graveyardPlayer.setGhost(false);
+        deleteCorpse(player.getName());
+
+        player.sendMessage("*********************************************************************");
+        player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt!");
+        player.sendMessage(ChatColor.YELLOW + "Pass das nächste mal besser auf.");
+        player.sendMessage("*********************************************************************");
+    }
+
+    private void lootCorpse(Player player) {
+
+        deleteCorpse(player.getName());
     }
 }
