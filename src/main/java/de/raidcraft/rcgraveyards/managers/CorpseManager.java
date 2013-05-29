@@ -68,7 +68,7 @@ public class CorpseManager {
         deleteCorpse(player.getName());
 
         player.sendMessage("*********************************************************************");
-        player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt!");
+        player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt und deine Items zurück bekommen!");
         player.sendMessage(ChatColor.YELLOW + "Pass das nächste mal besser auf.");
         player.sendMessage("*********************************************************************");
     }
