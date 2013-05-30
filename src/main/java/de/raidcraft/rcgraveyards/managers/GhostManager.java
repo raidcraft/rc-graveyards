@@ -128,7 +128,7 @@ public class GhostManager {
             addPotionEffects(player);
         } else if (!isGhost) {
             ghosts.remove(player.getName());
-            player.removePotionEffect(PotionEffectType.INVISIBILITY);
+            removePotionEffects(player);
         }
     }
 
@@ -139,7 +139,7 @@ public class GhostManager {
     public void removePlayer(Player player) {
         validateState();
         if (ghostTeam.removePlayer(player)) {
-            player.removePotionEffect(PotionEffectType.INVISIBILITY);
+            removePotionEffects(player);
         }
     }
 
