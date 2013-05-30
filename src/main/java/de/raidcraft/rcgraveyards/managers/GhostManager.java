@@ -44,12 +44,11 @@ public class GhostManager {
         ghostTeam = board.getTeam(GHOST_TEAM_NAME);
 
         // Create a new ghost team if needed
-        if (ghostTeam == null) {
-            ghostTeam = board.registerNewTeam(GHOST_TEAM_NAME);
-            ghostTeam.setCanSeeFriendlyInvisibles(true);
+        if(ghostTeam != null) {
+            ghostTeam.unregister();
         }
-
-
+        ghostTeam = board.registerNewTeam(GHOST_TEAM_NAME);
+        ghostTeam.setCanSeeFriendlyInvisibles(true);
     }
 
     private void createTask(Plugin plugin) {

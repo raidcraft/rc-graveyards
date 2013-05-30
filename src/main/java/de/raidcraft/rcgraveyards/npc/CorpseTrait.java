@@ -9,6 +9,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import net.citizensnpcs.api.trait.trait.MobType;
 import net.citizensnpcs.api.trait.trait.Owner;
 import net.citizensnpcs.api.trait.trait.Spawned;
 import net.citizensnpcs.trait.LookClose;
@@ -55,6 +56,7 @@ public class CorpseTrait extends Trait {
         npc.getTrait(CorpseTrait.class).setPlayerName(player.getName());
 
         // add traits
+        npc.addTrait(MobType.class);
         npc.addTrait(Spawned.class);
         npc.addTrait(LookClose.class);
         npc.addTrait(Owner.class);
@@ -62,6 +64,7 @@ public class CorpseTrait extends Trait {
 
 
         // configure traits
+        npc.getTrait(MobType.class).setType(EntityType.SKELETON);
         npc.getTrait(Spawned.class).setSpawned(true);
         npc.getTrait(LookClose.class).lookClose(true);
         npc.getTrait(Owner.class).setOwner("rcgraveyards");
