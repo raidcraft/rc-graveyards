@@ -41,7 +41,7 @@ public class PlayerManager {
     public long getLastDeath(String player) {
 
         //TODO get date from db
-        return 0;
+        return System.currentTimeMillis();
     }
 
     public void updatePlayerVisibility() {

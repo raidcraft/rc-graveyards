@@ -30,7 +30,7 @@ public class CorpseManager {
         // remove corpse if too old
         long lastDeath = plugin.getPlayerManager().getLastDeath(trait.getPlayerName());
         if(lastDeath < System.currentTimeMillis() - plugin.getConfig().corpseDuration*1000) {
-            deleteCorpse(trait.getPlayerName());
+            npc.destroy();
         }
         else {
             registeredCorpse.put(trait.getPlayerName().toLowerCase(), npc);
@@ -53,7 +53,8 @@ public class CorpseManager {
 
     public void checkReviver(Player player, String corpseName) {
 
-        if(player.getName().equalsIgnoreCase(corpseName)) {
+
+        if(plugin.getGhostManager().isGhost(player) && player.getName().equalsIgnoreCase(corpseName)) {
                 reviveGhost(player);
         }
         else {
