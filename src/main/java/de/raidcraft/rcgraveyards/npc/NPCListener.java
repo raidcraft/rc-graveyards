@@ -2,11 +2,10 @@ package de.raidcraft.rcgraveyards.npc;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
-import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
 import net.citizensnpcs.api.event.NPCDespawnEvent;
+import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -28,22 +27,14 @@ public class NPCListener implements Listener {
     }
 
     @EventHandler
-    public void onLeftClick(NPCDamageByEntityEvent event) {
-
-        Player player;
-        if(event.getDamager() instanceof Player) {
-            player = (Player)event.getDamager();
-        }
-        else {
-            return;
-        }
+    public void onLeftClick(NPCLeftClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
             return;
         }
 
         CorpseTrait trait = event.getNPC().getTrait(CorpseTrait.class);
-        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().checkReviver(player, trait.getPlayerName());
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().checkReviver(event.getClicker(), trait.getPlayerName());
     }
 
     @EventHandler

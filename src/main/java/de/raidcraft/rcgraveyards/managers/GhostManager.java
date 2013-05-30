@@ -89,7 +89,6 @@ public class GhostManager {
         validateState();
         if (!ghostTeam.hasPlayer(player)) {
             ghostTeam.addPlayer(player);
-            addPotionEffects(player);
         }
     }
 

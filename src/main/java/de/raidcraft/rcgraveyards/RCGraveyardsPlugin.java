@@ -37,6 +37,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
 
         registerEvents(new PlayerListener());
+        registerEvents(new NPCListener());
         registerCommands(GraveyardsCommands.class);
 
         ActionManager.registerAction(new ReviveGhostAction());
