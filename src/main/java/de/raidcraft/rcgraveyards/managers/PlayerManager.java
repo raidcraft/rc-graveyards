@@ -2,6 +2,8 @@ package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -39,5 +41,26 @@ public class PlayerManager {
 
         //TODO get date from db
         return 0;
+    }
+
+    public void updatePlayerVisibility() {
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            updatePlayerVisibility(player);
+        }
+    }
+
+    public void updatePlayerVisibility(Player player) {
+
+        if(plugin.getGhostManager().isGhost(player) || player.hasPermission("rcgraveyards.seeall")) {
+            for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                player.showPlayer(onlinePlayer);
+            }
+            return;
+        }
+        for(OfflinePlayer offlinePlayer : plugin.getGhostManager().getGhosts()) {
+            if(!offlinePlayer.isOnline()) continue;
+            player.hidePlayer(offlinePlayer.getPlayer());
+        }
     }
 }

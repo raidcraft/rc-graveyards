@@ -18,6 +18,7 @@ public class NPCListener implements Listener {
     @EventHandler
     public void onRightClick(NPCRightClickEvent event) {
 
+        RaidCraft.LOGGER.info("DEBUG: NPC RIGHT CLICK : " + event.getNPC().getName());
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
             return;
         }

@@ -27,6 +27,7 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         plugin.getPlayerManager().login(event.getPlayer());
         plugin.getGhostManager().addPlayer(event.getPlayer());
+        plugin.getPlayerManager().updatePlayerVisibility(event.getPlayer());
     }
 
     @EventHandler

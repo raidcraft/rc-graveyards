@@ -68,6 +68,7 @@ public class GraveyardPlayer {
 
         this.ghost = ghost;
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        plugin.getPlayerManager().updatePlayerVisibility();
 
         // set player opacity
         if(ghost) {
