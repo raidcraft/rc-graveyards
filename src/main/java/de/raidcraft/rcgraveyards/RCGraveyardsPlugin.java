@@ -5,12 +5,12 @@ import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.rcconversations.actions.ActionManager;
-import de.raidcraft.rcconversations.npc.NPCListener;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
 import de.raidcraft.rcgraveyards.conversations.ReviveGhostAction;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
 import de.raidcraft.rcgraveyards.managers.*;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.rcgraveyards.npc.NPCListener;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import net.citizensnpcs.Citizens;
@@ -37,7 +37,6 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
 
         registerEvents(new PlayerListener());
-        registerEvents(new NPCListener());
         registerCommands(GraveyardsCommands.class);
 
         ActionManager.registerAction(new ReviveGhostAction());

@@ -1,5 +1,6 @@
 package de.raidcraft.rcgraveyards.managers;
 
+import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import org.bukkit.Bukkit;
@@ -60,6 +61,7 @@ public class PlayerManager {
         }
         for(OfflinePlayer offlinePlayer : plugin.getGhostManager().getGhosts()) {
             if(!offlinePlayer.isOnline()) continue;
+            RaidCraft.LOGGER.info("DEBUG: HIDE PLAYER FOR " + player.getName() + " : " + offlinePlayer.getName());
             player.hidePlayer(offlinePlayer.getPlayer());
         }
     }
