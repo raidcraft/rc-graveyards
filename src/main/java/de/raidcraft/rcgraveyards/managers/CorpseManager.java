@@ -67,10 +67,7 @@ public class CorpseManager {
         graveyardPlayer.setGhost(false);
         deleteCorpse(player.getName());
 
-        player.sendMessage("*********************************************************************");
         player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt und deine Items zurück bekommen!");
-        player.sendMessage(ChatColor.YELLOW + "Pass das nächste mal besser auf.");
-        player.sendMessage("*********************************************************************");
     }
 
     private void lootCorpse(Player player) {
