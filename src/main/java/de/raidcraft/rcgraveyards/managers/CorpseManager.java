@@ -58,7 +58,7 @@ public class CorpseManager {
                 reviveGhost(player);
         }
         else {
-            lootCorpse(player);
+            lootCorpse(player, corpseName);
         }
     }
 
@@ -71,8 +71,10 @@ public class CorpseManager {
         player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt und deine Items zurück bekommen!");
     }
 
-    private void lootCorpse(Player player) {
+    private void lootCorpse(Player player, String corpseName) {
 
-        deleteCorpse(player.getName());
+        deleteCorpse(corpseName);
+
+        player.sendMessage(ChatColor.GREEN + "Du hast die Leiche von " + corpseName + " ausgeraubt." );
     }
 }
