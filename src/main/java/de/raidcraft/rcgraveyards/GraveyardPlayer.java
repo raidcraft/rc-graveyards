@@ -1,7 +1,10 @@
 package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.rcgraveyards.tables.DeathsTable;
+import de.raidcraft.rcgraveyards.tables.ItemStackTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,9 +22,11 @@ public class GraveyardPlayer {
     private Map<String, Graveyard> graveyards = new HashMap<>();
     private boolean ghost = false;
     private final Death lastDeath;
+    private GraveyardPlayer inst;
 
     public GraveyardPlayer(Player player) {
 
+        inst = this;
         this.player = player;
         this.lastDeath = new Death(player);
         for(Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getPlayerGraveyards(player.getName())) {
@@ -101,6 +106,13 @@ public class GraveyardPlayer {
 
     public void save() {
 
-        //TODO implement
+        Bukkit.getScheduler().runTaskAsynchronously(RaidCraft.getComponent(RCGraveyardsPlugin.class), new Runnable() {
+            @Override
+            public void run() {
+
+                RaidCraft.getTable(DeathsTable.class).addDeath(inst);
+                RaidCraft.getTable(ItemStackTable.class).addInventory(lastDeath.getInventory(), player.getName());
+            }
+        });
     }
 }
