@@ -85,6 +85,8 @@ public class GraveyardPlayer {
             player.saveData();
             // give compass
             player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
+
+            save();
         }
         else {
             plugin.getGhostManager().setGhost(player, false);

@@ -5,9 +5,12 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -67,6 +70,12 @@ public class CorpseManager {
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         graveyardPlayer.setGhost(false);
         deleteCorpse(player.getName());
+        List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName());
+        for (ItemStack itemStack : loot) {
+            if (itemStack != null && itemStack.getType() != Material.AIR) {
+                player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
+            }
+        }
 
         player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt und deine Items zurück bekommen!");
     }
@@ -74,7 +83,13 @@ public class CorpseManager {
     private void lootCorpse(Player player, String corpseName) {
 
         deleteCorpse(corpseName);
+        List<ItemStack> loot = plugin.getPlayerManager().getLootableDeathInventory(corpseName);
+        for (ItemStack itemStack : loot) {
+            if (itemStack != null && itemStack.getType() != Material.AIR) {
+                player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
+            }
+        }
 
-        player.sendMessage(ChatColor.GREEN + "Du hast die Leiche von " + corpseName + " ausgeraubt." );
+        player.sendMessage(ChatColor.GREEN + "Du hast die Leiche von " + corpseName + " ausgeraubt (" + loot.size() + " Items)" );
     }
 }

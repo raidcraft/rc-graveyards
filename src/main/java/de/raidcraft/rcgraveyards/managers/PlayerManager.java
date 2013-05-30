@@ -6,8 +6,11 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,5 +67,21 @@ public class PlayerManager {
             RaidCraft.LOGGER.info("DEBUG: HIDE PLAYER FOR " + player.getName() + " : " + offlinePlayer.getName());
             player.hidePlayer(offlinePlayer.getPlayer());
         }
+    }
+
+    public List<ItemStack> getLootableDeathInventory(String corpseName) {
+
+        List<ItemStack> items = new ArrayList<>();
+        //TODO get lootable items from db and delete them
+
+        return items;
+    }
+
+    public List<ItemStack> getDeathInventory(String corpseName) {
+
+        List<ItemStack> items = new ArrayList<>();
+        //TODO get all items from db and delete them
+
+        return items;
     }
 }
