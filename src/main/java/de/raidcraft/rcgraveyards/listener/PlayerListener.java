@@ -62,7 +62,7 @@ public class PlayerListener implements Listener {
         if(graveyard == null) return;
         event.setRespawnLocation(graveyard.getLocation());
         player.sendMessage("*********************************************************************");
-        player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.DARK_GREEN + " als Geist respawned.");
+        player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
         player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
         player.sendMessage(ChatColor.GOLD + "Oder nutze den Geisterheiler hier auf dem Friedhof und verliere dadurch Items.");
         player.sendMessage("*********************************************************************");

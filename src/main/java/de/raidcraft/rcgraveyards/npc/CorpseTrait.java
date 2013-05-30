@@ -31,6 +31,13 @@ public class CorpseTrait extends Trait {
         super("rcgraveyards");
     }
 
+    @Override
+    public void onSpawn() {
+
+        super.onSpawn();
+        npc.getTrait(Equipment.class).set(1, SkullUtil.getPlayerSkull(playerName));
+    }
+
     public String getPlayerName() {
 
         return playerName;
@@ -55,7 +62,6 @@ public class CorpseTrait extends Trait {
 
 
         // configure traits
-        npc.getTrait(Equipment.class).set(1, SkullUtil.getPlayerSkull(player.getName()));
         npc.getTrait(Spawned.class).setSpawned(true);
         npc.getTrait(LookClose.class).lookClose(true);
         npc.getTrait(Owner.class).setOwner("rcgraveyards");
