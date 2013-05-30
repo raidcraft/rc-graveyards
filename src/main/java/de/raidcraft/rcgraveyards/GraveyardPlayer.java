@@ -72,7 +72,6 @@ public class GraveyardPlayer {
         // set player opacity
         if(ghost) {
             // set as ghost
-            plugin.getGhostManager().addPlayer(player);
             plugin.getGhostManager().setGhost(player, true);
             // backup inventory
             for(ItemStack itemStack : player.getInventory().getContents()) {
@@ -83,12 +82,12 @@ public class GraveyardPlayer {
             player.getInventory().clear();
             // set compass target
             player.setCompassTarget(lastDeath.getLocation());
+            player.saveData();
             // give compass
             player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
-            plugin.getGhostManager().removePlayer(player);
         }
     }
 
