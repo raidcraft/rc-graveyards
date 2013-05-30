@@ -90,7 +90,7 @@ public class GraveyardsTable extends Table {
             }
             resultSet.close();
         } catch (SQLException e) {
-            RaidCraft.LOGGER.warning(e.getMessage());
+            e.printStackTrace();
         }
         return graveyards;
     }
