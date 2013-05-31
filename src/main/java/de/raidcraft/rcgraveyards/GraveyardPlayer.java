@@ -83,11 +83,6 @@ public class GraveyardPlayer {
         if(ghost) {
             // set as ghost
             plugin.getGhostManager().setGhost(player, true);
-            // backup inventory
-            for(ItemStack itemStack : player.getInventory().getContents()) {
-                if(itemStack == null || itemStack.getType() == Material.AIR) continue;
-                lastDeath.getInventory().add(itemStack.clone());
-            }
             // clear inventory
             player.getInventory().clear();
             // set compass target

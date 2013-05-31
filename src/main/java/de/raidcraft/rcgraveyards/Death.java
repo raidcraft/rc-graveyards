@@ -2,8 +2,10 @@ package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.skills.api.hero.Hero;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,14 @@ public class Death {
     public List<ItemStack> getInventory() {
 
         return inventory;
+    }
+
+    public void setInventory(PlayerInventory inventory) {
+
+        for(ItemStack itemStack : inventory.getContents()) {
+            if(itemStack == null || itemStack.getType() == Material.AIR) continue;
+            this.inventory.add(itemStack.clone());
+        }
     }
 
     public boolean wasPvp() {

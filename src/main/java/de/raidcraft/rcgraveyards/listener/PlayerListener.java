@@ -48,6 +48,7 @@ public class PlayerListener implements Listener {
         graveyardPlayer.getLastDeath().setLocation(player.getLocation().clone());
         graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
         CorpseTrait.create(player, player.getLocation());
+        graveyardPlayer.getLastDeath().setInventory(player.getInventory());
         event.getDrops().clear();
     }
 

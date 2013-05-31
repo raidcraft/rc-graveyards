@@ -1,6 +1,5 @@
 package de.raidcraft.rcgraveyards.tables;
 
-import com.sk89q.commandbook.CommandBook;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.database.Table;
 import de.raidcraft.util.ItemUtils;
@@ -74,7 +73,6 @@ public class ItemStackTable extends Table {
             getConnection().setAutoCommit(true);
             statement.close();
         } catch (SQLException e) {
-            CommandBook.logger().warning(e.getMessage());
             e.printStackTrace();
         }
     }
