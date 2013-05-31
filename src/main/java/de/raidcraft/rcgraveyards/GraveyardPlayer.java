@@ -22,19 +22,24 @@ public class GraveyardPlayer {
     private Map<String, Graveyard> graveyards = new HashMap<>();
     private boolean ghost = false;
     private final Death lastDeath;
-    private GraveyardPlayer inst;
 
     public GraveyardPlayer(Player player) {
 
-        inst = this;
         this.player = player;
-        this.lastDeath = new Death(player);
         for(Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getPlayerGraveyards(player.getName())) {
             graveyards.put(graveyard.getName(), graveyard);
         }
 
         // load from database
-        //TODO implement
+        Death death = RaidCraft.getTable(DeathsTable.class).getDeath(player);
+        if(death == null) {
+            death = new Death(player);
+        }
+        else {
+            death.setInventory(RaidCraft.getTable(ItemStackTable.class).getInventory(player));
+            setGhost(true);
+        }
+        this.lastDeath = death;
     }
 
     public Player getPlayer() {
@@ -95,6 +100,9 @@ public class GraveyardPlayer {
         }
         else {
             plugin.getGhostManager().setGhost(player, false);
+            // delete db entries
+            RaidCraft.getTable(DeathsTable.class).delete(player);
+            RaidCraft.getTable(ItemStackTable.class).delete(player);
         }
         plugin.getPlayerManager().updatePlayerVisibility();
     }
@@ -110,8 +118,8 @@ public class GraveyardPlayer {
             @Override
             public void run() {
 
-                RaidCraft.getTable(DeathsTable.class).addDeath(inst);
-                RaidCraft.getTable(ItemStackTable.class).addInventory(lastDeath.getInventory(), player.getName());
+                RaidCraft.getTable(DeathsTable.class).addDeath(lastDeath, player);
+                RaidCraft.getTable(ItemStackTable.class).addInventory(lastDeath.getInventory(), player);
             }
         });
     }

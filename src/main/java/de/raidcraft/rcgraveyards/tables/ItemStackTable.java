@@ -2,11 +2,13 @@ package de.raidcraft.rcgraveyards.tables;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.database.Table;
-import de.raidcraft.util.ItemUtils;
+import de.raidcraft.util.SerializationUtil;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class ItemStackTable extends Table {
                     "CREATE TABLE `" + getTableName() + "` (\n" +
                             "`id` INT NOT NULL AUTO_INCREMENT ,\n" +
                             "`player` VARCHAR( 32 ) NOT NULL ,\n" +
+                            "`world` VARCHAR ( 32 ) NOT NULL ,\n" +
                             "`material` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`durability` INT( 11 ) NOT NULL ,\n" +
                             "`amount` INT( 11 ) NOT NULL , \n" +
@@ -38,29 +41,26 @@ public class ItemStackTable extends Table {
         }
     }
 
-    public void addInventory(List<ItemStack> items, String player) {
+    public void addInventory(List<ItemStack> items, Player player) {
 
         delete(player);
         try {
             PreparedStatement statement;
 
-            String query = "INSERT INTO " + getTableName() + " (player, material, durability, itemmeta, amount) " +
+            String query = "INSERT INTO " + getTableName() + " (player, world, material, durability, itemmeta, amount) " +
                     "VALUES (?, ?, ?, ?, ?);";
 
             getConnection().setAutoCommit(false);
             statement = getConnection().prepareStatement(query);
-            ItemUtils.Serialization serialization;
 
             int i = 0;
             for(ItemStack item : items) {
-
-                serialization = new ItemUtils.Serialization(item);
-
-                statement.setString(1, player.toLowerCase());
-                statement.setString(2, item.getType().name());
-                statement.setShort(3, item.getDurability());
-                statement.setString(4, serialization.getSerializedItemData());
-                statement.setInt(5, item.getAmount());
+                statement.setString(1, player.getName().toLowerCase());
+                statement.setString(2, player.getWorld().getName());
+                statement.setString(3, item.getType().name());
+                statement.setShort(4, item.getDurability());
+                statement.setString(5, SerializationUtil.toByteStream(item.getItemMeta()));
+                statement.setInt(6, item.getAmount());
                 statement.executeUpdate();
 
                 i++;
@@ -77,11 +77,18 @@ public class ItemStackTable extends Table {
         }
     }
 
-    public void delete(String player) {
+    public List<ItemStack> getInventory(Player player) {
+
+        List<ItemStack> itemStacks = new ArrayList<>();
+        //TODO implement
+        return itemStacks;
+    }
+
+    public void delete(Player player) {
 
         try {
             executeUpdate(
-                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "'");
+                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
             e.printStackTrace();

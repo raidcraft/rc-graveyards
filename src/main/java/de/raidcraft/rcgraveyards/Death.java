@@ -27,6 +27,13 @@ public class Death {
         this.inventory = new ArrayList<>();
     }
 
+    public Death(Player player, Location location, long timestamp) {
+
+//        this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
+        this.location = location;
+        this.timestamp = timestamp;
+    }
+
     public long getTimestamp() {
 
         return timestamp;
@@ -40,6 +47,11 @@ public class Death {
     public List<ItemStack> getInventory() {
 
         return inventory;
+    }
+
+    public void setInventory(List<ItemStack> inventory) {
+
+        this.inventory = inventory;
     }
 
     public void setInventory(PlayerInventory inventory) {

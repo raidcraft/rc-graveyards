@@ -2,9 +2,12 @@ package de.raidcraft.rcgraveyards.tables;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.database.Table;
-import de.raidcraft.rcgraveyards.GraveyardPlayer;
+import de.raidcraft.rcgraveyards.Death;
 import de.raidcraft.util.DateUtil;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -27,6 +30,10 @@ public class DeathsTable extends Table {
                             "`player` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`date` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`pvp` TINYINT NOT NULL , \n" +
+                            "`world` VARCHAR ( 32 ) NOT NULL ,\n" +
+                            "`x` INT( 11 ) NOT NULL ,\n" +
+                            "`y` INT( 11 ) NOT NULL ,\n" +
+                            "`z` INT( 11 ) NOT NULL ,\n" +
                             "PRIMARY KEY ( `id` )\n" +
                             ")");
         } catch (SQLException e) {
@@ -34,15 +41,19 @@ public class DeathsTable extends Table {
         }
     }
 
-    public void addDeath(GraveyardPlayer graveyardPlayer) {
+    public void addDeath(Death death, Player player) {
 
-        delete(graveyardPlayer.getPlayer().getName());
+        delete(player);
         try {
-            String query = "INSERT INTO " + getTableName() + " (player, date, pvp) " +
+            String query = "INSERT INTO " + getTableName() + " (player, date, pvp, world, x, y, z) " +
                     "VALUES (" +
-                    "'" + graveyardPlayer.getPlayer().getName().toLowerCase() + "'" + "," +
-                    "'" + DateUtil.getDateString(graveyardPlayer.getLastDeath().getTimestamp()) + "'" + "," +
-                    "'" + ((graveyardPlayer.getLastDeath().wasPvp()) ? 1 : 0) + "'" +
+                    "'" + player.getName().toLowerCase() + "'" + "," +
+                    "'" + DateUtil.getDateString(death.getTimestamp()) + "'" + "," +
+                    "'" + ((death.wasPvp()) ? 1 : 0) + "'" + "," +
+                    "'" + death.getLocation().getWorld().getName() + "'" + "," +
+                    "'" + death.getLocation().getBlockX() + "'" + "," +
+                    "'" + death.getLocation().getBlockY() + "'" + "," +
+                    "'" + death.getLocation().getBlockZ() + "'" +
                     ");";
 
             executeUpdate(query);
@@ -52,11 +63,32 @@ public class DeathsTable extends Table {
         }
     }
 
-    public void delete(String player) {
+    public Death getDeath(Player player) {
+
+        try {
+            ResultSet resultSet = executeQuery(
+                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
+
+            while (resultSet.next()) {
+
+                Death death = new Death(player,
+                        new Location(player.getWorld(), resultSet.getInt("x"), resultSet.getInt("y"), resultSet.getInt("z")),
+                        DateUtil.getTimeStamp(resultSet.getString("date")));
+                resultSet.close();
+                return death;
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public void delete(Player player) {
 
         try {
             executeUpdate(
-                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "'");
+                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
             e.printStackTrace();

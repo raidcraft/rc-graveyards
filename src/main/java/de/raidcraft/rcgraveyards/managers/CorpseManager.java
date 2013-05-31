@@ -36,6 +36,7 @@ public class CorpseManager {
             npc.destroy();
         }
         else {
+            deleteCorpse(trait.getPlayerName());
             registeredCorpse.put(trait.getPlayerName().toLowerCase(), npc);
         }
     }
