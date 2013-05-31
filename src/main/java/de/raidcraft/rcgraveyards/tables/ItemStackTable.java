@@ -3,10 +3,13 @@ package de.raidcraft.rcgraveyards.tables;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.database.Table;
 import de.raidcraft.util.SerializationUtil;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,9 +82,27 @@ public class ItemStackTable extends Table {
 
     public List<ItemStack> getInventory(Player player) {
 
-        List<ItemStack> itemStacks = new ArrayList<>();
-        //TODO implement
-        return itemStacks;
+        List<ItemStack> items = new ArrayList<>();
+        try {
+            ResultSet resultSet = executeQuery(
+                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
+
+            while (resultSet.next()) {
+                ItemStack itemStack = new ItemStack(
+                        Material.getMaterial(resultSet.getString("item")),
+                        resultSet.getInt("amount"),
+                        resultSet.getShort("durability")
+                );
+
+                String itemData = resultSet.getString("itemmeta");
+                itemStack.setItemMeta((ItemMeta)SerializationUtil.fromByteStream(itemData, itemStack.getType()));
+                items.add(itemStack);
+            }
+            resultSet.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return items;
     }
 
     public void delete(Player player) {
