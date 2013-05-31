@@ -27,7 +27,7 @@ public class ItemStackTable extends Table {
             executeUpdate(
                     "CREATE TABLE `" + getTableName() + "` (\n" +
                             "`id` INT NOT NULL AUTO_INCREMENT ,\n" +
-                            "`player` INT( 11 ) NOT NULL ,\n" +
+                            "`player` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`material` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`durability` INT( 11 ) NOT NULL ,\n" +
                             "`amount` INT( 11 ) NOT NULL , \n" +

@@ -24,7 +24,7 @@ public class DeathsTable extends Table {
             executeUpdate(
                     "CREATE TABLE `" + getTableName() + "` (\n" +
                             "`id` INT NOT NULL AUTO_INCREMENT ,\n" +
-                            "`player` INT( 11 ) NOT NULL ,\n" +
+                            "`player` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`date` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`pvp` TINYINT NOT NULL , \n" +
                             "PRIMARY KEY ( `id` )\n" +
