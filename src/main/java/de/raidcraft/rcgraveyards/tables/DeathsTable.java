@@ -1,7 +1,9 @@
 package de.raidcraft.rcgraveyards.tables;
 
+import de.raidcraft.RaidCraft;
 import de.raidcraft.api.database.Table;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
+import de.raidcraft.util.DateUtil;
 
 import java.sql.SQLException;
 
@@ -34,5 +36,30 @@ public class DeathsTable extends Table {
 
     public void addDeath(GraveyardPlayer graveyardPlayer) {
 
+        delete(graveyardPlayer.getPlayer().getName());
+        try {
+            String query = "INSERT INTO " + getTableName() + " (player, date, pvp) " +
+                    "VALUES (" +
+                    "'" + graveyardPlayer.getPlayer().getName().toLowerCase() + "'" + "," +
+                    "'" + DateUtil.getDateString(graveyardPlayer.getLastDeath().getTimestamp()) + "'" + "," +
+                    "'" + ((graveyardPlayer.getLastDeath().wasPvp()) ? 1 : 0) + "'" +
+                    ");";
+
+            executeUpdate(query);
+        } catch (SQLException e) {
+            RaidCraft.LOGGER.warning(e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(String player) {
+
+        try {
+            executeUpdate(
+                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "'");
+        } catch (SQLException e) {
+            RaidCraft.LOGGER.warning(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

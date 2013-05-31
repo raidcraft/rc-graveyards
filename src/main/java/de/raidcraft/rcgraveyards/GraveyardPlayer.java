@@ -37,6 +37,11 @@ public class GraveyardPlayer {
         //TODO implement
     }
 
+    public Player getPlayer() {
+
+        return player;
+    }
+
     public Graveyard getClosestGraveyard(Location location) {
 
         double distance = 0;

@@ -57,7 +57,7 @@ public class ItemStackTable extends Table {
 
                 serialization = new ItemUtils.Serialization(item);
 
-                statement.setString(1, player);
+                statement.setString(1, player.toLowerCase());
                 statement.setString(2, item.getType().name());
                 statement.setShort(3, item.getDurability());
                 statement.setString(4, serialization.getSerializedItemData());
@@ -83,7 +83,7 @@ public class ItemStackTable extends Table {
 
         try {
             executeUpdate(
-                    "DELETE FROM " + getTableName() + " WHERE player = '" + player + "'");
+                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "'");
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
             e.printStackTrace();
