@@ -67,7 +67,7 @@ public class Death {
 
     public boolean wasPvp() {
 
-        return (hero.getLastDamageCause().getAttackSource() == AttackSource.HERO);
+        return (hero.getLastDamageCause() != null && hero.getLastDamageCause().getAttackSource() == AttackSource.HERO);
     }
 
     public Location getLocation() {
