@@ -78,7 +78,7 @@ public class CorpseManager {
             }
         }
         graveyardPlayer.setGhost(false);
-        player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt und deine Items zurück bekommen!");
+        player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt. Die Leiche hat deine Items fallen lassen.");
     }
 
     private void lootCorpse(Player player, String corpseName) {
@@ -91,6 +91,6 @@ public class CorpseManager {
             }
         }
 
-        player.sendMessage(ChatColor.GREEN + "Du hast die Leiche von " + corpseName + " ausgeraubt (" + loot.size() + " Items)" );
+        player.sendMessage(ChatColor.GREEN + "Die Leiche von " + corpseName + " hat " + loot.size() + " Items fallen gelassen");
     }
 }
