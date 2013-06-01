@@ -59,13 +59,16 @@ public class CorpseManager {
 
     public void checkReviver(Player player, String corpseName) {
 
-
-        if(plugin.getGhostManager().isGhost(player) && player.getName().equalsIgnoreCase(corpseName)) {
+        boolean ghost = plugin.getGhostManager().isGhost(player);
+        if(ghost && player.getName().equalsIgnoreCase(corpseName)) {
             reviveGhost(player, ReviveReason.FOUND_CORPSE);
             player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt. Die Leiche hat deine Items fallen lassen.");
         }
-        else {
+        else if(!ghost){
             lootCorpse(player, corpseName);
+        }
+        else {
+            player.sendMessage(ChatColor.RED + "Du kannst als Geist keine anderen Leichen berauben!");
         }
     }
 
