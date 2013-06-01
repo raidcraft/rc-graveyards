@@ -59,14 +59,15 @@ public class CorpseManager {
 
 
         if(plugin.getGhostManager().isGhost(player) && player.getName().equalsIgnoreCase(corpseName)) {
-                reviveGhost(player);
+            reviveGhost(player, ReviveReason.FOUND_CORPSE);
+            player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt. Die Leiche hat deine Items fallen lassen.");
         }
         else {
             lootCorpse(player, corpseName);
         }
     }
 
-    private void reviveGhost(Player player) {
+    public void reviveGhost(Player player, ReviveReason reason) {
 
         player.getInventory().clear();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
@@ -74,14 +75,14 @@ public class CorpseManager {
         List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName(), player.getWorld().getName());
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
+                //TODO check item depend on reason
                 player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
             }
         }
         graveyardPlayer.setGhost(false);
-        player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt. Die Leiche hat deine Items fallen lassen.");
     }
 
-    private void lootCorpse(Player player, String corpseName) {
+    public void lootCorpse(Player player, String corpseName) {
 
         deleteCorpse(corpseName);
         List<ItemStack> loot = plugin.getPlayerManager().getLootableDeathInventory(corpseName, player.getWorld().getName());
@@ -92,5 +93,11 @@ public class CorpseManager {
         }
 
         player.sendMessage(ChatColor.GREEN + "Die Leiche von " + corpseName + " hat " + loot.size() + " Items fallen gelassen");
+    }
+
+    public enum ReviveReason {
+
+        FOUND_CORPSE,
+        NECROMANCER
     }
 }
