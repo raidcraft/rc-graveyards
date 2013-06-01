@@ -70,7 +70,6 @@ public class CorpseTrait extends Trait {
         npc.getTrait(Owner.class).setOwner("rcgraveyards");
         npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
 
-        RaidCraft.LOGGER.info("DEBUG: " + location.getWorld().getName() + " | " + location.getBlockX() + " | " + location.getBlockY() + " | " + location.getBlockZ());
         npc.spawn(location);
 
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCitizens().storeNPCs(new CommandContext(new String[]{}));
