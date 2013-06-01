@@ -45,6 +45,8 @@ public class PlayerListener implements Listener {
         Player player = event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
+        // create corpse
+        CorpseTrait.create(player, player.getLocation());
         graveyardPlayer.getLastDeath().setLocation(player.getLocation().clone());
         graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
         graveyardPlayer.getLastDeath().setInventory(player.getInventory());
@@ -63,8 +65,6 @@ public class PlayerListener implements Listener {
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
-        // create corpse
-        CorpseTrait.create(player, deathLocation);
         // inform player
         event.setRespawnLocation(graveyard.getLocation());
         player.sendMessage("*********************************************************************");
