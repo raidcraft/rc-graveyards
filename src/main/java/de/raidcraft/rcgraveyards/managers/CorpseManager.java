@@ -1,6 +1,5 @@
 package de.raidcraft.rcgraveyards.managers;
 
-import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
@@ -33,7 +32,6 @@ public class CorpseManager {
 
         // remove corpse if too old
         long lastDeath = plugin.getPlayerManager().getLastDeath(trait.getPlayerName(), npc.getBukkitEntity().getWorld().getName());
-        RaidCraft.LOGGER.info("DEBUG: " + npc.getBukkitEntity().getWorld().getName());
         if(lastDeath < System.currentTimeMillis() - plugin.getConfig().corpseDuration*1000) {
             npc.destroy();
         }
@@ -70,6 +68,7 @@ public class CorpseManager {
 
     private void reviveGhost(Player player) {
 
+        player.getInventory().clear();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         graveyardPlayer.setGhost(false);
         deleteCorpse(player.getName());
