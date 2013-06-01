@@ -6,7 +6,6 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.ItemStackTable;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -63,9 +62,9 @@ public class PlayerManager {
             }
             return;
         }
-        for(OfflinePlayer offlinePlayer : plugin.getGhostManager().getGhosts()) {
-            if(!offlinePlayer.isOnline() || offlinePlayer.getName().equalsIgnoreCase(player.getName())) continue;
-            player.hidePlayer(offlinePlayer.getPlayer());
+        for(Player ghostPlayer : plugin.getGhostManager().getGhosts()) {
+            if(!ghostPlayer.isOnline() || ghostPlayer.getName().equalsIgnoreCase(player.getName())) continue;
+            player.hidePlayer(ghostPlayer.getPlayer());
         }
     }
 
