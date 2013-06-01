@@ -7,6 +7,7 @@ import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 /**
@@ -15,10 +16,13 @@ import org.bukkit.event.Listener;
  */
 public class NPCListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onRightClick(NPCRightClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
+            if(RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())) {
+                event.setCancelled(true);
+            }
             return;
         }
 
@@ -26,10 +30,13 @@ public class NPCListener implements Listener {
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().checkReviver(event.getClicker(), trait.getPlayerName());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onLeftClick(NPCLeftClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
+            if(RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())) {
+                event.setCancelled(true);
+            }
             return;
         }
 
