@@ -84,7 +84,7 @@ public class CorpseManager {
     private void lootCorpse(Player player, String corpseName) {
 
         deleteCorpse(corpseName);
-        List<ItemStack> loot = plugin.getPlayerManager().getLootableDeathInventory(corpseName);
+        List<ItemStack> loot = plugin.getPlayerManager().getLootableDeathInventory(corpseName, player.getWorld().getName());
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
