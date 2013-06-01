@@ -58,12 +58,13 @@ public class PlayerManager {
 
         if(plugin.getGhostManager().isGhost(player) || player.hasPermission("rcgraveyards.seeall")) {
             for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+                if(onlinePlayer.getName().equalsIgnoreCase(player.getName())) continue;
                 player.showPlayer(onlinePlayer);
             }
             return;
         }
         for(OfflinePlayer offlinePlayer : plugin.getGhostManager().getGhosts()) {
-            if(!offlinePlayer.isOnline()) continue;
+            if(!offlinePlayer.isOnline() || offlinePlayer.getName().equalsIgnoreCase(player.getName())) continue;
             player.hidePlayer(offlinePlayer.getPlayer());
         }
     }
