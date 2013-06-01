@@ -3,6 +3,7 @@ package de.raidcraft.rcgraveyards.managers;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -75,7 +76,12 @@ public class CorpseManager {
         List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName(), player.getWorld().getName());
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
-                //TODO check item depend on reason
+                if(CustomItemUtil.isEquipment(itemStack)) {
+                    itemStack.setDurability((short)((double)itemStack.getDurability() * reason.getDamageLevel().getModifier()));
+                }
+                else {
+                    if(reason.isEquipmentOnly()) continue;
+                }
                 player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
             }
         }
@@ -97,8 +103,47 @@ public class CorpseManager {
 
     public enum ReviveReason {
 
-        FOUND_CORPSE,
-        NECROMANCER,
-        COMMAND
+        FOUND_CORPSE(false, EQUIPMENT_DAMAGE_LEVEL.LOW),
+        NECROMANCER(true, EQUIPMENT_DAMAGE_LEVEL.HIGH),
+        COMMAND(false, EQUIPMENT_DAMAGE_LEVEL.NO);
+
+        public boolean equipmentOnly;
+        public EQUIPMENT_DAMAGE_LEVEL damageLevel;
+
+        private ReviveReason(boolean equipmentOnly, EQUIPMENT_DAMAGE_LEVEL damageLevel) {
+
+            this.equipmentOnly = equipmentOnly;
+            this.damageLevel = damageLevel;
+        }
+
+        public boolean isEquipmentOnly() {
+
+            return equipmentOnly;
+        }
+
+        public EQUIPMENT_DAMAGE_LEVEL getDamageLevel() {
+
+            return damageLevel;
+        }
+    }
+
+    public enum EQUIPMENT_DAMAGE_LEVEL {
+
+        NO(1),
+        LOW(0.8),
+        MIDDLE(0.7),
+        HIGH(0.5);
+
+        public double modifier;
+
+        private EQUIPMENT_DAMAGE_LEVEL(double modifier) {
+
+            this.modifier = modifier;
+        }
+
+        public double getModifier() {
+
+            return modifier;
+        }
     }
 }
