@@ -12,6 +12,7 @@ import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.api.trait.trait.MobType;
 import net.citizensnpcs.api.trait.trait.Owner;
 import net.citizensnpcs.api.trait.trait.Spawned;
+import net.citizensnpcs.trait.CurrentLocation;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -61,6 +62,7 @@ public class CorpseTrait extends Trait {
         npc.addTrait(LookClose.class);
         npc.addTrait(Owner.class);
         npc.addTrait(Equipment.class);
+        npc.addTrait(CurrentLocation.class);
 
 
         // configure traits
