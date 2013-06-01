@@ -130,9 +130,10 @@ public class CorpseManager {
     public enum EQUIPMENT_DAMAGE_LEVEL {
 
         NO(1),
-        LOW(0.8),
+        LOW(0.9),
         MIDDLE(0.7),
-        HIGH(0.5);
+        HIGH(0.5),
+        VERY_HIGH(0.3);
 
         public double modifier;
 
