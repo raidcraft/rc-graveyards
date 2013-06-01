@@ -67,7 +67,7 @@ public class CorpseManager {
 
         if(player.getName().equalsIgnoreCase(corpseName)) {
 
-            player.sendMessage(ChatColor.GREEN + "Deine Seele ist in " + plugin.getConfig().ghostReviveDuration
+            player.sendMessage(ChatColor.RED + "Deine Seele ist in " + plugin.getConfig().ghostReviveDuration
                     + " Sek. zurück gekehrt. Bringe dich in Sicherheit!");
             Bukkit.getScheduler().runTaskLater(plugin, new GhostReviver(player, looted), 20 * plugin.getConfig().ghostReviveDuration);
             return;
@@ -193,7 +193,7 @@ public class CorpseManager {
                 msg += "Ein andere Spieler hat deine Leiche ausgeraubt!";
             }
             else {
-                msg += "Du hast deine Items wieder im Inventar.";
+                msg += "Deine Items liegen im Inventar.";
             }
             player.sendMessage(ChatColor.GREEN + msg);
             reviveGhost(player, ReviveReason.FOUND_CORPSE);
