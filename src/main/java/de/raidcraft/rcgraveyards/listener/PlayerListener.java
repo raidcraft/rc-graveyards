@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
@@ -134,6 +135,18 @@ public class PlayerListener implements Listener {
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onLivingEntityDamage(EntityDamageByEntityEvent event) {
+
+        if(event.getDamager() instanceof Player) {
+            Player player = (Player)event.getDamager();
+            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+
+            if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
