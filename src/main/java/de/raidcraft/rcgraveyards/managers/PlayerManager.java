@@ -3,6 +3,7 @@ package de.raidcraft.rcgraveyards.managers;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -41,10 +42,9 @@ public class PlayerManager {
         return players.get(player);
     }
 
-    public long getLastDeath(String player) {
+    public long getLastDeath(String player, String world) {
 
-        //TODO get date from db
-        return System.currentTimeMillis();
+        return RaidCraft.getTable(DeathsTable.class).getLastDeath(player, world);
     }
 
     public void updatePlayerVisibility() {
@@ -64,7 +64,6 @@ public class PlayerManager {
         }
         for(OfflinePlayer offlinePlayer : plugin.getGhostManager().getGhosts()) {
             if(!offlinePlayer.isOnline()) continue;
-            RaidCraft.LOGGER.info("DEBUG: HIDE PLAYER FOR " + player.getName() + " : " + offlinePlayer.getName());
             player.hidePlayer(offlinePlayer.getPlayer());
         }
     }

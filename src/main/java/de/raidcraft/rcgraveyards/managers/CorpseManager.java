@@ -31,7 +31,7 @@ public class CorpseManager {
         CorpseTrait trait = npc.getTrait(CorpseTrait.class);
 
         // remove corpse if too old
-        long lastDeath = plugin.getPlayerManager().getLastDeath(trait.getPlayerName());
+        long lastDeath = plugin.getPlayerManager().getLastDeath(trait.getPlayerName(), npc.getBukkitEntity().getWorld().getName());
         if(lastDeath < System.currentTimeMillis() - plugin.getConfig().corpseDuration*1000) {
             npc.destroy();
         }

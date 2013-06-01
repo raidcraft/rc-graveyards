@@ -84,6 +84,24 @@ public class DeathsTable extends Table {
         return null;
     }
 
+    public long getLastDeath(String player, String world) {
+
+        try {
+            ResultSet resultSet = executeQuery(
+                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "' AND world = '" + world + "'");
+
+            while (resultSet.next()) {
+                long timestamp = DateUtil.getTimeStamp(resultSet.getString("date"));
+                resultSet.close();
+                return timestamp;
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public void delete(Player player) {
 
         try {
