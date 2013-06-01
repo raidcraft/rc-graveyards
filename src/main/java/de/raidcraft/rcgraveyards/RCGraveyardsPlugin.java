@@ -7,6 +7,7 @@ import de.raidcraft.api.config.Setting;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
 import de.raidcraft.rcgraveyards.conversations.ReviveGhostAction;
+import de.raidcraft.rcgraveyards.listener.MobListener;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
 import de.raidcraft.rcgraveyards.managers.*;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
@@ -52,6 +53,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         corpseManager = new CorpseManager(this);
 
         registerEvents(new PlayerListener());
+        registerEvents(new MobListener());
         registerEvents(ghostManager);
 
         loadCitizens();

@@ -6,6 +6,7 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
+import net.milkbowl.vault.item.Items;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -60,15 +61,30 @@ public class CorpseManager {
     public void checkReviver(Player player, String corpseName) {
 
         boolean ghost = plugin.getGhostManager().isGhost(player);
-        if(ghost && player.getName().equalsIgnoreCase(corpseName)) {
+        NPC npc = registeredCorpse.get(player.getName());
+        boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
+
+        if(player.getName().equalsIgnoreCase(corpseName)) {
+            String msg = "Du hast dich wiederbelebt. ";
+            if(looted) {
+                msg += "Ein andere Spieler hat deine Leiche ausgeraubt!";
+            }
+            else {
+                msg += "Die Leiche hat deine Items fallen lassen.";
+            }
+            player.sendMessage(ChatColor.GREEN + msg);
             reviveGhost(player, ReviveReason.FOUND_CORPSE);
-            player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt. Die Leiche hat deine Items fallen lassen.");
+            return;
         }
-        else if(!ghost){
-            lootCorpse(player, corpseName);
+
+        if(ghost) {
+            player.sendMessage(ChatColor.RED + "Du kannst als Geist keine anderen Leichen berauben!");
+        }
+        else(looted) {
+            player.sendMessage(ChatColor.RED + "Diese Leiche ist schon ausgeraubt!");
         }
         else {
-            player.sendMessage(ChatColor.RED + "Du kannst als Geist keine anderen Leichen berauben!");
+            lootCorpse(player, corpseName);
         }
     }
 
@@ -76,7 +92,6 @@ public class CorpseManager {
 
         player.getInventory().clear();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
-        deleteCorpse(player.getName());
         List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName(), player.getWorld().getName());
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
@@ -95,12 +110,16 @@ public class CorpseManager {
                 player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
             }
         }
+        deleteCorpse(player.getName());
         graveyardPlayer.setGhost(false);
     }
 
     public void lootCorpse(Player player, String corpseName) {
 
-        deleteCorpse(corpseName);
+        NPC npc = registeredCorpse.get(corpseName);
+        if(npc != null) {
+            npc.getTrait(CorpseTrait.class).setLooted(true);
+        }
         List<ItemStack> loot = plugin.getPlayerManager().getLootableDeathInventory(corpseName, player.getWorld().getName());
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {

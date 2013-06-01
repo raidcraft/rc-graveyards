@@ -26,6 +26,8 @@ public class CorpseTrait extends Trait {
 
     @Persist
     private String playerName;
+    @Persist
+    private boolean looted;
 
     public CorpseTrait() {
 
@@ -49,11 +51,22 @@ public class CorpseTrait extends Trait {
         this.playerName = playerName;
     }
 
+    public boolean isLooted() {
+
+        return looted;
+    }
+
+    public void setLooted(boolean looted) {
+
+        this.looted = looted;
+    }
+
     public static void create(Player player, Location location) {
 
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.SKELETON, player.getName());
         npc.addTrait(CorpseTrait.class);
         npc.getTrait(CorpseTrait.class).setPlayerName(player.getName());
+        npc.getTrait(CorpseTrait.class).setLooted(false);
 
         // add traits
         npc.addTrait(MobType.class);
