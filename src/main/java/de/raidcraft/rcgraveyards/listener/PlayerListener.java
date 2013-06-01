@@ -47,7 +47,6 @@ public class PlayerListener implements Listener {
 
         graveyardPlayer.getLastDeath().setLocation(player.getLocation().clone());
         graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
-        CorpseTrait.create(player, player.getLocation());
         graveyardPlayer.getLastDeath().setInventory(player.getInventory());
         event.getDrops().clear();
     }
@@ -64,6 +63,9 @@ public class PlayerListener implements Listener {
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
+        // create corpse
+        CorpseTrait.create(player, deathLocation);
+        // inform player
         event.setRespawnLocation(graveyard.getLocation());
         player.sendMessage("*********************************************************************");
         player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
