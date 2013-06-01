@@ -1,5 +1,6 @@
 package de.raidcraft.rcgraveyards.managers;
 
+import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
@@ -77,7 +78,9 @@ public class CorpseManager {
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 if(CustomItemUtil.isEquipment(itemStack)) {
-                    itemStack.setDurability((short)((double)itemStack.getDurability() * reason.getDamageLevel().getModifier()));
+                    double durability = (short)((double)itemStack.getDurability() * reason.getDamageLevel().getModifier());
+                    RaidCraft.LOGGER.info("DEBUG: d:" + durability + " | m:" + reason.getDamageLevel().getModifier() + " | o:" + itemStack.getDurability());
+                    itemStack.setDurability((short)durability);
                 }
                 else {
                     if(reason.isEquipmentOnly()) continue;
