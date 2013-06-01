@@ -144,8 +144,10 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
-        if(graveyardPlayer.isGhost()) event.setCancelled(true);
-        player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
+        if(graveyardPlayer.isGhost()) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
+        }
     }
 
     public class CorpseCreator implements Runnable {

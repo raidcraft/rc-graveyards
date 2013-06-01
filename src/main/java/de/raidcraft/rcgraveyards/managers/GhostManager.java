@@ -1,10 +1,5 @@
 package de.raidcraft.rcgraveyards.managers;
 
-import com.comphenix.protocol.Packets;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.ConnectionSide;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -19,9 +14,6 @@ import org.bukkit.scoreboard.Team;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
-import static de.raidcraft.rcgraveyards.util.BiomeFaker.translateMapChunk;
-import static de.raidcraft.rcgraveyards.util.BiomeFaker.translateMapChunkBulk;
 
 public class GhostManager implements Listener {
     /**
@@ -46,21 +38,22 @@ public class GhostManager implements Listener {
         createTask(plugin);
         createGetTeam();
 
-        ProtocolLibrary.getProtocolManager().addPacketListener(
-                new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, Packets.Server.MAP_CHUNK, Packets.Server.MAP_CHUNK_BULK) {
-                    @Override
-                    public void onPacketSending(PacketEvent event) {
-                        if(!isGhost(event.getPlayer())) return;
-                        switch (event.getPacketID()) {
-                            case Packets.Server.MAP_CHUNK:
-                                translateMapChunk(event.getPacket(), event.getPlayer());
-                                break;
-                            case Packets.Server.MAP_CHUNK_BULK:
-                                translateMapChunkBulk(event.getPacket(), event.getPlayer());
-                                break;
-                        }
-                    }
-                });
+//        ProtocolLibrary.getProtocolManager().addPacketListener(
+//            new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, Packets.Server.MAP_CHUNK, Packets.Server.MAP_CHUNK_BULK) {
+//                @Override
+//                public void onPacketSending(PacketEvent event) {
+//                    if(!isGhost(event.getPlayer())) return;
+//                    switch (event.getPacketID()) {
+//                        case Packets.Server.MAP_CHUNK:
+//                            translateMapChunk(event.getPacket(), event.getPlayer());
+//                            break;
+//                        case Packets.Server.MAP_CHUNK_BULK:
+//                            translateMapChunkBulk(event.getPacket(), event.getPlayer());
+//                            break;
+//                    }
+//                }
+//            }
+//        );
     }
 
     private void createGetTeam() {
