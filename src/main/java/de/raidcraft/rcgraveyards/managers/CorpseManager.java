@@ -4,8 +4,10 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -64,15 +66,10 @@ public class CorpseManager {
         boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
 
         if(player.getName().equalsIgnoreCase(corpseName)) {
-            String msg = "Du hast dich wiederbelebt. ";
-            if(looted) {
-                msg += "Ein andere Spieler hat deine Leiche ausgeraubt!";
-            }
-            else {
-                msg += "Die Leiche hat deine Items fallen lassen.";
-            }
-            player.sendMessage(ChatColor.GREEN + msg);
-            reviveGhost(player, ReviveReason.FOUND_CORPSE);
+
+            player.sendMessage(ChatColor.GREEN + "Deine Seele ist in " + plugin.getConfig().ghostReviveDuration
+                    + " Sek. zurück gekehrt. Bringe dich in Sicherheit!");
+            Bukkit.getScheduler().runTaskLater(plugin, new GhostReviver(player, looted), 20 * plugin.getConfig().ghostReviveDuration);
             return;
         }
 
@@ -106,7 +103,7 @@ public class CorpseManager {
                 else {
                     if(reason.isEquipmentOnly()) continue;
                 }
-                player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
+                PlayerInventoryUtil.putInInventory(player, itemStack);
             }
         }
         deleteCorpse(player.getName());
@@ -174,6 +171,32 @@ public class CorpseManager {
         public double getModifier() {
 
             return modifier;
+        }
+    }
+
+    public class GhostReviver implements Runnable {
+
+        Player player;
+        boolean looted;
+
+        public GhostReviver(Player player, boolean looted) {
+
+            this.player = player;
+            this.looted = looted;
+        }
+
+        @Override
+        public void run() {
+
+            String msg = "Du bist wieder lebendig. ";
+            if(looted) {
+                msg += "Ein andere Spieler hat deine Leiche ausgeraubt!";
+            }
+            else {
+                msg += "Du hast deine Items wieder im Inventar.";
+            }
+            player.sendMessage(ChatColor.GREEN + msg);
+            reviveGhost(player, ReviveReason.FOUND_CORPSE);
         }
     }
 }
