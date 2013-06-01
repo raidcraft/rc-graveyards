@@ -72,7 +72,7 @@ public class PlayerListener implements Listener {
         player.sendMessage("****");
         graveyardPlayer.setGhost(true);
         // create corpse delayed
-        Bukkit.getScheduler().runTaskLater(RaidCraft.getComponent(RCGraveyardsPlugin.class), new DelayedCorpseCreator(player, deathLocation), 4 * 20);
+        Bukkit.getScheduler().runTaskLater(RaidCraft.getComponent(RCGraveyardsPlugin.class), new CorpseCreator(player, deathLocation), 4 * 20);
     }
 
     @EventHandler
@@ -147,12 +147,12 @@ public class PlayerListener implements Listener {
 //        player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
 //    }
 
-    public class DelayedCorpseCreator implements Runnable {
+    public class CorpseCreator implements Runnable {
 
         Player player;
         Location location;
 
-        public DelayedCorpseCreator(Player player, Location location) {
+        public CorpseCreator(Player player, Location location) {
 
             this.player = player;
             this.location = location;

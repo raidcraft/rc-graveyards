@@ -40,7 +40,6 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerTable(DeathsTable.class, new DeathsTable());
         registerTable(ItemStackTable.class, new ItemStackTable());
 
-        registerEvents(new PlayerListener());
         registerCommands(GraveyardsCommands.class);
 
         ActionManager.registerAction(new ReviveGhostAction());
@@ -51,6 +50,9 @@ public class RCGraveyardsPlugin extends BasePlugin {
         dynmapManager = new DynmapManager();
         ghostManager = new GhostManager(this);
         corpseManager = new CorpseManager(this);
+
+        registerEvents(new PlayerListener());
+        registerEvents(ghostManager);
 
         loadCitizens();
         reload();
