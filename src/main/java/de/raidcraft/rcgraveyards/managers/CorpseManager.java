@@ -78,8 +78,12 @@ public class CorpseManager {
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 if(CustomItemUtil.isEquipment(itemStack)) {
-                    double durability = (short)((double)itemStack.getDurability() * reason.getDamageLevel().getModifier());
-                    RaidCraft.LOGGER.info("DEBUG: d:" + durability + " | m:" + reason.getDamageLevel().getModifier() + " | o:" + itemStack.getDurability());
+                    double modifier = reason.getDamageLevel().getModifier();
+                    if(graveyardPlayer.getLastDeath().wasPvp()) {
+                        modifier = EQUIPMENT_DAMAGE_LEVEL.VERY_LOW.getModifier();
+                    }
+                    double durability = (short)((double)itemStack.getDurability() * modifier);
+                    RaidCraft.LOGGER.info("DEBUG: d:" + durability + " | m:" + modifier + " | o:" + itemStack.getDurability());
                     itemStack.setDurability((short)durability);
                 }
                 else {
@@ -133,6 +137,7 @@ public class CorpseManager {
     public enum EQUIPMENT_DAMAGE_LEVEL {
 
         NO(1),
+        VERY_LOW(0.95),
         LOW(0.9),
         MIDDLE(0.7),
         HIGH(0.5),
