@@ -6,7 +6,6 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
-import net.milkbowl.vault.item.Items;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -80,7 +79,7 @@ public class CorpseManager {
         if(ghost) {
             player.sendMessage(ChatColor.RED + "Du kannst als Geist keine anderen Leichen berauben!");
         }
-        else(looted) {
+        else if(looted) {
             player.sendMessage(ChatColor.RED + "Diese Leiche ist schon ausgeraubt!");
         }
         else {
