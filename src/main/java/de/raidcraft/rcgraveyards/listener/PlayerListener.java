@@ -118,8 +118,10 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
-        if(graveyardPlayer.isGhost()) event.setCancelled(true);
-        player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Items droppen!");
+        if(graveyardPlayer.isGhost()) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Items droppen!");
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
