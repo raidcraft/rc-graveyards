@@ -98,6 +98,7 @@ public class CorpseManager {
     public enum ReviveReason {
 
         FOUND_CORPSE,
-        NECROMANCER
+        NECROMANCER,
+        COMMAND
     }
 }

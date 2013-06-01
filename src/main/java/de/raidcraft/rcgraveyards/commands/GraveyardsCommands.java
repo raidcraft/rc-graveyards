@@ -5,6 +5,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.managers.CorpseManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -25,6 +26,33 @@ public class GraveyardsCommands {
     )
     @NestedCommand(NestedCommands.class)
     public void rcg(CommandContext context, CommandSender sender) throws CommandException {
+    }
+
+    @Command(
+            aliases = {"revive", "unghost"},
+            desc = "Revive player"
+    )
+    @CommandPermissions("rcgraveyards.admin")
+    public void revive(CommandContext context, CommandSender sender) throws CommandException {
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = (Player)sender;
+        String target = player.getName();
+        if(context.argsLength() > 0) target = context.getString(0);
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(target);
+        if(graveyardPlayer == null) {
+            throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
+        }
+        if(plugin.getGhostManager().isGhost(graveyardPlayer.getPlayer())) {
+            plugin.getCorpseManager().reviveGhost(graveyardPlayer.getPlayer(), CorpseManager.ReviveReason.COMMAND);
+            if(!sender.getName().equalsIgnoreCase(target)) {
+                player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW + graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
+            }
+            graveyardPlayer.getPlayer().sendMessage(ChatColor.GREEN + sender.getName() + "hat dich wiederbelebt!");
+        }
+        else {
+            throw new CommandException("Der Spieler " + target + " ist kein Geist!");
+        }
     }
 
     public static class NestedCommands {
@@ -123,27 +151,6 @@ public class GraveyardsCommands {
 
             player.teleport(graveyard.getLocation());
             player.sendMessage(ChatColor.GREEN + "Zum Friedhof " + ChatColor.YELLOW + graveyard.getName() + ChatColor.GREEN + " teleportiert.");
-        }
-
-        @Command(
-                aliases = {"revive", "unghost"},
-                desc = "Revive player"
-        )
-        @CommandPermissions("rcgraveyards.admin")
-        public void revive(CommandContext context, CommandSender sender) throws CommandException {
-
-            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-            Player player = (Player)sender;
-            String target = player.getName();
-            if(context.argsLength() > 0) target = context.getString(0);
-            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(target);
-            if(graveyardPlayer == null) {
-                throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
-            }
-            if(plugin.getGhostManager().isGhost(graveyardPlayer.getPlayer())) {
-                graveyardPlayer.setGhost(false);
-                player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW +  graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
-            }
         }
     }
 }
