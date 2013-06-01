@@ -2,6 +2,7 @@ package de.raidcraft.rcgraveyards.tables;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.database.Table;
+import de.raidcraft.util.CustomItemUtil;
 import de.raidcraft.util.SerializationUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,6 +38,7 @@ public class ItemStackTable extends Table {
                             "`durability` INT( 11 ) NOT NULL ,\n" +
                             "`amount` INT( 11 ) NOT NULL , \n" +
                             "`itemmeta` TEXT NOT NULL , \n" +
+                            "`equipment` TINYINT NOT NULL , \n" +
                             "PRIMARY KEY ( `id` )\n" +
                             ")");
         } catch (SQLException e) {
@@ -50,8 +52,8 @@ public class ItemStackTable extends Table {
         try {
             PreparedStatement statement;
 
-            String query = "INSERT INTO " + getTableName() + " (player, world, material, durability, itemmeta, amount) " +
-                    "VALUES (?, ?, ?, ?, ?);";
+            String query = "INSERT INTO " + getTableName() + " (player, world, material, durability, itemmeta, amount, equipment) " +
+                    "VALUES (?, ?, ?, ?, ?, ?);";
 
             getConnection().setAutoCommit(false);
             statement = getConnection().prepareStatement(query);
@@ -64,6 +66,10 @@ public class ItemStackTable extends Table {
                 statement.setShort(4, item.getDurability());
                 statement.setString(5, SerializationUtil.toByteStream(item.getItemMeta()));
                 statement.setInt(6, item.getAmount());
+
+                boolean equipment = false;
+                if(CustomItemUtil.isEquipment(item)) equipment = true;
+                statement.setInt(7, (equipment) ? 1 : 0);
                 statement.executeUpdate();
 
                 i++;
@@ -82,10 +88,19 @@ public class ItemStackTable extends Table {
 
     public List<ItemStack> getInventory(Player player) {
 
+        return getInventory(player.getName(), player.getWorld().getName(), false);
+    }
+
+    public List<ItemStack> getInventory(String player, String world, boolean withoutEquipment) {
+
         List<ItemStack> items = new ArrayList<>();
+        String withoutEquipmentFilter = "";
+        if(withoutEquipment) {
+            withoutEquipmentFilter = "AND equipment = '0'";
+        }
         try {
             ResultSet resultSet = executeQuery(
-                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
+                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "' AND world = '" + world + "' " + withoutEquipmentFilter);
 
             while (resultSet.next()) {
                 ItemStack itemStack = new ItemStack(
@@ -107,9 +122,18 @@ public class ItemStackTable extends Table {
 
     public void delete(Player player) {
 
+        delete(player.getName(), player.getWorld().getName(), false);
+    }
+
+    public void delete(String player, String world, boolean withoutEquipment) {
+
+        String withoutEquipmentFilter = "";
+        if(withoutEquipment) {
+            withoutEquipmentFilter = "AND equipment = '0'";
+        }
         try {
             executeUpdate(
-                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
+                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "' AND world = '" + world + "' " + withoutEquipmentFilter);
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
             e.printStackTrace();

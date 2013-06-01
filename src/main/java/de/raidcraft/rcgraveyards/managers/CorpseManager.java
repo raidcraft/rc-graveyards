@@ -71,7 +71,7 @@ public class CorpseManager {
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         graveyardPlayer.setGhost(false);
         deleteCorpse(player.getName());
-        List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName());
+        List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName(), player.getWorld().getName());
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);

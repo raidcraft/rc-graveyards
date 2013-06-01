@@ -4,12 +4,12 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
+import de.raidcraft.rcgraveyards.tables.ItemStackTable;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,19 +68,17 @@ public class PlayerManager {
         }
     }
 
-    public List<ItemStack> getLootableDeathInventory(String corpseName) {
+    public List<ItemStack> getLootableDeathInventory(String corpseName, String world) {
 
-        List<ItemStack> items = new ArrayList<>();
-        //TODO get lootable items from db and delete them
-
+        List<ItemStack> items = RaidCraft.getTable(ItemStackTable.class).getInventory(corpseName, world, true);
+        RaidCraft.getTable(ItemStackTable.class).delete(corpseName, world, true);
         return items;
     }
 
-    public List<ItemStack> getDeathInventory(String corpseName) {
+    public List<ItemStack> getDeathInventory(String corpseName, String world) {
 
-        List<ItemStack> items = new ArrayList<>();
-        //TODO get all items from db and delete them
-
+        List<ItemStack> items = RaidCraft.getTable(ItemStackTable.class).getInventory(corpseName, world, false);
+        RaidCraft.getTable(ItemStackTable.class).delete(corpseName, world, false);
         return items;
     }
 }
