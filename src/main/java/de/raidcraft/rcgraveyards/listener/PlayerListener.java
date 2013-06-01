@@ -6,6 +6,7 @@ import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -70,8 +71,8 @@ public class PlayerListener implements Listener {
         player.sendMessage(ChatColor.GOLD + "Oder nutze den Geisterheiler hier auf dem Friedhof und verliere dadurch Items.");
         player.sendMessage("*********************************************************************");
         graveyardPlayer.setGhost(true);
-        // create corpse
-        CorpseTrait.create(player, player.getLocation());
+        // create corpse delayed
+        Bukkit.getScheduler().runTaskLater(RaidCraft.getComponent(RCGraveyardsPlugin.class), new DelayedCorpseCreator(player, deathLocation), 4 * 20);
     }
 
     @EventHandler
@@ -143,4 +144,20 @@ public class PlayerListener implements Listener {
 //        if(graveyardPlayer.isGhost()) event.setCancelled(true);
 //        player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
 //    }
+
+    public class DelayedCorpseCreator implements Runnable {
+
+        Player player;
+        Location location;
+
+        public DelayedCorpseCreator(Player player, Location location) {
+
+            this.player = player;
+            this.location = location;
+        }
+
+        public void run() {
+            CorpseTrait.create(player, location);
+        }
+    }
 }
