@@ -62,7 +62,7 @@ public class CorpseManager {
     public void checkReviver(Player player, String corpseName) {
 
         boolean ghost = plugin.getGhostManager().isGhost(player);
-        NPC npc = registeredCorpse.get(player.getName());
+        NPC npc = registeredCorpse.get(corpseName.toLowerCase());
         boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
 
         if(player.getName().equalsIgnoreCase(corpseName)) {
