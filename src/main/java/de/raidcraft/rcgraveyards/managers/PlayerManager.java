@@ -55,16 +55,27 @@ public class PlayerManager {
 
     public void updatePlayerVisibility(Player player) {
 
-        if(plugin.getGhostManager().isGhost(player) || player.hasPermission("rcgraveyards.seeall")) {
-            for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-                if(onlinePlayer.getName().equalsIgnoreCase(player.getName())) continue;
-                player.showPlayer(onlinePlayer);
-            }
+        if(player.hasPermission("rcgraveyards.seeall")) {
             return;
         }
-        for(Player ghostPlayer : plugin.getGhostManager().getGhosts()) {
-            if(!ghostPlayer.isOnline() || ghostPlayer.getName().equalsIgnoreCase(player.getName())) continue;
-            player.hidePlayer(ghostPlayer.getPlayer());
+        boolean ghost = plugin.getGhostManager().isGhost(player);
+        for(Player otherPlayer : Bukkit.getOnlinePlayers()) {
+            if(plugin.getGhostManager().isGhost(otherPlayer)) {
+                if(ghost) {
+                    player.showPlayer(otherPlayer);
+                }
+                else {
+                    player.hidePlayer(otherPlayer);
+                }
+            }
+            else {
+                if(ghost) {
+                    player.hidePlayer(otherPlayer);
+                }
+                else {
+                    player.showPlayer(otherPlayer);
+                }
+            }
         }
     }
 
