@@ -21,7 +21,7 @@ public class GraveyardPlayer {
     private Player player;
     private Map<String, Graveyard> graveyards = new HashMap<>();
     private boolean ghost = false;
-    private final Death lastDeath;
+    private Death lastDeath;
 
     public GraveyardPlayer(Player player) {
 
@@ -31,15 +31,14 @@ public class GraveyardPlayer {
         }
 
         // load from database
-        Death death = RaidCraft.getTable(DeathsTable.class).getDeath(player);
-        if(death == null) {
-            death = new Death(player);
+        lastDeath = RaidCraft.getTable(DeathsTable.class).getDeath(player);
+        if(lastDeath == null) {
+            lastDeath = new Death(player);
         }
         else {
-            death.setInventory(RaidCraft.getTable(ItemStackTable.class).getInventory(player));
+            lastDeath.setInventory(RaidCraft.getTable(ItemStackTable.class).getInventory(player));
             setGhost(true);
         }
-        this.lastDeath = death;
     }
 
     public Player getPlayer() {
