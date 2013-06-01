@@ -12,7 +12,6 @@ import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.api.trait.trait.MobType;
 import net.citizensnpcs.api.trait.trait.Owner;
 import net.citizensnpcs.api.trait.trait.Spawned;
-import net.citizensnpcs.trait.CurrentLocation;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -62,7 +61,6 @@ public class CorpseTrait extends Trait {
         npc.addTrait(LookClose.class);
         npc.addTrait(Owner.class);
         npc.addTrait(Equipment.class);
-        npc.addTrait(CurrentLocation.class);
 
 
         // configure traits
@@ -72,6 +70,7 @@ public class CorpseTrait extends Trait {
         npc.getTrait(Owner.class).setOwner("rcgraveyards");
         npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
 
+        RaidCraft.LOGGER.info("DEBUG: " + location.getWorld().getName() + " | " + location.getBlockX() + " | " + location.getBlockY() + " | " + location.getBlockZ());
         npc.spawn(location);
 
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCitizens().storeNPCs(new CommandContext(new String[]{}));
