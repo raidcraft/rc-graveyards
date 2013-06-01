@@ -24,11 +24,16 @@ import org.bukkit.event.player.*;
 public class PlayerListener implements Listener {
 
     @EventHandler
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        plugin.getGhostManager().addPlayer(event.getPlayer());
+    }
+
+    @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         plugin.getPlayerManager().login(event.getPlayer());
-        plugin.getGhostManager().addPlayer(event.getPlayer());
         plugin.getPlayerManager().updatePlayerVisibility(event.getPlayer());
     }
 
