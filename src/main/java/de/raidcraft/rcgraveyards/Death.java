@@ -1,5 +1,8 @@
 package de.raidcraft.rcgraveyards;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.skills.SkillsPlugin;
+import de.raidcraft.skills.api.combat.AttackSource;
 import de.raidcraft.skills.api.hero.Hero;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,14 +25,14 @@ public class Death {
 
     public Death(Player player) {
 
-//        this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
+        this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
         this.location = null;
         this.inventory = new ArrayList<>();
     }
 
     public Death(Player player, Location location, long timestamp) {
 
-//        this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
+        this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
         this.location = location;
         this.timestamp = timestamp;
     }
@@ -64,8 +67,7 @@ public class Death {
 
     public boolean wasPvp() {
 
-//        return (hero.getLastDamageCause().getAttackSource() == AttackSource.HERO);
-        return false;
+        return (hero.getLastDamageCause().getAttackSource() == AttackSource.HERO);
     }
 
     public Location getLocation() {
