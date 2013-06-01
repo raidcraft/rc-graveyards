@@ -92,6 +92,7 @@ public class DeathsTable extends Table {
 
             while (resultSet.next()) {
                 long timestamp = DateUtil.getTimeStamp(resultSet.getString("date"));
+                RaidCraft.LOGGER.info("DEBUG: " + resultSet.getString("date") + " | " + timestamp);
                 resultSet.close();
                 return timestamp;
             }

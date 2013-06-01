@@ -33,15 +33,14 @@ public class CorpseManager {
 
         // remove corpse if too old
         long lastDeath = plugin.getPlayerManager().getLastDeath(trait.getPlayerName(), npc.getBukkitEntity().getWorld().getName());
+        RaidCraft.LOGGER.info("DEBUG: " + npc.getBukkitEntity().getWorld().getName());
         if(lastDeath < System.currentTimeMillis() - plugin.getConfig().corpseDuration*1000) {
-            RaidCraft.LOGGER.info("DEBUG: " + lastDeath);
             npc.destroy();
         }
         else {
             deleteCorpse(trait.getPlayerName());
             registeredCorpse.put(trait.getPlayerName().toLowerCase(), npc);
         }
-        RaidCraft.LOGGER.info("DEBUG: NPC: " + npc);
     }
 
     public void unregisterCorpse(NPC npc) {
