@@ -70,7 +70,6 @@ public class CorpseManager {
 
         player.getInventory().clear();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
-        graveyardPlayer.setGhost(false);
         deleteCorpse(player.getName());
         List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName(), player.getWorld().getName());
         for (ItemStack itemStack : loot) {
@@ -78,7 +77,7 @@ public class CorpseManager {
                 player.getLocation().getWorld().dropItem(player.getLocation(), itemStack);
             }
         }
-
+        graveyardPlayer.setGhost(false);
         player.sendMessage(ChatColor.GREEN + "Du hast dich wiederbelebt und deine Items zurück bekommen!");
     }
 
