@@ -44,9 +44,6 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
-
-        // create corpse
-        CorpseTrait.create(player, player.getLocation());
         graveyardPlayer.getLastDeath().setLocation(player.getLocation().clone());
         graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
         graveyardPlayer.getLastDeath().setInventory(player.getInventory());
@@ -73,6 +70,8 @@ public class PlayerListener implements Listener {
         player.sendMessage(ChatColor.GOLD + "Oder nutze den Geisterheiler hier auf dem Friedhof und verliere dadurch Items.");
         player.sendMessage("*********************************************************************");
         graveyardPlayer.setGhost(true);
+        // create corpse
+        CorpseTrait.create(player, player.getLocation());
     }
 
     @EventHandler
