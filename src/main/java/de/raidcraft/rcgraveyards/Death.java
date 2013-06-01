@@ -59,6 +59,7 @@ public class Death {
 
     public void setInventory(PlayerInventory inventory) {
 
+        this.inventory.clear();
         for(ItemStack itemStack : inventory.getContents()) {
             if(itemStack == null || itemStack.getType() == Material.AIR) continue;
             this.inventory.add(itemStack.clone());
