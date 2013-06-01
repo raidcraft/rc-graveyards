@@ -65,11 +65,11 @@ public class PlayerListener implements Listener {
         if(graveyard == null) return;
         // inform player
         event.setRespawnLocation(graveyard.getLocation());
-        player.sendMessage("*********************************************************************");
+        player.sendMessage("****");
         player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
         player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
         player.sendMessage(ChatColor.GOLD + "Oder nutze den Geisterheiler hier auf dem Friedhof und verliere dadurch Items.");
-        player.sendMessage("*********************************************************************");
+        player.sendMessage("****");
         graveyardPlayer.setGhost(true);
         // create corpse delayed
         Bukkit.getScheduler().runTaskLater(RaidCraft.getComponent(RCGraveyardsPlugin.class), new DelayedCorpseCreator(player, deathLocation), 4 * 20);
