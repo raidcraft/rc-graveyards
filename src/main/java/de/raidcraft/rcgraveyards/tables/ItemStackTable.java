@@ -53,7 +53,7 @@ public class ItemStackTable extends Table {
             PreparedStatement statement;
 
             String query = "INSERT INTO " + getTableName() + " (player, world, material, durability, itemmeta, amount, equipment) " +
-                    "VALUES (?, ?, ?, ?, ?, ?);";
+                    "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
             getConnection().setAutoCommit(false);
             statement = getConnection().prepareStatement(query);
