@@ -3,6 +3,7 @@ package de.raidcraft.rcgraveyards.commands;
 import com.sk89q.minecraft.util.commands.*;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
+import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -39,7 +40,7 @@ public class GraveyardsCommands {
                 aliases = {"reload"},
                 desc = "Reload plugin"
         )
-        @CommandPermissions("rcgraveyards.reload")
+        @CommandPermissions("rcgraveyards.admin")
         public void reload(CommandContext context, CommandSender sender) throws CommandException {
 
             RaidCraft.getComponent(RCGraveyardsPlugin.class).reload();
@@ -52,7 +53,7 @@ public class GraveyardsCommands {
                 min = 1,
                 flags = "m"
         )
-        @CommandPermissions("rcgraveyards.create")
+        @CommandPermissions("rcgraveyards.admin")
         public void create(CommandContext context, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) {
@@ -83,7 +84,7 @@ public class GraveyardsCommands {
                 desc = "Delete graveyard",
                 min = 1
         )
-        @CommandPermissions("rcgraveyards.delete")
+        @CommandPermissions("rcgraveyards.admin")
         public void delete(CommandContext context, CommandSender sender) throws CommandException {
 
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
@@ -103,8 +104,8 @@ public class GraveyardsCommands {
                 desc = "Warp to graveyard",
                 min = 1
         )
-        @CommandPermissions("rcgraveyards.warp")
-        public void warp(CommandContext context, CommandSender sender) throws CommandException {
+                 @CommandPermissions("rcgraveyards.admin")
+                 public void warp(CommandContext context, CommandSender sender) throws CommandException {
 
             if(sender instanceof ConsoleCommandSender) {
                 sender.sendMessage("Player context required!");
@@ -122,6 +123,27 @@ public class GraveyardsCommands {
 
             player.teleport(graveyard.getLocation());
             player.sendMessage(ChatColor.GREEN + "Zum Friedhof " + ChatColor.YELLOW + graveyard.getName() + ChatColor.GREEN + " teleportiert.");
+        }
+
+        @Command(
+                aliases = {"revive", "unghost"},
+                desc = "Revive player"
+        )
+        @CommandPermissions("rcgraveyards.admin")
+        public void revive(CommandContext context, CommandSender sender) throws CommandException {
+
+            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+            Player player = (Player)sender;
+            String target = player.getName();
+            if(context.argsLength() > 0) target = context.getString(0);
+            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(target);
+            if(graveyardPlayer == null) {
+                throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
+            }
+            if(plugin.getGhostManager().isGhost(graveyardPlayer.getPlayer())) {
+                graveyardPlayer.setGhost(false);
+                player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW +  graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
+            }
         }
     }
 }
