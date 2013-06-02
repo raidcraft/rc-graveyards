@@ -149,6 +149,7 @@ public class GhostManager implements Listener {
 //        }
 
         Chunk chunk = player.getLocation().getChunk();
-        player.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
+        chunk.unload();
+        chunk.load();
     }
 }
