@@ -76,6 +76,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
         @Setting("corpse-exist-duration") public int corpseDuration = 432000; // in seconds
         @Setting("ghost-revive-delay") public int ghostReviveDuration = 15; // in seconds
+        @Setting("corpse-loot-item-indicator-material") public String corpseLootIndicatorMaterial = "DIAMOND";
 
         public LocalConfiguration(RCGraveyardsPlugin plugin) {
 

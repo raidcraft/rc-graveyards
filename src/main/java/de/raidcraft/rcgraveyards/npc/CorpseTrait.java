@@ -14,8 +14,10 @@ import net.citizensnpcs.api.trait.trait.Owner;
 import net.citizensnpcs.api.trait.trait.Spawned;
 import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Author: Philip
@@ -59,6 +61,13 @@ public class CorpseTrait extends Trait {
     public void setLooted(boolean looted) {
 
         this.looted = looted;
+        if(looted) {
+            Material material = Material.getMaterial(RaidCraft.getComponent(RCGraveyardsPlugin.class).getConfig().corpseLootIndicatorMaterial);
+            npc.getTrait(Equipment.class).set(0, new ItemStack(material));
+        }
+        else {
+            npc.getTrait(Equipment.class).set(0, null);
+        }
     }
 
     public static void create(Player player, Location location) {

@@ -70,9 +70,13 @@ public class CorpseManager {
 
         if(player.getName().equalsIgnoreCase(corpseName)) {
 
-            player.sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + plugin.getConfig().ghostReviveDuration
-                    + " Sek. zurück. Bringe dich in Sicherheit!");
-            delayingReviver.addGhostToRevive(player, plugin.getConfig().ghostReviveDuration);
+            if(delayingReviver.addGhostToRevive(player, plugin.getConfig().ghostReviveDuration)) {
+                player.sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + plugin.getConfig().ghostReviveDuration
+                        + " Sek. zurück. Bringe dich in Sicherheit!");
+            }
+            else {
+                player.sendMessage(ChatColor.RED + "Deine Seele ist bereits auf den Weg zurück zu dir!");
+            }
             return;
         }
 
@@ -181,9 +185,13 @@ public class CorpseManager {
 
         private Map<Player, Integer> ghosts = new HashMap<>();
 
-        public void addGhostToRevive(Player player, int delay) {
+        public boolean addGhostToRevive(Player player, int delay) {
 
+            if(ghosts.containsKey(player)) {
+                return false;
+            }
             ghosts.put(player, delay);
+            return true;
         }
 
         @Override
