@@ -190,7 +190,7 @@ public class CorpseManager {
             if(ghosts.containsKey(player)) {
                 return false;
             }
-            ghosts.put(player, delay);
+            ghosts.put(player, delay+1);
             return true;
         }
 
@@ -200,14 +200,18 @@ public class CorpseManager {
             Map<Player, Integer> ghostsCopy = new HashMap<>(ghosts);
             for(Map.Entry<Player, Integer> entry : ghostsCopy.entrySet()) {
 
-                if(entry.getValue() > 10) continue;
-                if(entry.getValue() == 0) {
+                int delay = entry.getValue();
+                delay--;
+                ghosts.put(entry.getKey(), delay);
+
+                if(delay > 10) continue;
+                if(delay == 0) {
                     entry.getKey().sendMessage(ChatColor.GREEN + "Du bist wieder lebendig. Deine Items liegen im Inventar.");
                     reviveGhost(entry.getKey(), ReviveReason.FOUND_CORPSE);
                     ghosts.remove(entry.getKey());
                     continue;
                 }
-                entry.getKey().sendMessage(ChatColor.YELLOW + entry.getValue().toString());
+                entry.getKey().sendMessage(ChatColor.YELLOW + String.valueOf(delay));
             }
         }
     }
