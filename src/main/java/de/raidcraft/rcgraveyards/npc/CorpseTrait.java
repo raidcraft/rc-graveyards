@@ -41,6 +41,7 @@ public class CorpseTrait extends Trait {
 
         super.onSpawn();
         npc.getTrait(Equipment.class).set(1, SkullUtil.getPlayerSkull(playerName));
+        updateLootIndicator();
     }
 
     public String getPlayerName() {
@@ -61,6 +62,12 @@ public class CorpseTrait extends Trait {
     public void setLooted(boolean looted) {
 
         this.looted = looted;
+        updateLootIndicator();
+    }
+
+    public void updateLootIndicator() {
+
+        if(npc.getBukkitEntity() == null) return;
         if(looted) {
             npc.getTrait(Equipment.class).set(0, null);
         }
