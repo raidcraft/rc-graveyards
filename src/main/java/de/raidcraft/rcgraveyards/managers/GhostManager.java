@@ -9,8 +9,8 @@ import com.comphenix.protocol.wrappers.WrappedDataWatcher;
 import de.raidcraft.api.packets.Packet28EntityMetadata;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.Listener;
@@ -104,7 +104,7 @@ public class GhostManager implements Listener {
         } else if (!isGhost) {
             ghosts.remove(player);
             removePotionEffects(player);
-            sendResetPackages(player);
+            resetFakes(player);
         }
     }
 
@@ -127,12 +127,28 @@ public class GhostManager implements Listener {
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
     }
 
-    private void sendResetPackages(Player player) {
+    private void resetFakes(Player player) {
 
-        for(Entity entity : player.getNearbyEntities(16, 16, 16)) {
+//        try {
+//            for(Entity entity : player.getNearbyEntities(16, 16, 16)) {
+//
+//                if(!(entity instanceof LivingEntity)) continue;
+//
+//                PacketContainer packetContainer = ProtocolLibrary.getProtocolManager().createPacket(
+//                        Packets.Server.MAP_CHUNK);
+//
+//                Packet33ChunkData packet = new Packet33ChunkData(packetContainer);
+//                packet.
+//                packet.setEntityId(entity.getEntityId());
+//                WrappedDataWatcher watcher = new WrappedDataWatcher(packet.getEntityMetadata());
+//                watcher
+//
+//                ProtocolLibrary.getProtocolManager().sendServerPacket(player, packetContainer);
+//            }
+//        } catch (InvocationTargetException e) {
+//        }
 
-            if(!(entity instanceof LivingEntity)) continue;
-            ((LivingEntity) entity).removePotionEffect(PotionEffectType.INVISIBILITY);
-        }
+        Chunk chunk = player.getLocation().getChunk();
+        player.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
     }
 }
