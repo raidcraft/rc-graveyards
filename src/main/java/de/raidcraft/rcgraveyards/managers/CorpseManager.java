@@ -24,10 +24,13 @@ public class CorpseManager {
 
     private RCGraveyardsPlugin plugin;
     private Map<String, NPC> registeredCorpse = new HashMap<>();
+    private GhostReviver delayingReviver = new GhostReviver();
 
     public CorpseManager(RCGraveyardsPlugin plugin) {
 
         this.plugin = plugin;
+
+        Bukkit.getScheduler().runTaskTimer(plugin, delayingReviver, 20, 20);
     }
 
     public void registerCorpse(NPC npc) {
@@ -67,9 +70,9 @@ public class CorpseManager {
 
         if(player.getName().equalsIgnoreCase(corpseName)) {
 
-            player.sendMessage(ChatColor.RED + "Deine Seele ist in " + plugin.getConfig().ghostReviveDuration
-                    + " Sek. zurück gekehrt. Bringe dich in Sicherheit!");
-            Bukkit.getScheduler().runTaskLater(plugin, new GhostReviver(player, looted), 20 * plugin.getConfig().ghostReviveDuration);
+            player.sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + plugin.getConfig().ghostReviveDuration
+                    + " Sek. zurück. Bringe dich in Sicherheit!");
+            delayingReviver.addGhostToRevive(player, plugin.getConfig().ghostReviveDuration);
             return;
         }
 
@@ -176,27 +179,28 @@ public class CorpseManager {
 
     public class GhostReviver implements Runnable {
 
-        Player player;
-        boolean looted;
+        private Map<Player, Integer> ghosts = new HashMap<>();
 
-        public GhostReviver(Player player, boolean looted) {
+        public void addGhostToRevive(Player player, int delay) {
 
-            this.player = player;
-            this.looted = looted;
+            ghosts.put(player, delay);
         }
 
         @Override
         public void run() {
 
-            String msg = "Du bist wieder lebendig. ";
-            if(looted) {
-                msg += "Ein andere Spieler hat deine Leiche ausgeraubt!";
+            Map<Player, Integer> ghostsCopy = new HashMap<>(ghosts);
+            for(Map.Entry<Player, Integer> entry : ghostsCopy.entrySet()) {
+
+                if(entry.getValue() > 10) continue;
+                if(entry.getValue() == 0) {
+                    entry.getKey().sendMessage(ChatColor.GREEN + "Du bist wieder lebendig. Deine Items liegen im Inventar.");
+                    reviveGhost(entry.getKey(), ReviveReason.FOUND_CORPSE);
+                    ghosts.remove(entry.getKey());
+                    continue;
+                }
+                entry.getKey().sendMessage(ChatColor.YELLOW + entry.getValue().toString());
             }
-            else {
-                msg += "Deine Items liegen im Inventar.";
-            }
-            player.sendMessage(ChatColor.GREEN + msg);
-            reviveGhost(player, ReviveReason.FOUND_CORPSE);
         }
     }
 }
