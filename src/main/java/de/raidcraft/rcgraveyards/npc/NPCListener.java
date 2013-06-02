@@ -16,7 +16,7 @@ import org.bukkit.event.Listener;
  */
 public class NPCListener implements Listener {
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onRightClick(NPCRightClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
@@ -30,7 +30,7 @@ public class NPCListener implements Listener {
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().checkReviver(event.getClicker(), trait.getPlayerName());
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onLeftClick(NPCLeftClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
