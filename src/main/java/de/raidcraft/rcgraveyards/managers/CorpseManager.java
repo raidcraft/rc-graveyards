@@ -211,7 +211,7 @@ public class CorpseManager {
                     ghosts.remove(entry.getKey());
                     continue;
                 }
-                entry.getKey().sendMessage(ChatColor.YELLOW + String.valueOf(delay));
+                entry.getKey().sendMessage(ChatColor.GREEN + "* " + delay);
             }
         }
     }
