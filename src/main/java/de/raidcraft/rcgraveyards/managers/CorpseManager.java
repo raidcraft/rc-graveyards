@@ -67,10 +67,11 @@ public class CorpseManager {
         boolean ghost = plugin.getGhostManager().isGhost(player);
         NPC npc = registeredCorpse.get(corpseName.toLowerCase());
         boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
+        String robber = npc.getTrait(CorpseTrait.class).getRobber();
 
         if(player.getName().equalsIgnoreCase(corpseName)) {
 
-            if(delayingReviver.addGhostToRevive(player, plugin.getConfig().ghostReviveDuration)) {
+            if(delayingReviver.addGhostToRevive(player, new ReviveInformation(plugin.getConfig().ghostReviveDuration, looted, robber))) {
                 player.sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + plugin.getConfig().ghostReviveDuration
                         + " Sek. zurück. Bringe dich in Sicherheit!");
             }
@@ -84,7 +85,7 @@ public class CorpseManager {
             player.sendMessage(ChatColor.RED + "Du kannst als Geist keine anderen Leichen berauben!");
         }
         else if(looted) {
-            player.sendMessage(ChatColor.RED + "Diese Leiche ist schon ausgeraubt!");
+            player.sendMessage(ChatColor.RED + "Diese Leiche wurde bereits von " + robber + " ausgeraubt!");
         }
         else {
             lootCorpse(player, corpseName);
@@ -121,7 +122,7 @@ public class CorpseManager {
 
         NPC npc = registeredCorpse.get(corpseName.toLowerCase());
         if(npc != null) {
-            npc.getTrait(CorpseTrait.class).setLooted(true);
+            npc.getTrait(CorpseTrait.class).setLooted(true, player.getName());
         }
         List<ItemStack> loot = plugin.getPlayerManager().getLootableDeathInventory(corpseName, player.getWorld().getName());
         for (ItemStack itemStack : loot) {
@@ -183,36 +184,79 @@ public class CorpseManager {
 
     public class GhostReviver implements Runnable {
 
-        private Map<Player, Integer> ghosts = new HashMap<>();
+        private Map<Player, ReviveInformation> ghosts = new HashMap<>();
 
-        public boolean addGhostToRevive(Player player, int delay) {
+        public boolean addGhostToRevive(Player player, ReviveInformation reviveInformation) {
 
             if(ghosts.containsKey(player)) {
                 return false;
             }
-            ghosts.put(player, delay+1);
+            reviveInformation.increaseReviveDelay();
+            ghosts.put(player, reviveInformation);
             return true;
         }
 
         @Override
         public void run() {
 
-            Map<Player, Integer> ghostsCopy = new HashMap<>(ghosts);
-            for(Map.Entry<Player, Integer> entry : ghostsCopy.entrySet()) {
+            Map<Player, ReviveInformation> ghostsCopy = new HashMap<>(ghosts);
+            for(Map.Entry<Player, ReviveInformation> entry : ghostsCopy.entrySet()) {
 
-                int delay = entry.getValue();
-                delay--;
-                ghosts.put(entry.getKey(), delay);
-
+                ReviveInformation info = entry.getValue();
+                info.decreaseReviveDelay();
+                ghosts.put(entry.getKey(), info);
+                int delay = info.getReviveDelay();
                 if(delay > 10) continue;
                 if(delay == 0) {
-                    entry.getKey().sendMessage(ChatColor.GREEN + "Du bist wieder lebendig. Deine Items liegen im Inventar.");
+                    entry.getKey().sendMessage(ChatColor.GREEN + "Du bist wieder lebendig.");
+                    if(info.isLooted()) {
+                        entry.getKey().sendMessage(ChatColor.GREEN + "Deine Leiche wurde jedoch von " + ChatColor.YELLOW +  info.getRobber() + ChatColor.GREEN + " ausgeraubt!");
+                    }
                     reviveGhost(entry.getKey(), ReviveReason.FOUND_CORPSE);
                     ghosts.remove(entry.getKey());
                     continue;
                 }
                 entry.getKey().sendMessage(ChatColor.GREEN + "* " + delay);
             }
+        }
+    }
+
+    public class ReviveInformation {
+
+        private int reviveDelay;
+        private boolean looted;
+        private String robber;
+
+        public ReviveInformation(int reviveDelay, boolean looted, String robber) {
+
+            this.reviveDelay = reviveDelay;
+            this.looted = looted;
+            this.robber = robber;
+        }
+
+        public int getReviveDelay() {
+
+            return reviveDelay;
+        }
+
+        public void increaseReviveDelay() {
+
+            this.reviveDelay++;
+        }
+
+        public void decreaseReviveDelay() {
+
+            this.reviveDelay--;
+        }
+
+        public boolean isLooted() {
+
+            return looted;
+        }
+
+        public String getRobber() {
+
+            return robber;
         }
     }
 }
