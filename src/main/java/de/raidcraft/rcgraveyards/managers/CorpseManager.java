@@ -119,7 +119,7 @@ public class CorpseManager {
 
     public void lootCorpse(Player player, String corpseName) {
 
-        NPC npc = registeredCorpse.get(corpseName);
+        NPC npc = registeredCorpse.get(corpseName.toLowerCase());
         if(npc != null) {
             npc.getTrait(CorpseTrait.class).setLooted(true);
         }
