@@ -11,6 +11,7 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -37,18 +38,23 @@ public class GhostManager implements Listener {
                     if(!isGhost(event.getPlayer())) return;
                     switch (event.getPacketID()) {
                         case Packets.Server.ENTITY_METADATA:
-                            Packet28EntityMetadata packet = new Packet28EntityMetadata(event.getPacket());
-                            Entity entity = packet.getEntity(event);
+                            Packet28EntityMetadata packet28 = new Packet28EntityMetadata(event.getPacket());
+                            Entity entity = packet28.getEntity(event);
                             if(entity.hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) return;
 
-                            WrappedDataWatcher watcher = new WrappedDataWatcher(packet.getEntityMetadata());
+                            WrappedDataWatcher watcher = new WrappedDataWatcher(packet28.getEntityMetadata());
                             Byte flag = watcher.getByte(0);
                             if (flag != null) {
-                                // Clone and update it
-                                packet = new Packet28EntityMetadata(packet.getHandle().deepClone());
-                                watcher = new WrappedDataWatcher(packet.getEntityMetadata());
+                                packet28 = new Packet28EntityMetadata(packet28.getHandle().deepClone());
+                                watcher = new WrappedDataWatcher(packet28.getEntityMetadata());
+
+                                if(entity instanceof Sheep) {
+                                    Byte woolState = watcher.getByte(16);
+                                    watcher.setObject(16, (byte) (woolState | 16));
+                                }
+
                                 watcher.setObject(0, (byte) (flag | 32));
-                                event.setPacket(packet.getHandle());
+                                event.setPacket(packet28.getHandle());
                             }
                             break;
                     }
