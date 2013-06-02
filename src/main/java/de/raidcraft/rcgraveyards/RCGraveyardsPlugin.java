@@ -25,6 +25,7 @@ import org.bukkit.Bukkit;
  */
 public class RCGraveyardsPlugin extends BasePlugin {
 
+    public final static String VISIBLE_FOR_GHOSTS_METADATA = "VISIBLE_FOR_GHOSTS";
     private LocalConfiguration config;
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;

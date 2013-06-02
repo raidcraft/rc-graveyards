@@ -18,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 /**
  * Author: Philip
@@ -39,8 +40,10 @@ public class CorpseTrait extends Trait {
     @Override
     public void onSpawn() {
 
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         super.onSpawn();
         npc.getTrait(Equipment.class).set(1, SkullUtil.getPlayerSkull(playerName));
+        npc.getBukkitEntity().setMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA, new FixedMetadataValue(plugin, true));
         updateLootIndicator();
     }
 

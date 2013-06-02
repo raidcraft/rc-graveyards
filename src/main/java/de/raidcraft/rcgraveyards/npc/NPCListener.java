@@ -20,7 +20,8 @@ public class NPCListener implements Listener {
     public void onRightClick(NPCRightClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
-            if(RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())) {
+            if(RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())
+                    && !event.getNPC().getBukkitEntity().hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) {
                 event.setCancelled(true);
             }
             return;
@@ -34,7 +35,8 @@ public class NPCListener implements Listener {
     public void onLeftClick(NPCLeftClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
-            if(RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())) {
+            if(RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())
+                    && !event.getNPC().getBukkitEntity().hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) {
                 event.setCancelled(true);
             }
             return;
