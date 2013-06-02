@@ -1,6 +1,5 @@
 package de.raidcraft.rcgraveyards.managers;
 
-import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
@@ -105,7 +104,7 @@ public class CorpseManager {
                         modifier = EQUIPMENT_DAMAGE_LEVEL.VERY_LOW.getModifier();
                     }
                     double durability = (short)((double)itemStack.getDurability() * modifier);
-                    RaidCraft.LOGGER.info("DEBUG: d:" + durability + " | m:" + modifier + " | o:" + itemStack.getDurability());
+                    //TODO: use future methods in CustomItemUtil!
                     itemStack.setDurability((short)durability);
                 }
                 else {
