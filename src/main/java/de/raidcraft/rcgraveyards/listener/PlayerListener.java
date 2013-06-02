@@ -16,6 +16,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
 
@@ -159,6 +160,20 @@ public class PlayerListener implements Listener {
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void inHunger(FoodLevelChangeEvent event) {
+
+        if(event.getEntityType() != EntityType.PLAYER) return;
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = (Player)event.getEntity();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+
+        if(graveyardPlayer.isGhost()) {
+            event.setCancelled(true);
         }
     }
 
