@@ -47,7 +47,7 @@ public class GhostManager implements Listener {
                                 // Clone and update it
                                 packet = new Packet28EntityMetadata(packet.getHandle().deepClone());
                                 watcher = new WrappedDataWatcher(packet.getEntityMetadata());
-                                watcher.setObject(0, (byte) (flag));
+                                watcher.setObject(0, (byte) (flag | 32));
                                 event.setPacket(packet.getHandle());
                             }
                             break;
