@@ -10,6 +10,7 @@ import de.raidcraft.api.packets.Packet28EntityMetadata;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.event.Listener;
@@ -103,6 +104,7 @@ public class GhostManager implements Listener {
         } else if (!isGhost) {
             ghosts.remove(player);
             removePotionEffects(player);
+            sendResetPackages(player);
         }
     }
 
@@ -123,5 +125,14 @@ public class GhostManager implements Listener {
 //        player.removePotionEffect(PotionEffectType.SPEED);
 //        player.removePotionEffect(PotionEffectType.WITHER);
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
+    }
+
+    private void sendResetPackages(Player player) {
+
+        for(Entity entity : player.getNearbyEntities(16, 16, 16)) {
+
+            if(!(entity instanceof LivingEntity)) continue;
+            ((LivingEntity) entity).removePotionEffect(PotionEffectType.INVISIBILITY);
+        }
     }
 }
