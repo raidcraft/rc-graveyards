@@ -1,6 +1,7 @@
-entity-metadata:
-  - 'VISIBLE_FOR_GHOSTS'
-  - 'HIDDEN_FOR_LIVING'
+meta:
+  entity-metadata:
+    - 'VISIBLE_FOR_GHOSTS'
+    - 'HIDDEN_FOR_LIVING'
 stages:
 # check if this necromancer has competence for given ghost
   start:
