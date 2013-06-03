@@ -131,6 +131,16 @@ public class GraveyardManager {
         return graveyards;
     }
 
+    public List<Graveyard> getGraveyards() {
+
+        List<Graveyard> graveyards = new ArrayList<>();
+
+        for(Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
+            graveyards.add(entry.getValue());
+        }
+        return graveyards;
+    }
+
     public void registerNewGraveyard(Graveyard graveyard) {
 
         RaidCraft.getTable(GraveyardsTable.class).createGraveyard(graveyard);

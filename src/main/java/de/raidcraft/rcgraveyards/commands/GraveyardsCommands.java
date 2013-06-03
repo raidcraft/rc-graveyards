@@ -152,5 +152,29 @@ public class GraveyardsCommands {
             player.teleport(graveyard.getLocation());
             player.sendMessage(ChatColor.GREEN + "Zum Friedhof " + ChatColor.YELLOW + graveyard.getName() + ChatColor.GREEN + " teleportiert.");
         }
+
+        @Command(
+                aliases = {"list"},
+                desc = "List all graveyards"
+        )
+        @CommandPermissions("rcgraveyards.admin")
+        public void list(CommandContext context, CommandSender sender) throws CommandException {
+
+            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+            Player player = (Player)sender;
+
+            String list = "";
+            ChatColor color;
+            int i = 0;
+            for (Graveyard graveyard : plugin.getGraveyardManager().getGraveyards()) {
+                i++;
+                if(i % 2 == 0) color = ChatColor.YELLOW;
+                else color = ChatColor.WHITE;
+                list += color + graveyard.getFriendlyName() + ", ";
+            }
+
+            player.sendMessage(ChatColor.GREEN + "Es gibt derzeit " + i + " Friedhöfe:");
+            sender.sendMessage(list);
+        }
     }
 }
