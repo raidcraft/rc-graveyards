@@ -25,19 +25,24 @@ public class CheckGraveyardCompetenceAction extends AbstractAction {
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
 
+        if(graveyardPlayer.getLastDeath().getLocation() == null) {
+            changeStage(conversation, failure);
+        }
+
         Graveyard playerGraveyard = graveyardPlayer.getClosestGraveyard(graveyardPlayer.getLastDeath().getLocation());
         Graveyard necroGraveyard = plugin.getGraveyardManager().getClosestGraveyard(conversation.getHost().getLocation());
         if(playerGraveyard.getName().equalsIgnoreCase(necroGraveyard.getName())) {
-            if(success != null) {
-                conversation.setCurrentStage(success);
-                conversation.triggerCurrentStage();
-            }
+            changeStage(conversation, success);
         }
         else {
-            if(failure != null) {
-                conversation.setCurrentStage(failure);
-                conversation.triggerCurrentStage();
-            }
+            changeStage(conversation, failure);
+        }
+    }
+
+    private void changeStage(Conversation conversation, String stage) {
+        if(stage != null) {
+            conversation.setCurrentStage(stage);
+            conversation.triggerCurrentStage();
         }
     }
 }
