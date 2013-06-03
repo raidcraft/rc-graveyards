@@ -2,6 +2,7 @@ package de.raidcraft.rcgraveyards.commands;
 
 import com.sk89q.minecraft.util.commands.*;
 import de.raidcraft.RaidCraft;
+import de.raidcraft.rcconversations.npc.ConversationsTrait;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
@@ -104,6 +105,7 @@ public class GraveyardsCommands {
 
             Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), player.getName());
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
+            ConversationsTrait.create(player.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
             sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name +  ChatColor.GREEN + " wurde erstellt!");
         }
 
@@ -175,6 +177,23 @@ public class GraveyardsCommands {
 
             player.sendMessage(ChatColor.GREEN + "Es gibt derzeit " + i + " Friedhöfe:");
             sender.sendMessage(list);
+        }
+
+        @Command(
+                aliases = {"recreateghosthealer"},
+                desc = "Recreates all ghosthealer"
+        )
+        @CommandPermissions("rcgraveyards.admin")
+        public void recreateGhostHealer(CommandContext context, CommandSender sender) throws CommandException {
+
+            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+            Player player = (Player)sender;
+
+            for (Graveyard graveyard : plugin.getGraveyardManager().getGraveyards()) {
+                if(!graveyard.getLocation().getWorld().getName().equalsIgnoreCase(player.getWorld().getName())) continue;
+
+                ConversationsTrait.create(graveyard.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
+            }
         }
     }
 }
