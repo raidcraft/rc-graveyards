@@ -6,13 +6,20 @@ stages:
   start:
     actions:
       A:
+        type: CHECK_IF_GHOST
+        args:
+          onfailure: noghost
+      B:
         type: CHECK_GRAVEYARD_COMPETENCE
         args:
           onsuccess: success
-          onfailure: failure
+          onfailure: wronggraveyard
 
-# inform ghost about failure
-  failure:
+# player is no ghost
+  noghost:
+    text: 'Ich spreche nur mit Geistern!'
+# inform ghost about wrong graveyard
+  wronggraveyard:
     text: 'Ich kann dein Körper nicht wiederbeleben.|Du musst zum Friedhof %[graveyard] gehen und dort mit dem Geisterbeschwörer reden!'
     actions:
       A:
