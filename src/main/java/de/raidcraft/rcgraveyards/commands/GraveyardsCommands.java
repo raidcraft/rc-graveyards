@@ -5,7 +5,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
-import de.raidcraft.rcgraveyards.managers.CorpseManager;
+import de.raidcraft.rcgraveyards.util.ReviveReason;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -44,7 +44,7 @@ public class GraveyardsCommands {
             throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
         }
         if(plugin.getGhostManager().isGhost(graveyardPlayer.getPlayer())) {
-            plugin.getCorpseManager().reviveGhost(graveyardPlayer.getPlayer(), CorpseManager.ReviveReason.COMMAND);
+            plugin.getCorpseManager().reviveGhost(graveyardPlayer.getPlayer(), ReviveReason.COMMAND);
             if(!sender.getName().equalsIgnoreCase(target)) {
                 player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW + graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
             }
