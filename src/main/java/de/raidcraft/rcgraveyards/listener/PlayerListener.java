@@ -216,12 +216,8 @@ public class PlayerListener implements Listener {
             List<NPC> npcs = NPCRegistry.INST.getSpawnedNPCs(graveyard.getLocation().getChunk());
             boolean found = false;
             for(NPC npc : npcs) {
-                System.out.print("D0: " + npc);
-                System.out.print("D1: " + npc.hasTrait(ConversationsTrait.class));
-                System.out.print("D2: " + npc.getTrait(ConversationsTrait.class).getConversationName());
-                System.out.print("D3: " + plugin.getConfig().necromancerConversationName);
-                if(npc.hasTrait(ConversationsTrait.class)
-                        && npc.getTrait(ConversationsTrait.class).getConversationName().equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
+                ConversationsTrait trait = npc.getTrait(ConversationsTrait.class);
+                if(trait != null && trait.getConversationName().equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
                     if(found) {
                         NPCRegistry.INST.unregisterNPC(npc);
                         npc.destroy();
