@@ -30,4 +30,11 @@ stages:
             args:
               delay: 15
       2:
-        text:
+        text: 'Nein ich möchte doch meine Leiche suchen'
+        actions:
+          A:
+            type: TEXT
+            args:
+              text: 'Viel Glück dabei!'
+          B:
+            type: END

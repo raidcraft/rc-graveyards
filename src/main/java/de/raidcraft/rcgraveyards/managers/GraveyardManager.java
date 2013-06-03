@@ -98,6 +98,19 @@ public class GraveyardManager {
         return null;
     }
 
+    public Graveyard getClosestGraveyard(Location location) {
+
+        double distance = 0;
+        Graveyard closestGraveyard = null;
+        for(Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
+            if(closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance) {
+                closestGraveyard = entry.getValue();
+                distance = entry.getValue().getLocation().distance(location);
+            }
+        }
+        return closestGraveyard;
+    }
+
     public List<Graveyard> getPlayerGraveyards(String player) {
 
         List<Graveyard> graveyards = new ArrayList<>();
