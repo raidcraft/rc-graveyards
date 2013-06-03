@@ -219,6 +219,7 @@ public class PlayerListener implements Listener {
                 if(npc.hasTrait(ConversationsTrait.class)
                         && npc.getTrait(ConversationsTrait.class).getConversationName().equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
                     if(found) {
+                        NPCRegistry.INST.unregisterNPC(npc);
                         npc.destroy();
                         break;
                     }
