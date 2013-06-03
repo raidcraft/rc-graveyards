@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,10 +56,14 @@ public class Death {
         this.inventory = inventory;
     }
 
-    public void setInventory(PlayerInventory inventory) {
+    public void saveInventory() {
 
         this.inventory.clear();
-        for(ItemStack itemStack : inventory.getContents()) {
+        for(ItemStack itemStack : hero.getPlayer().getInventory().getContents()) {
+            if(itemStack == null || itemStack.getType() == Material.AIR) continue;
+            this.inventory.add(itemStack.clone());
+        }
+        for(ItemStack itemStack : hero.getPlayer().getEquipment().getArmorContents()) {
             if(itemStack == null || itemStack.getType() == Material.AIR) continue;
             this.inventory.add(itemStack.clone());
         }
