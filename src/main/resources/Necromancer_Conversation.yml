@@ -1,4 +1,4 @@
-meta:
+settings:
   entity-metadata:
     - 'VISIBLE_FOR_GHOSTS'
     - 'HIDDEN_FOR_LIVING'
