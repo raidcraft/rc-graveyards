@@ -216,6 +216,10 @@ public class PlayerListener implements Listener {
             List<NPC> npcs = NPCRegistry.INST.getSpawnedNPCs(graveyard.getLocation().getChunk());
             boolean found = false;
             for(NPC npc : npcs) {
+                if(npc == null) {
+                    RaidCraft.LOGGER.info("DEBUG: NPC is null!");
+                    continue;
+                }
                 if(npc.hasTrait(ConversationsTrait.class)
                         && npc.getTrait(ConversationsTrait.class).getConversationName().equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
                     if(found) {
