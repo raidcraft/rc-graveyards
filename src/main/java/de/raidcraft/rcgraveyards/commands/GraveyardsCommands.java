@@ -178,22 +178,5 @@ public class GraveyardsCommands {
             player.sendMessage(ChatColor.GREEN + "Es gibt derzeit " + i + " Friedhöfe:");
             sender.sendMessage(list);
         }
-
-        @Command(
-                aliases = {"recreateghosthealer"},
-                desc = "Recreates all ghosthealer"
-        )
-        @CommandPermissions("rcgraveyards.admin")
-        public void recreateGhostHealer(CommandContext context, CommandSender sender) throws CommandException {
-
-            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-            Player player = (Player)sender;
-
-            for (Graveyard graveyard : plugin.getGraveyardManager().getGraveyards()) {
-                if(!graveyard.getLocation().getWorld().getName().equalsIgnoreCase(player.getWorld().getName())) continue;
-
-                ConversationsTrait.create(graveyard.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
-            }
-        }
     }
 }

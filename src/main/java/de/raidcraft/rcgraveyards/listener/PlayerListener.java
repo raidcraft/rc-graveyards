@@ -1,11 +1,14 @@
 package de.raidcraft.rcgraveyards.listener;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.rcconversations.npc.ConversationsTrait;
+import de.raidcraft.rcconversations.npc.NPCRegistry;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,6 +22,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+
+import java.util.List;
 
 /**
  * @author Philip Urban
@@ -74,7 +79,8 @@ public class PlayerListener implements Listener {
         player.sendMessage("****");
         graveyardPlayer.setGhost(true);
         // create corpse delayed
-        Bukkit.getScheduler().runTaskLater(RaidCraft.getComponent(RCGraveyardsPlugin.class), new CorpseCreator(player, deathLocation), 4 * 20);
+        Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreator(player, deathLocation), 4 * 20);
+        Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerChecker(plugin, graveyard), 4 * 20);
     }
 
     @EventHandler
@@ -190,6 +196,40 @@ public class PlayerListener implements Listener {
 
         public void run() {
             CorpseTrait.create(player, location);
+        }
+    }
+
+    public class GhosthealerChecker implements Runnable {
+
+        RCGraveyardsPlugin plugin;
+        Graveyard graveyard;
+
+        public GhosthealerChecker(RCGraveyardsPlugin plugin, Graveyard graveyard) {
+
+            this.plugin = plugin;
+            this.graveyard = graveyard;
+        }
+
+        @Override
+        public void run() {
+
+            List<NPC> npcs = NPCRegistry.INST.getSpawnedNPCs(graveyard.getLocation().getChunk());
+            boolean found = false;
+            for(NPC npc : npcs) {
+                if(npc.hasTrait(ConversationsTrait.class)
+                        && npc.getTrait(ConversationsTrait.class).getConversationName().equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
+                    if(found) {
+                        npc.destroy();
+                        break;
+                    }
+                    else {
+                        found = true;
+                    }
+                }
+            }
+            if(!found) {
+                ConversationsTrait.create(graveyard.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
+            }
         }
     }
 }
