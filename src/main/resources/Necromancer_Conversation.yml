@@ -1,5 +1,5 @@
 settings:
-  entity-metadata:
+  entity-metakeys:
     - 'VISIBLE_FOR_GHOSTS'
     - 'HIDDEN_FOR_LIVING'
 stages:

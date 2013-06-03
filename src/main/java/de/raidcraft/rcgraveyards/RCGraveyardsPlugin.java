@@ -29,6 +29,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     public final static String VISIBLE_FOR_GHOSTS_METADATA = "VISIBLE_FOR_GHOSTS";
     public final static String HIDDEN_FOR_LIVING_METADATA = "HIDDEN_FOR_LIVING";
+    public final static String PLAYER_IS_GHOST_METADATA = "GHOSTS";
     private LocalConfiguration config;
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;
