@@ -6,6 +6,7 @@ import de.raidcraft.rcconversations.api.action.ActionArgumentException;
 import de.raidcraft.rcconversations.api.action.ActionArgumentList;
 import de.raidcraft.rcconversations.api.action.ActionInformation;
 import de.raidcraft.rcconversations.api.conversation.Conversation;
+import de.raidcraft.rcconversations.conversations.EndReason;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.util.ReviveInformation;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
@@ -29,5 +30,6 @@ public class ReviveGhostAction extends AbstractAction {
         }
 
         plugin.getCorpseManager().delayingReviver.addGhostToRevive(conversation.getPlayer(), new ReviveInformation(delay, false, null, ReviveReason.NECROMANCER));
+        conversation.endConversation(EndReason.INFORM);
     }
 }
