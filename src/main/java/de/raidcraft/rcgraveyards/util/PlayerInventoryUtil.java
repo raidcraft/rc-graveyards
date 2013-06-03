@@ -18,6 +18,7 @@ public class PlayerInventoryUtil {
         } else {
             inventory.setItem(firstEmpty, itemStack);
         }
+        player.updateInventory();
     }
 
 }
