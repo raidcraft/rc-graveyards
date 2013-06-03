@@ -1,0 +1,33 @@
+entity-metadata:
+  - 'VISIBLE_FOR_GHOSTS'
+  - 'HIDDEN_FOR_LIVING'
+stages:
+# check if this necromancer has competence for given ghost
+  start:
+    actions:
+      A:
+        type: CHECK_GRAVEYARD_COMPETENCE
+        args:
+          onsuccess: success
+          onfailure: failure
+
+# inform ghost about failure
+  failure:
+    text: 'Ich kann dein Körper nicht wiederbeleben.|Du musst zum Friedhof %[graveyard] gehen und dort mit dem Geisterbeschwörer reden!'
+    actions:
+      A:
+        type: END
+
+# revive ghost
+  success:
+    text: 'Bist du dir sicher das ich dich hier wiederbeleben soll?|Wenn du zu deiner Leiche gehst hast du die Chance deine Items zurück zu bekommen.'
+    answers:
+      1:
+        text: 'Ja erweck mich wieder zum Leben'
+        actions:
+          A:
+            type: REVIVE_GHOST
+            args:
+              delay: 15
+      2:
+        text:

@@ -6,6 +6,7 @@ import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
+import de.raidcraft.rcgraveyards.conversations.CheckGraveyardCompetenceAction;
 import de.raidcraft.rcgraveyards.conversations.ReviveGhostAction;
 import de.raidcraft.rcgraveyards.listener.MobListener;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
@@ -26,6 +27,7 @@ import org.bukkit.Bukkit;
 public class RCGraveyardsPlugin extends BasePlugin {
 
     public final static String VISIBLE_FOR_GHOSTS_METADATA = "VISIBLE_FOR_GHOSTS";
+    public final static String HIDDEN_FOR_LIVING_METADATA = "HIDDEN_FOR_LIVING";
     private LocalConfiguration config;
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;
@@ -45,6 +47,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerCommands(GraveyardsCommands.class);
 
         ActionManager.registerAction(new ReviveGhostAction());
+        ActionManager.registerAction(new CheckGraveyardCompetenceAction());
 
         // init managers
         graveyardManager = new GraveyardManager(this);
