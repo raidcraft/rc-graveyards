@@ -72,7 +72,7 @@ public class PlayerListener implements Listener {
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
         // let the player rewspawn near the graveyard location
-        event.setRespawnLocation(LocationUtil.improveLocation(graveyardPlayer.getLastDeath().getLocation()));
+        event.setRespawnLocation(LocationUtil.improveLocation(graveyard.getLocation()));
         player.sendMessage("****");
         player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
         player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
