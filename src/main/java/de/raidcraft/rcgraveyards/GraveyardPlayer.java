@@ -89,10 +89,10 @@ public class GraveyardPlayer {
             plugin.getGhostManager().setGhost(player, true);
             // clear inventory
             player.getInventory().clear();
-            // set compass target
-            player.setCompassTarget(lastDeath.getLocation());
             // give compass
             player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
+            // set compass target
+            player.setCompassTarget(lastDeath.getLocation());
 
             save();
         }
