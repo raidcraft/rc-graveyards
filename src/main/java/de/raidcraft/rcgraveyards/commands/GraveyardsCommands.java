@@ -178,5 +178,21 @@ public class GraveyardsCommands {
             player.sendMessage(ChatColor.GREEN + "Es gibt derzeit " + i + " Friedhöfe:");
             sender.sendMessage(list);
         }
+
+        @Command(
+                aliases = {"test"},
+                desc = "Test command"
+        )
+        @CommandPermissions("rcgraveyards.admin")
+        public void test(CommandContext context, CommandSender sender) throws CommandException {
+
+            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+            Player player = (Player)sender;
+            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+
+            player.setCompassTarget(graveyardPlayer.getLastDeath().getLocation());
+
+            player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun auf deinen letzen Todespunkt!");
+        }
     }
 }
