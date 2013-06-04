@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -70,8 +71,21 @@ public class PlayerListener implements Listener {
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
-        // inform player
-        event.setRespawnLocation(graveyard.getLocation());
+        // let the player rewspawn near the graveyard location
+        Location location = graveyard.getLocation();
+        if(location.getBlock().getRelative(2, 0, 0).getType() == Material.AIR) {
+            location = location.getBlock().getRelative(2, 0, 0).getLocation();
+        }
+        else if(location.getBlock().getRelative(-2, 0, 0).getType() == Material.AIR) {
+            location = location.getBlock().getRelative(-2, 0, 0).getLocation();
+        }
+        else if(location.getBlock().getRelative(0, 0, 2).getType() == Material.AIR) {
+            location = location.getBlock().getRelative(0, 0, 2).getLocation();
+        }
+        else if(location.getBlock().getRelative(0, 0, -2).getType() == Material.AIR) {
+            location = location.getBlock().getRelative(0, 0, -2).getLocation();
+        }
+        event.setRespawnLocation(location);
         player.sendMessage("****");
         player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
         player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
