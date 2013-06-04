@@ -91,7 +91,6 @@ public class GraveyardPlayer {
             player.getInventory().clear();
             // set compass target
             player.setCompassTarget(lastDeath.getLocation());
-            player.saveData();
             // give compass
             player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
 
