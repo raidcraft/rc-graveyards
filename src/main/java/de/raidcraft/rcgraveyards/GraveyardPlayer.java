@@ -92,7 +92,12 @@ public class GraveyardPlayer {
             // give compass
             player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
             // set compass target
-            player.setCompassTarget(lastDeath.getLocation());
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    player.setCompassTarget(lastDeath.getLocation());
+                }
+            },1);
 
             save();
         }
