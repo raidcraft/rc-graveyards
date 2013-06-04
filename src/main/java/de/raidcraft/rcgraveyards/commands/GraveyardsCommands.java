@@ -50,7 +50,7 @@ public class GraveyardsCommands {
             if(!sender.getName().equalsIgnoreCase(target)) {
                 player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW + graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
             }
-            graveyardPlayer.getPlayer().sendMessage(ChatColor.GREEN + sender.getName() + "hat dich wiederbelebt!");
+            graveyardPlayer.getPlayer().sendMessage(ChatColor.GREEN + sender.getName() + " hat dich wiederbelebt!");
         }
         else {
             throw new CommandException("Der Spieler " + target + " ist kein Geist!");
