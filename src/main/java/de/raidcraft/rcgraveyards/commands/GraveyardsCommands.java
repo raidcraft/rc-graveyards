@@ -6,6 +6,7 @@ import de.raidcraft.rcconversations.npc.ConversationsTrait;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -67,10 +68,10 @@ public class GraveyardsCommands {
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
         if(!graveyardPlayer.isGhost()) {
-            throw new CommandException("Nur Geister können sich zu ihrem letzten Todespunkt teleportieren!");
+            throw new CommandException("Nur Geister können sich zu ihrem letzten Friedhof teleportieren!");
         }
-        player.teleport(graveyardPlayer.getLastDeath().getImprovedLocation());
-        player.sendMessage(ChatColor.GREEN + "Du wurdest zu deinem Todespunkt teleportiert!");
+        player.teleport(LocationUtil.improveLocation(graveyardPlayer.getClosestGraveyard(graveyardPlayer.getLastDeath().getLocation()).getLocation()));
+        player.sendMessage(ChatColor.GREEN + "Du wurdest zu deinem Friedhof teleportiert!");
     }
 
     public static class NestedCommands {

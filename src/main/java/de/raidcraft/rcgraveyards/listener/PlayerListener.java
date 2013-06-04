@@ -7,6 +7,7 @@ import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -71,7 +72,7 @@ public class PlayerListener implements Listener {
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if(graveyard == null) return;
         // let the player rewspawn near the graveyard location
-        event.setRespawnLocation(graveyardPlayer.getLastDeath().getImprovedLocation());
+        event.setRespawnLocation(LocationUtil.improveLocation(graveyardPlayer.getLastDeath().getLocation()));
         player.sendMessage("****");
         player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
         player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");

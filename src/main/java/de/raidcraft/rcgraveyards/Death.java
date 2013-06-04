@@ -79,24 +79,6 @@ public class Death {
         return location;
     }
 
-    public Location getImprovedLocation() {
-
-        Location improvedLocation = location;
-        if(location.getBlock().getRelative(2, 0, 0).getType() == Material.AIR) {
-            improvedLocation = location.getBlock().getRelative(2, 0, 0).getLocation();
-        }
-        else if(location.getBlock().getRelative(-2, 0, 0).getType() == Material.AIR) {
-            improvedLocation = location.getBlock().getRelative(-2, 0, 0).getLocation();
-        }
-        else if(location.getBlock().getRelative(0, 0, 2).getType() == Material.AIR) {
-            improvedLocation = location.getBlock().getRelative(0, 0, 2).getLocation();
-        }
-        else if(location.getBlock().getRelative(0, 0, -2).getType() == Material.AIR) {
-            improvedLocation = location.getBlock().getRelative(0, 0, -2).getLocation();
-        }
-        return improvedLocation;
-    }
-
     public void setLocation(Location location) {
 
         this.location = location;
