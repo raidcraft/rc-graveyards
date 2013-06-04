@@ -56,6 +56,23 @@ public class GraveyardsCommands {
         }
     }
 
+    @Command(
+            aliases = {"friedhof", "geisterheiler"},
+            desc = "Teleports player to deathpoint"
+    )
+    public void friedhof(CommandContext context, CommandSender sender) throws CommandException {
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = (Player)sender;
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+
+        if(!graveyardPlayer.isGhost()) {
+            throw new CommandException("Nur Geister können sich zu ihrem letzten Todespunkt teleportieren!");
+        }
+        player.teleport(graveyardPlayer.getLastDeath().getImprovedLocation());
+        player.sendMessage(ChatColor.GREEN + "Du wurdest zu deinem Todespunkt teleportiert!");
+    }
+
     public static class NestedCommands {
 
         private final RCGraveyardsPlugin module;
