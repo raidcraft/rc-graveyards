@@ -30,6 +30,7 @@ public class CheckGraveyardCompetenceAction extends AbstractAction {
         }
 
         Graveyard playerGraveyard = graveyardPlayer.getClosestGraveyard(graveyardPlayer.getLastDeath().getLocation());
+        conversation.set("graveyard", playerGraveyard.getFriendlyName());
         Graveyard necroGraveyard = plugin.getGraveyardManager().getClosestGraveyard(conversation.getHost().getLocation());
         if(playerGraveyard.getName().equalsIgnoreCase(necroGraveyard.getName())) {
             changeStage(conversation, success);

@@ -81,8 +81,8 @@ public class PlayerListener implements Listener {
         player.sendMessage("****");
         graveyardPlayer.setGhost(true);
         // create corpse delayed
-        Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreator(player, deathLocation), 4 * 20);
-        Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerChecker(plugin, graveyard), 4 * 20);
+        Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreator(player, deathLocation), 2 * 20);
+        Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerChecker(plugin, graveyard), 20);
     }
 
     @EventHandler
