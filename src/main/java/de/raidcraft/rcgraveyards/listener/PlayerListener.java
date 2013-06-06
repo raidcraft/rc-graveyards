@@ -71,6 +71,9 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         Location deathLocation = graveyardPlayer.getLastDeath().getLocation();
         if(deathLocation == null) return;
@@ -103,6 +106,9 @@ public class PlayerListener implements Listener {
         Graveyard graveyard = plugin.getGraveyardManager().getGraveyard(event.getPlayer().getLocation());
         if(graveyard == null) return;
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getPlayer().getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
         if(graveyardPlayer.knowGraveyard(graveyard)) {
             return;
         }
@@ -123,6 +129,9 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
     }
@@ -133,6 +142,9 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
@@ -148,6 +160,9 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player)event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
     }
@@ -159,6 +174,9 @@ public class PlayerListener implements Listener {
             Player player = (Player)event.getDamager();
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+            if (graveyardPlayer == null) {
+                return;
+            }
 
             if(graveyardPlayer.isGhost()) event.setCancelled(true);
         }
@@ -170,6 +188,9 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
@@ -185,6 +206,9 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player)event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
