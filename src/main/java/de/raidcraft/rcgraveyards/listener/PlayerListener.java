@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -170,15 +171,23 @@ public class PlayerListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onLivingEntityDamage(EntityDamageByEntityEvent event) {
 
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         if(event.getDamager() instanceof Player) {
             Player player = (Player)event.getDamager();
-            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
             if (graveyardPlayer == null) {
                 return;
             }
 
             if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        } else if (event.getEntity() instanceof Player && event.getDamager() instanceof Monster) {
+            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(((Player) event.getEntity()).getName());
+            if (graveyardPlayer == null) {
+                return;
+            }
+            // remove the mob target
+            ((Monster) event.getDamager()).setTarget(null);
+            event.setCancelled(true);
         }
     }
 
