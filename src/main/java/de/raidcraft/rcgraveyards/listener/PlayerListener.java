@@ -1,15 +1,13 @@
 package de.raidcraft.rcgraveyards.listener;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.rcconversations.npc.ConversationsTrait;
-import de.raidcraft.rcconversations.npc.NPCRegistry;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
-import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
+import de.raidcraft.rcgraveyards.tasks.GhosthealerCheckerTask;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
-import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -23,15 +21,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-
-import java.util.List;
+import org.bukkit.event.player.*;
 
 /**
  * @author Philip Urban
@@ -91,8 +81,8 @@ public class PlayerListener implements Listener {
         player.sendMessage("****");
         graveyardPlayer.setGhost(true);
         // create corpse delayed
-        Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreator(player, deathLocation), 2 * 20);
-        Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerChecker(plugin, graveyard), 20);
+        Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
+        Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerCheckerTask(plugin, graveyard), 20);
     }
 
     @EventHandler
@@ -221,57 +211,6 @@ public class PlayerListener implements Listener {
 
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
-        }
-    }
-
-    public class CorpseCreator implements Runnable {
-
-        Player player;
-        Location location;
-
-        public CorpseCreator(Player player, Location location) {
-
-            this.player = player;
-            this.location = location;
-        }
-
-        public void run() {
-            CorpseTrait.create(player, location);
-        }
-    }
-
-    public class GhosthealerChecker implements Runnable {
-
-        RCGraveyardsPlugin plugin;
-        Graveyard graveyard;
-
-        public GhosthealerChecker(RCGraveyardsPlugin plugin, Graveyard graveyard) {
-
-            this.plugin = plugin;
-            this.graveyard = graveyard;
-        }
-
-        @Override
-        public void run() {
-
-            List<NPC> npcs = NPCRegistry.INST.getSpawnedNPCs(graveyard.getLocation().getChunk());
-            boolean found = false;
-            for(NPC npc : npcs) {
-                String conversationName = npc.getTrait(ConversationsTrait.class).getConversationName();
-                if(conversationName != null && conversationName.equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
-                    if(found) {
-                        NPCRegistry.INST.unregisterNPC(npc);
-                        npc.destroy();
-                        break;
-                    }
-                    else {
-                        found = true;
-                    }
-                }
-            }
-            if(!found) {
-                ConversationsTrait.create(graveyard.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
-            }
         }
     }
 }
