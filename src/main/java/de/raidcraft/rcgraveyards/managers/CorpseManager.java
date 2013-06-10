@@ -3,6 +3,7 @@ package de.raidcraft.rcgraveyards.managers;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.rcgraveyards.tasks.GhostReviverTask;
 import de.raidcraft.rcgraveyards.util.*;
 import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
@@ -23,7 +24,7 @@ public class CorpseManager {
 
     private RCGraveyardsPlugin plugin;
     private Map<String, NPC> registeredCorpse = new HashMap<>();
-    public final GhostReviver delayingReviver = new GhostReviver();
+    public final GhostReviverTask delayingReviver = new GhostReviverTask();
 
     public CorpseManager(RCGraveyardsPlugin plugin) {
 

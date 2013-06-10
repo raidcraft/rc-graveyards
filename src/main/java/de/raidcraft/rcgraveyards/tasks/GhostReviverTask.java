@@ -1,7 +1,8 @@
-package de.raidcraft.rcgraveyards.util;
+package de.raidcraft.rcgraveyards.tasks;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.util.ReviveInformation;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -11,15 +12,15 @@ import java.util.Map;
 /**
  * @author Philip Urban
  */
-public class GhostReviver implements Runnable {
+public class GhostReviverTask implements Runnable {
 
     private Map<Player, ReviveInformation> ghosts = new HashMap<>();
 
-    public GhostReviver() {
+    public GhostReviverTask() {
 
     }
 
-    public GhostReviver(Player player, ReviveInformation reviveInformation) {
+    public GhostReviverTask(Player player, ReviveInformation reviveInformation) {
 
         addGhostToRevive(player, reviveInformation);
     }
