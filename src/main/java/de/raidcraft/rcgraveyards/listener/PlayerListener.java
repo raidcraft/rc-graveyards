@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +23,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 import java.util.List;
 
@@ -59,12 +66,15 @@ public class PlayerListener implements Listener {
         event.getDrops().clear();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         Location deathLocation = graveyardPlayer.getLastDeath().getLocation();
         if(deathLocation == null) return;
@@ -97,6 +107,9 @@ public class PlayerListener implements Listener {
         Graveyard graveyard = plugin.getGraveyardManager().getGraveyard(event.getPlayer().getLocation());
         if(graveyard == null) return;
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getPlayer().getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
         if(graveyardPlayer.knowGraveyard(graveyard)) {
             return;
         }
@@ -111,22 +124,28 @@ public class PlayerListener implements Listener {
      * Cancel events if player is ghost
      */
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onItemPickup(PlayerPickupItemEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onItemDrop(PlayerDropItemEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
@@ -134,7 +153,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerDamage(EntityDamageEvent event) {
 
         if(event.getEntityType() != EntityType.PLAYER) return;
@@ -142,28 +161,45 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player)event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) event.setCancelled(true);
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onLivingEntityDamage(EntityDamageByEntityEvent event) {
 
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         if(event.getDamager() instanceof Player) {
             Player player = (Player)event.getDamager();
-            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+            if (graveyardPlayer == null) {
+                return;
+            }
 
             if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        } else if (event.getEntity() instanceof Player && event.getDamager() instanceof Monster) {
+            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(((Player) event.getEntity()).getName());
+            if (graveyardPlayer == null) {
+                return;
+            }
+            // remove the mob target
+            ((Monster) event.getDamager()).setTarget(null);
+            event.setCancelled(true);
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
@@ -171,7 +207,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true,priority = EventPriority.LOWEST)
     public void inHunger(FoodLevelChangeEvent event) {
 
         if(event.getEntityType() != EntityType.PLAYER) return;
@@ -179,6 +215,9 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player)event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        if (graveyardPlayer == null) {
+            return;
+        }
 
         if(graveyardPlayer.isGhost()) {
             event.setCancelled(true);
