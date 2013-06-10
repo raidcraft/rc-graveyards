@@ -146,7 +146,7 @@ public class PlayerListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerDamage(EntityDamageEvent event) {
 
-        if(event.getEntityType() != EntityType.PLAYER) return;
+        if(!(event.getEntity() instanceof Player)) return;
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player)event.getEntity();
@@ -155,7 +155,9 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        if(graveyardPlayer.isGhost()) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -172,7 +174,7 @@ public class PlayerListener implements Listener {
             if(graveyardPlayer.isGhost()) event.setCancelled(true);
         } else if (event.getEntity() instanceof Player && event.getDamager() instanceof Monster) {
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(((Player) event.getEntity()).getName());
-            if (graveyardPlayer == null) {
+            if (!graveyardPlayer.isGhost()) {
                 return;
             }
             // remove the mob target
