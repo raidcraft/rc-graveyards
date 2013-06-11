@@ -13,22 +13,24 @@ public class Graveyard {
     private Location location;
     private int size;
     private boolean main;
+    private int radius;
     private String creator;
     private String creationDate;
 
-    public Graveyard(String name, Location location, int size, boolean main, String creator, String creationDate) {
+    public Graveyard(String name, Location location, int size, boolean main, int radius, String creator, String creationDate) {
 
         this.name = name;
         this.location = location;
         this.size = size;
         this.main = main;
+        this.radius = radius;
         this.creator = creator;
         this.creationDate = creationDate;
     }
 
-    public Graveyard(String name, Location location, int size, boolean main, String creator) {
+    public Graveyard(String name, Location location, int size, boolean main, int radius, String creator) {
 
-        this(name, location, size, main, creator, DateUtil.getCurrentDateString());
+        this(name, location, size, main, radius, creator, DateUtil.getCurrentDateString());
     }
 
     public String getName() {
@@ -54,6 +56,11 @@ public class Graveyard {
     public boolean isMain() {
 
         return main;
+    }
+
+    public int getRadius() {
+
+        return radius;
     }
 
     public String getCreator() {

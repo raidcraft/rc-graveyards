@@ -121,7 +121,12 @@ public class GraveyardsCommands {
                 size = context.getInteger(1);
             }
 
-            Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), player.getName());
+            int radius = 0;
+            if(context.argsLength() > 2) {
+                radius = context.getInteger(2);
+            }
+
+            Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getName());
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
             ConversationsTrait.create(player.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
             sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name +  ChatColor.GREEN + " wurde erstellt!");

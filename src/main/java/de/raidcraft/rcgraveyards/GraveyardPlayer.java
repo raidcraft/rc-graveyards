@@ -51,7 +51,7 @@ public class GraveyardPlayer {
         double distance = 0;
         Graveyard closestGraveyard = null;
         for(Map.Entry<String, Graveyard> entry : graveyards.entrySet()) {
-            if(closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance) {
+            if((closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance) && entry.getValue().getRadius() <= distance) {
                 closestGraveyard = entry.getValue();
                 distance = entry.getValue().getLocation().distance(location);
             }

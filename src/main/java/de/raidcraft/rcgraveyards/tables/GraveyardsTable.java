@@ -36,6 +36,7 @@ public class GraveyardsTable extends Table {
                             "`z` INT( 11 ) NOT NULL ,\n" +
                             "`size` INT( 11 ) NOT NULL ,\n" +
                             "`main` TINYINT( 1 ) NOT NULL, " +
+                            "`radius` INT( 11 ) NOT NULL ,\n" +
                             "`creator` VARCHAR ( 32 ) NOT NULL, " +
                             "`created` VARCHAR ( 32 ) NOT NULL, " +
                             "PRIMARY KEY ( `id` )" +
@@ -48,7 +49,7 @@ public class GraveyardsTable extends Table {
     public void createGraveyard(Graveyard graveyard) {
 
         try {
-            String query = "INSERT INTO " + getTableName() + " (name, world, x, y, z, size, main, creator, created) " +
+            String query = "INSERT INTO " + getTableName() + " (name, world, x, y, z, size, main, radius, creator, created) " +
                     "VALUES (" +
                     "'" + graveyard.getName() + "'" + "," +
                     "'" + graveyard.getLocation().getWorld().getName() + "'" + "," +
@@ -57,6 +58,7 @@ public class GraveyardsTable extends Table {
                     "'" + graveyard.getLocation().getBlockZ() + "'" + "," +
                     "'" + graveyard.getSize() + "'" + "," +
                     "'" + ((graveyard.isMain()) ? 1 : 0) + "'" + "," +
+                    "'" + graveyard.getRadius() + "'" + "," +
                     "'" + graveyard.getCreator() + "'" + "," +
                     "'" + graveyard.getCreationDate() + "'" +
                     ");";
@@ -83,6 +85,7 @@ public class GraveyardsTable extends Table {
                         , new Location(world, resultSet.getDouble("x"), resultSet.getDouble("y"), resultSet.getDouble("z"))
                         , resultSet.getInt("size")
                         , resultSet.getBoolean("main")
+                        , resultSet.getInt("radius")
                         , resultSet.getString("creator")
                         , resultSet.getString("created"));
 
