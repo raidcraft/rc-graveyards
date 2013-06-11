@@ -111,6 +111,7 @@ public class GhostManager implements Listener {
     private void addPotionEffects(Player player) {
 
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 2));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Integer.MAX_VALUE, 1));
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15));
     }
@@ -118,6 +119,7 @@ public class GhostManager implements Listener {
     private void removePotionEffects(Player player) {
 
         player.removePotionEffect(PotionEffectType.SPEED);
+        player.removePotionEffect(PotionEffectType.JUMP);
         player.removePotionEffect(PotionEffectType.WITHER);
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
     }
