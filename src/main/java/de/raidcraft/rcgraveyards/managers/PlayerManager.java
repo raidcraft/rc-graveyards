@@ -38,7 +38,15 @@ public class PlayerManager {
 
     public GraveyardPlayer getGraveyardPlayer(String player) {
 
-        return players.get(player);
+        GraveyardPlayer graveyardPlayer = players.get(player);
+        if(graveyardPlayer == null) {
+            for(Map.Entry<String, GraveyardPlayer> entry : players.entrySet()) {
+                if(entry.getKey().toLowerCase().startsWith(player.toLowerCase())) {
+                    graveyardPlayer = entry.getValue();
+                }
+            }
+        }
+        return graveyardPlayer;
     }
 
     public long getLastDeath(String player, String world) {
