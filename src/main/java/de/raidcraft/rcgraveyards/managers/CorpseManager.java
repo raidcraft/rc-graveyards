@@ -98,7 +98,7 @@ public class CorpseManager {
         List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName(), player.getWorld().getName());
         for (ItemStack itemStack : loot) {
             if (itemStack != null && itemStack.getType() != Material.AIR) {
-                if(CustomItemUtil.isEquipment(itemStack)) {
+                if(CustomItemUtil.isCustomItem(itemStack)) {
                     double modifier = reason.getDamageLevel().getModifier();
                     if(graveyardPlayer.getLastDeath().wasPvp()) {
                         modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
