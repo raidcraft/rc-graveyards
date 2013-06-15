@@ -5,12 +5,12 @@ package de.raidcraft.rcgraveyards.util;
  */
 public enum EquipmentDamageLevel {
 
-    NO(1),
-    VERY_LOW(0.95),
-    LOW(0.9),
-    MIDDLE(0.7),
-    HIGH(0.5),
-    VERY_HIGH(0.3);
+    NO(0),
+    VERY_LOW(0.05),
+    LOW(0.1),
+    MIDDLE(0.3),
+    HIGH(0.25),
+    VERY_HIGH(0.7);
 
     public double modifier;
 

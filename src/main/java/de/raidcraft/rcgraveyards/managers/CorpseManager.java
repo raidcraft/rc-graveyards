@@ -1,10 +1,15 @@
 package de.raidcraft.rcgraveyards.managers;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.api.items.CustomItemStack;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.tasks.GhostReviverTask;
-import de.raidcraft.rcgraveyards.util.*;
+import de.raidcraft.rcgraveyards.util.EquipmentDamageLevel;
+import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
+import de.raidcraft.rcgraveyards.util.ReviveInformation;
+import de.raidcraft.rcgraveyards.util.ReviveReason;
 import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -103,9 +108,8 @@ public class CorpseManager {
                     if(graveyardPlayer.getLastDeath().wasPvp()) {
                         modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
                     }
-                    double durability = (short)((double)itemStack.getDurability() * modifier);
-                    //TODO: use future methods in CustomItemUtil!
-                    itemStack.setDurability((short)durability);
+                    CustomItemStack customItem = RaidCraft.getCustomItem(itemStack);
+                    customItem.setDurability(customItem.getDurability() - (int)((double)customItem.getMaxDurability() * modifier));
                 }
                 else {
                     if(reason.isEquipmentOnly()) continue;
