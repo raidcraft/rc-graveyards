@@ -5,6 +5,7 @@ import de.raidcraft.api.database.Table;
 import de.raidcraft.rcgraveyards.Death;
 import de.raidcraft.util.DateUtil;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -100,6 +101,24 @@ public class DeathsTable extends Table {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public Location getDeathLocation(String player, World world) {
+
+        try {
+            ResultSet resultSet = executeQuery(
+                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "' AND world = '" + world.getName() + "'");
+
+            while (resultSet.next()) {
+                Location deathLocation = new Location(world, resultSet.getInt("x"), resultSet.getInt("y"), resultSet.getInt("z"));
+                resultSet.close();
+                return deathLocation;
+            }
+            resultSet.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void delete(Player player) {

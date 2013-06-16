@@ -5,6 +5,7 @@ import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.rcconversations.actions.ActionManager;
+import de.raidcraft.rcgraveyards.commands.GhostsCommand;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
 import de.raidcraft.rcgraveyards.conversations.CheckGraveyardCompetenceAction;
 import de.raidcraft.rcgraveyards.conversations.CheckIfGhostAction;
@@ -47,6 +48,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerTable(ItemStackTable.class, new ItemStackTable());
 
         registerCommands(GraveyardsCommands.class);
+        registerCommands(GhostsCommand.class);
 
         ActionManager.registerAction(new ReviveGhostAction());
         ActionManager.registerAction(new CheckGraveyardCompetenceAction());
