@@ -14,6 +14,7 @@ import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -60,6 +61,11 @@ public class CorpseManager {
     }
 
     public void checkReviver(Player player, String corpseName) {
+
+        if(player.getGameMode() == GameMode.CREATIVE) {
+            player.sendMessage(ChatColor.RED + "Interaktion mit der Leiche unterbunden! Du befindest dich im Creativemode!");
+            return;
+        }
 
         boolean ghost = plugin.getGhostManager().isGhost(player);
         NPC npc = registeredCorpse.get(corpseName.toLowerCase());
