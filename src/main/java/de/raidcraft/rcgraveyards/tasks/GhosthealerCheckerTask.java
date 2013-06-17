@@ -28,6 +28,7 @@ public class GhosthealerCheckerTask implements Runnable {
         List<NPC> npcs = NPCRegistry.INST.getSpawnedNPCs(graveyard.getLocation().getChunk());
         boolean found = false;
         for(NPC npc : npcs) {
+            if(npc.getBukkitEntity().getLocation().distance(graveyard.getLocation()) > 5) continue;
             String conversationName = npc.getTrait(ConversationsTrait.class).getConversationName();
             if(conversationName.equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
                 if(found) {
