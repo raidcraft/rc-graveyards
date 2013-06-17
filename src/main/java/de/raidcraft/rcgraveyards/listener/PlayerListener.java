@@ -156,6 +156,9 @@ public class PlayerListener implements Listener {
         }
 
         if(graveyardPlayer.isGhost()) {
+            if(event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
+                player.setFireTicks(0);
+            }
             event.setCancelled(true);
         }
     }
