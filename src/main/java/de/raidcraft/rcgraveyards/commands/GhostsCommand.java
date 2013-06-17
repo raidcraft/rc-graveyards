@@ -47,6 +47,7 @@ public class GhostsCommand {
         }
         if(plugin.getGhostManager().isGhost(graveyardPlayer.getPlayer())) {
             plugin.getCorpseManager().reviveGhost(graveyardPlayer.getPlayer(), ReviveReason.COMMAND);
+            graveyardPlayer.getPlayer().teleport(graveyardPlayer.getLastDeath().getLocation());
             if(!sender.getName().equalsIgnoreCase(target)) {
                 player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW + graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
             }
