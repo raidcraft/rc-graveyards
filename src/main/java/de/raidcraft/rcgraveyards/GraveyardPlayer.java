@@ -103,6 +103,7 @@ public class GraveyardPlayer {
             save();
         }
         else {
+            player.setFireTicks(0);
             plugin.getGhostManager().setGhost(player, false);
             // delete db entries
             RaidCraft.getTable(DeathsTable.class).delete(player);
