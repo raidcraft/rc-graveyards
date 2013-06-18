@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -196,7 +197,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(graveyardPlayer.isGhost()) {
+        if(graveyardPlayer.isGhost() && event.getAction() != Action.PHYSICAL) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
         }
