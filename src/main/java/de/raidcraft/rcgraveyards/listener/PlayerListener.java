@@ -200,6 +200,11 @@ public class PlayerListener implements Listener {
         if(event.getAction() == Action.PHYSICAL) return;
         if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL
                 && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+        if(event.getClickedBlock() != null
+                && (event.getClickedBlock().getType() == Material.WOOD_DOOR
+                || event.getClickedBlock().getType() == Material.WOOD_BUTTON
+                || event.getClickedBlock().getType() == Material.STONE_BUTTON
+        )) return;
 
         event.setCancelled(true);
         player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
