@@ -4,6 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.ItemStackTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -100,6 +101,7 @@ public class GraveyardPlayer {
                 }
             },1);
 
+            PlayerInventoryUtil.putInInventory(player, new ItemStack(Material.ENDER_PEARL, 64));
             save();
         }
         else {

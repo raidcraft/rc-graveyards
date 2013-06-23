@@ -11,6 +11,7 @@ import de.raidcraft.rcgraveyards.util.MovementChecker;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -193,14 +194,15 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
-        if (graveyardPlayer == null) {
-            return;
-        }
 
-        if(graveyardPlayer.isGhost() && event.getAction() != Action.PHYSICAL) {
-            event.setCancelled(true);
-            player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
-        }
+        if(graveyardPlayer == null) return;
+        if(!graveyardPlayer.isGhost()) return;
+        if(event.getAction() == Action.PHYSICAL) return;
+        if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL
+                && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+
+        event.setCancelled(true);
+        player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
     }
 
     @EventHandler(ignoreCancelled = true,priority = EventPriority.LOWEST)
