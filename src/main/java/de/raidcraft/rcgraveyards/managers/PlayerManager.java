@@ -57,17 +57,21 @@ public class PlayerManager {
     public void updatePlayerVisibility() {
 
         for(Player player : Bukkit.getOnlinePlayers()) {
+            if(player.hasPermission("rcgraveyards.seeall")) {
+                continue;
+            }
             updatePlayerVisibility(player);
         }
     }
 
     public void updatePlayerVisibility(Player player) {
 
-        if(player.hasPermission("rcgraveyards.seeall")) {
-            return;
-        }
         boolean ghost = plugin.getGhostManager().isGhost(player);
         for(Player otherPlayer : Bukkit.getOnlinePlayers()) {
+
+            if(otherPlayer.hasPermission("rcgraveyards.seeall")) {
+                continue;
+            }
             if(plugin.getGhostManager().isGhost(otherPlayer)) {
                 if(ghost) {
                     player.showPlayer(otherPlayer);
