@@ -82,6 +82,7 @@ public class CorpseManager {
             }
 
             if(delayingReviver.addGhostToRevive(player, new ReviveInformation(plugin.getConfig().ghostReviveDuration, looted, robber, reason))) {
+                player.getInventory().clear();
                 player.sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + plugin.getConfig().ghostReviveDuration
                         + " Sek. zurück. Bringe dich in Sicherheit!");
             }
