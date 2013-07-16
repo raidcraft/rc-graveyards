@@ -3,6 +3,7 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
+    <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
@@ -10,33 +11,29 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: de.raidcraft:raidcraft-api:1.4-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: de.raidcraft:rcconversations:1.1-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="raidcraft-api" />
-    <orderEntry type="library" name="Maven: net.milkbowl.vault:vault:1.2.24" level="project" />
-    <orderEntry type="library" name="Maven: com.comphenix.protocol:ProtocolLib:2.4.1" level="project" />
+    <orderEntry type="library" name="Maven: de.raidcraft:raidcraft-api:1.1.5-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: net.milkbowl.vault:vault:1.2.22" level="project" />
+    <orderEntry type="library" name="Maven: com.comphenix.protocol:ProtocolLib:2.4.7" level="project" />
     <orderEntry type="library" name="Maven: cglib:cglib-nodep:2.2.2" level="project" />
-    <orderEntry type="library" name="Maven: de.kumpelblase2:remoteentities:1.6" level="project" />
-    <orderEntry type="library" name="Maven: com.sk89q:worldedit:5.5-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: de.kumpelblase2:remoteentities:1.8-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.sk89q:worldedit:5.5.8-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: de.schlichtherle:truezip:6.8.3" level="project" />
     <orderEntry type="library" name="Maven: rhino:js:1.7R2" level="project" />
     <orderEntry type="library" name="Maven: com.sk89q:jchronic:0.2.4a" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.8.1" level="project" />
-    <orderEntry type="library" name="Maven: com.sk89q:worldguard:5.7-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.5.2-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.sk89q:commandbook:2.2-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.sk89q:worldguard:5.8-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.6.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.sk89q:commandbook:2.2.1-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: net.sf.opencsv:opencsv:2.0" level="project" />
     <orderEntry type="library" name="Maven: com.nijikokun:iconomy:5.0" level="project" />
     <orderEntry type="library" name="Maven: org.khelekore:prtree:1.5.0" level="project" />
-    <orderEntry type="library" name="Maven: com.zachsthings.libcomponents:libcomponents-bukkit:1.2-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: de.raidcraft:skills:1.3.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: de.raidcraft:permissions:1.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="rcconversations" />
-    <orderEntry type="library" name="Maven: net.citizensnpcs:citizens:2.0.8-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.dynmap:dynmap:1.5" level="project" />
-    <orderEntry type="library" name="Maven: me.moplants:tabdeco:1.0.0" level="project" />
-    <orderEntry type="library" name="Maven: org.kitteh:tagapi:2.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:craftbukkit:1.5.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: com.zachsthings.libcomponents:libcomponents-bukkit:1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.zachsthings.libcomponents:libcomponents-core:1.2" level="project" />
+    <orderEntry type="library" name="Maven: de.raidcraft:skills:LATEST" level="project" />
+    <orderEntry type="library" name="Maven: de.raidcraft:rcconversations:1.1.5-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: net.citizensnpcs:citizens:2.0.9-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.dynmap:dynmap:0.80" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:craftbukkit:1.6.2-R0.1-SNAPSHOT" level="project" />
   </component>
 </module>
 
