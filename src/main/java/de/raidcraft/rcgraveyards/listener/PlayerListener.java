@@ -179,7 +179,7 @@ public class PlayerListener implements Listener {
             if(graveyardPlayer.isGhost()) event.setCancelled(true);
         } else if (event.getEntity() instanceof Player && event.getDamager() instanceof Monster) {
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(((Player) event.getEntity()).getName());
-            if (!graveyardPlayer.isGhost()) {
+            if (graveyardPlayer == null || !graveyardPlayer.isGhost()) {
                 return;
             }
             // remove the mob target
