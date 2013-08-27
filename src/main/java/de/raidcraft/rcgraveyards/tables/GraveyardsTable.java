@@ -29,7 +29,7 @@ public class GraveyardsTable extends Table {
             getConnection().prepareStatement(
                     "CREATE TABLE `" + getTableName() + "` (" +
                             "`id` INT NOT NULL AUTO_INCREMENT, " +
-                            "`name` VARCHAR( 32 ) NOT NULL, " +
+                            "`name` VARCHAR( 64 ) NOT NULL, " +
                             "`world` VARCHAR ( 32 ) NOT NULL ,\n" +
                             "`x` INT( 11 ) NOT NULL ,\n" +
                             "`y` INT( 11 ) NOT NULL ,\n" +
