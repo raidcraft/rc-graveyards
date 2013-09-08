@@ -204,6 +204,7 @@ public class PlayerListener implements Listener {
                 && (event.getClickedBlock().getType() == Material.WOOD_DOOR
                 || event.getClickedBlock().getType() == Material.WOOD_BUTTON
                 || event.getClickedBlock().getType() == Material.STONE_BUTTON
+                || event.getClickedBlock().getType() == Material.LEVER
         )) return;
 
         event.setCancelled(true);
