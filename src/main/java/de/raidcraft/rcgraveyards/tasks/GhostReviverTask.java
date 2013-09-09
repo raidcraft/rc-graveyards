@@ -41,6 +41,8 @@ public class GhostReviverTask implements Runnable {
         Map<Player, ReviveInformation> ghostsCopy = new HashMap<>(ghosts);
         for(Map.Entry<Player, ReviveInformation> entry : ghostsCopy.entrySet()) {
 
+            if(!entry.getKey().isOnline()) ghosts.remove(entry.getKey());
+
             ReviveInformation info = entry.getValue();
             info.decreaseReviveDelay();
             ghosts.put(entry.getKey(), info);

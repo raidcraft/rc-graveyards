@@ -105,6 +105,8 @@ public class CorpseManager {
 
     public void reviveGhost(Player player, ReviveReason reason) {
 
+        if(!player.isOnline()) return;
+
         player.getInventory().clear();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getName(), player.getWorld().getName());
