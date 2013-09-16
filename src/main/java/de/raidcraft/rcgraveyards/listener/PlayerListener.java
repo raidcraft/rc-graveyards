@@ -198,8 +198,15 @@ public class PlayerListener implements Listener {
         if(graveyardPlayer == null) return;
         if(!graveyardPlayer.isGhost()) return;
         if(event.getAction() == Action.PHYSICAL) return;
-        if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL
-                && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)) return;
+        if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
+            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                event.setCancelled(true);
+                player.sendMessage(ChatColor.RED + "Du musst mit der Enderperle in die Luft klicken!");
+            }
+            else if(event.getAction() == Action.RIGHT_CLICK_AIR) {
+                return;
+            }
+        }
         if(event.getClickedBlock() != null
                 && (event.getClickedBlock().getType() == Material.WOOD_DOOR
                 || event.getClickedBlock().getType() == Material.WOOD_BUTTON
