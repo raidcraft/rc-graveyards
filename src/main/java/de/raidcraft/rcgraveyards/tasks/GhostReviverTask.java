@@ -48,7 +48,7 @@ public class GhostReviverTask implements Runnable {
             ghosts.put(entry.getKey(), info);
             int delay = info.getReviveDelay();
             if(delay > 10) continue;
-            if(delay == 0) {
+            if(delay <= 0) {
                 entry.getKey().sendMessage(ChatColor.GREEN + "Du bist wieder lebendig.");
                 if(info.isLooted() && !info.getReason().isEquipmentOnly()) {
                     entry.getKey().sendMessage(ChatColor.GREEN + "Deine Leiche wurde jedoch von " + ChatColor.YELLOW +  info.getRobber() + ChatColor.GREEN + " ausgeraubt!");
