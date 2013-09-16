@@ -145,7 +145,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerDamage(EntityDamageEvent event) {
 
         if(!(event.getEntity() instanceof Player)) return;
