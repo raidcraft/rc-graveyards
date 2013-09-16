@@ -28,18 +28,18 @@
         <developerConnection>scm:git:ssh://git@git.raid-craft.de:22109/rcgraveyards.git</developerConnection>
     </scm>
 
+    <parent>
+        <groupId>de.raidcraft</groupId>
+        <artifactId>masterpom</artifactId>
+        <version>RELEASE</version>
+    </parent>
+
     <repositories>
         <repository>
             <id>raidcraft</id>
             <url>http://nexus.raid-craft.de/content/groups/public/</url>
         </repository>
     </repositories>
-
-    <parent>
-        <groupId>de.raidcraft</groupId>
-        <artifactId>masterpom</artifactId>
-        <version>RELEASE</version>
-    </parent>
 
     <dependencies>
         <dependency>
