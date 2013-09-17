@@ -202,6 +202,7 @@ public class PlayerListener implements Listener {
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.RED + "Du musst mit der Enderperle in die Luft klicken!");
+                return;
             }
             else if(event.getAction() == Action.RIGHT_CLICK_AIR) {
                 return;
