@@ -145,7 +145,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerDamage(EntityDamageEvent event) {
 
         if(!(event.getEntity() instanceof Player)) return;
@@ -158,7 +158,7 @@ public class PlayerListener implements Listener {
         }
 
         if(graveyardPlayer.isGhost()) {
-            if(event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
+            if(event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
                 player.setFireTicks(0);
             }
             event.setCancelled(true);
