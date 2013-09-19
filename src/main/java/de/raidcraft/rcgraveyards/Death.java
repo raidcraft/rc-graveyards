@@ -56,14 +56,10 @@ public class Death {
         this.inventory = inventory;
     }
 
-    public void saveInventory() {
+    public void saveInventory(List<ItemStack> items) {
 
         this.inventory.clear();
-        for(ItemStack itemStack : hero.getPlayer().getInventory().getContents()) {
-            if(itemStack == null || itemStack.getType() == Material.AIR) continue;
-            this.inventory.add(itemStack.clone());
-        }
-        for(ItemStack itemStack : hero.getPlayer().getEquipment().getArmorContents()) {
+        for(ItemStack itemStack : items) {
             if(itemStack == null || itemStack.getType() == Material.AIR) continue;
             this.inventory.add(itemStack.clone());
         }

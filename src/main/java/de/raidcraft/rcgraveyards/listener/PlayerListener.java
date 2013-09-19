@@ -46,7 +46,7 @@ public class PlayerListener implements Listener {
         plugin.getGhostManager().removePlayer(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler()
     public void onPlayerDeath(PlayerDeathEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
@@ -54,7 +54,7 @@ public class PlayerListener implements Listener {
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         graveyardPlayer.getLastDeath().setLocation(player.getLocation().clone());
         graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
-        graveyardPlayer.getLastDeath().saveInventory();
+        graveyardPlayer.getLastDeath().saveInventory(event.getDrops());
         event.getDrops().clear();
     }
 
