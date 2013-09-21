@@ -1,8 +1,8 @@
 package de.raidcraft.rcgraveyards.npc;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.items.Skull;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
-import de.raidcraft.rcgraveyards.util.SkullUtil;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.command.CommandContext;
 import net.citizensnpcs.api.npc.NPC;
@@ -43,7 +43,7 @@ public class CorpseTrait extends Trait {
     public void onSpawn() {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        npc.getTrait(Equipment.class).set(1, SkullUtil.getPlayerSkull(playerName));
+        npc.getTrait(Equipment.class).set(1, Skull.getPlayerSkull(playerName));
         npc.getBukkitEntity().setMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA, new FixedMetadataValue(plugin, true));
         updateLootIndicator();
     }
