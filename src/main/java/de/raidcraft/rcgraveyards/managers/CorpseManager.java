@@ -118,7 +118,7 @@ public class CorpseManager {
                         modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
                     }
                     CustomItemStack customItem = RaidCraft.getCustomItem(itemStack);
-                    customItem.setDurability(customItem.getCustomDurability() - (int)((double)customItem.getMaxDurability() * modifier));
+                    customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
                 }
                 else {
                     if(reason.isEquipmentOnly()) continue;
