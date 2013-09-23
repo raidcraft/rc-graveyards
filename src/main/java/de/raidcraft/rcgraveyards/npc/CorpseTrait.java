@@ -43,7 +43,7 @@ public class CorpseTrait extends Trait {
     public void onSpawn() {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        npc.getTrait(Equipment.class).set(1, Skull.getPlayerSkull(playerName));
+        npc.getTrait(Equipment.class).set(1, Skull.getSkull(playerName));
         npc.getBukkitEntity().setMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA, new FixedMetadataValue(plugin, true));
         updateLootIndicator();
     }
