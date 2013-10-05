@@ -1,5 +1,6 @@
 package de.raidcraft.rcgraveyards.tasks;
 
+import de.raidcraft.RaidCraft;
 import de.raidcraft.rcconversations.npc.ConversationsTrait;
 import de.raidcraft.rcconversations.npc.NPCRegistry;
 import de.raidcraft.rcgraveyards.Graveyard;
@@ -42,6 +43,7 @@ public class GhosthealerCheckerTask implements Runnable {
             }
         }
         if(!found) {
+            RaidCraft.LOGGER.warning("[Graveyards] Created new Geisterheiler in " + graveyard.getFriendlyName());
             ConversationsTrait.create(graveyard.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
         }
     }
