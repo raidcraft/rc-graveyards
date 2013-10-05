@@ -161,6 +161,11 @@ public class PlayerListener implements Listener {
             if(event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
                 player.setFireTicks(0);
             }
+            if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
+                // teleport the player back to his graveyard
+                player.teleport(LocationUtil.improveLocation(graveyardPlayer.getClosestGraveyard(graveyardPlayer.getLastDeath().getLocation()).getLocation()));
+                player.sendMessage(ChatColor.GREEN + "Du wurdest zu deinem Friedhof teleportiert!");
+            }
             event.setCancelled(true);
         }
     }
