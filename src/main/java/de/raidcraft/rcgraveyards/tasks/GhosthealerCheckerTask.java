@@ -7,8 +7,6 @@ import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import net.citizensnpcs.api.npc.NPC;
 
-import java.util.List;
-
 /**
  * @author Philip Urban
  */
@@ -26,9 +24,8 @@ public class GhosthealerCheckerTask implements Runnable {
     @Override
     public void run() {
 
-        List<NPC> npcs = NPCRegistry.INST.getSpawnedNPCs(graveyard.getLocation().getChunk());
         boolean found = false;
-        for(NPC npc : npcs) {
+        for(NPC npc : NPCRegistry.INST.getSpawnedNPCs(graveyard.getLocation().getChunk())) {
             if(npc.getBukkitEntity().getLocation().distance(graveyard.getLocation()) > 5) continue;
             String conversationName = npc.getTrait(ConversationsTrait.class).getConversationName();
             if(conversationName.equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) {
