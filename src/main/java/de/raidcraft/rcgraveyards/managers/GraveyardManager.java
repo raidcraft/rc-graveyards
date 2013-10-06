@@ -103,7 +103,9 @@ public class GraveyardManager {
         double distance = 0;
         Graveyard closestGraveyard = null;
         for(Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
-            if(closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance) {
+            double newDistance = entry.getValue().getLocation().distance(location);
+            if(closestGraveyard == null || newDistance < distance
+                    && (entry.getValue().getRadius() == 0 || entry.getValue().getRadius() >= newDistance)) {
                 closestGraveyard = entry.getValue();
                 distance = entry.getValue().getLocation().distance(location);
             }
