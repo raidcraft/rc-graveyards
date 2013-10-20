@@ -10,6 +10,7 @@ import de.raidcraft.rcgraveyards.util.EquipmentDamageLevel;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.rcgraveyards.util.ReviveInformation;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
+import de.raidcraft.util.CaseInsensitiveMap;
 import de.raidcraft.util.CustomItemUtil;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -19,7 +20,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +29,7 @@ import java.util.Map;
 public class CorpseManager {
 
     private RCGraveyardsPlugin plugin;
-    private Map<String, NPC> registeredCorpse = new HashMap<>();
+    private Map<String, NPC> registeredCorpse = new CaseInsensitiveMap<>();
     public final GhostReviverTask delayingReviver = new GhostReviverTask();
 
     public CorpseManager(RCGraveyardsPlugin plugin) {
@@ -43,6 +43,11 @@ public class CorpseManager {
 
         CorpseTrait trait = npc.getTrait(CorpseTrait.class);
         deleteCorpse(trait.getPlayerName());
+        // player is not death
+        if(plugin.getPlayerManager().getLastDeath(trait.getPlayerName(), npc.getBukkitEntity().getWorld().getName()) == 0) {
+            npc.destroy();
+            return;
+        }
         registeredCorpse.put(trait.getPlayerName().toLowerCase(), npc);
     }
 
