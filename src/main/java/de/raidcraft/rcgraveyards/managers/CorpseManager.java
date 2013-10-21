@@ -76,12 +76,17 @@ public class CorpseManager {
         NPC npc = registeredCorpse.get(corpseName.toLowerCase());
         boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
         String robber = npc.getTrait(CorpseTrait.class).getRobber();
+        long lastDeath = plugin.getPlayerManager().getLastDeath(corpseName, npc.getBukkitEntity().getWorld().getName());
 
+        if(lastDeath == 0) {
+            deleteCorpse(corpseName);
+            return;
+        }
 
         if(player.getName().equalsIgnoreCase(corpseName)) {
 
             ReviveReason reason = ReviveReason.FOUND_CORPSE;
-            long lastDeath = plugin.getPlayerManager().getLastDeath(corpseName, npc.getBukkitEntity().getWorld().getName());
+
             if(lastDeath < System.currentTimeMillis() - plugin.getConfig().corpseDuration*1000) {
                 reason = ReviveReason.NECROMANCER;
             }
