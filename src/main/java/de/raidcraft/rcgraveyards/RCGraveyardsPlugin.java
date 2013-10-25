@@ -15,13 +15,13 @@ import de.raidcraft.rcgraveyards.listener.PlayerListener;
 import de.raidcraft.rcgraveyards.managers.*;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.npc.NPCListener;
-import de.raidcraft.rcgraveyards.tables.DeathsTable;
-import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
-import de.raidcraft.rcgraveyards.tables.ItemStackTable;
-import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import de.raidcraft.rcgraveyards.tables.*;
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.Bukkit;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Philip Urban
@@ -45,7 +45,6 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerTable(GraveyardsTable.class, new GraveyardsTable());
         registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
         registerTable(DeathsTable.class, new DeathsTable());
-        registerTable(ItemStackTable.class, new ItemStackTable());
 
         registerCommands(GraveyardsCommands.class);
         registerCommands(GhostsCommand.class);
@@ -79,6 +78,14 @@ public class RCGraveyardsPlugin extends BasePlugin {
     @Override
     public void disable() {
 
+    }
+
+    @Override
+    public List<Class<?>> getDatabaseClasses() {
+
+        List<Class<?>> databases = new ArrayList<>();
+        databases.add(TStoredItem.class);
+        return databases;
     }
 
     public class LocalConfiguration extends ConfigurationBase<RCGraveyardsPlugin> {

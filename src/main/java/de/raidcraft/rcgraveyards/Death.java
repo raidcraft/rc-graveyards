@@ -1,15 +1,17 @@
 package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.storage.ItemStorage;
+import de.raidcraft.rcgraveyards.tables.TStoredItem;
 import de.raidcraft.skills.SkillsPlugin;
 import de.raidcraft.skills.api.combat.AttackSource;
 import de.raidcraft.skills.api.hero.Hero;
+import de.raidcraft.util.CustomItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,14 +21,12 @@ public class Death {
 
     private Hero hero;
     private Location location;
-    private List<ItemStack> inventory;
     private long timestamp;
 
     public Death(Player player) {
 
         this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
         this.location = null;
-        this.inventory = new ArrayList<>();
     }
 
     public Death(Player player, Location location, long timestamp) {
@@ -46,22 +46,20 @@ public class Death {
         this.timestamp = timestamp;
     }
 
-    public List<ItemStack> getInventory() {
-
-        return inventory;
-    }
-
-    public void setInventory(List<ItemStack> inventory) {
-
-        this.inventory = inventory;
-    }
-
     public void saveInventory(List<ItemStack> items) {
 
-        this.inventory.clear();
+        ItemStorage itemStorage = new ItemStorage("graveyards");
         for(ItemStack itemStack : items) {
             if(itemStack == null || itemStack.getType() == Material.AIR) continue;
-            this.inventory.add(itemStack.clone());
+
+            boolean lootable = CustomItemUtil.isEquipment(itemStack);
+            int storedItemId = itemStorage.storeObject(itemStack);
+            TStoredItem storedItem = new TStoredItem();
+            storedItem.setStorageId(storedItemId);
+            storedItem.setPlayer(hero.getPlayer().getName());
+            storedItem.setWorld(hero.getPlayer().getWorld().getName());
+            storedItem.setLootable(lootable);
+            RaidCraft.getDatabase(RCGraveyardsPlugin.class).save(storedItem);
         }
     }
 

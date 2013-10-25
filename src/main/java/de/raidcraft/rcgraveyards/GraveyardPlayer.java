@@ -2,7 +2,6 @@ package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
-import de.raidcraft.rcgraveyards.tables.ItemStackTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import org.bukkit.Bukkit;
@@ -37,7 +36,6 @@ public class GraveyardPlayer {
             lastDeath = new Death(player);
         }
         else {
-            lastDeath.setInventory(RaidCraft.getTable(ItemStackTable.class).getInventory(player));
             setGhost(true);
         }
     }
@@ -109,7 +107,6 @@ public class GraveyardPlayer {
             plugin.getGhostManager().setGhost(player, false);
             // delete db entries
             RaidCraft.getTable(DeathsTable.class).delete(player);
-            RaidCraft.getTable(ItemStackTable.class).delete(player);
         }
         plugin.getPlayerManager().updatePlayerVisibility();
     }
@@ -121,13 +118,6 @@ public class GraveyardPlayer {
 
     public void save() {
 
-        Bukkit.getScheduler().runTaskAsynchronously(RaidCraft.getComponent(RCGraveyardsPlugin.class), new Runnable() {
-            @Override
-            public void run() {
-
-                RaidCraft.getTable(DeathsTable.class).addDeath(lastDeath, player);
-                RaidCraft.getTable(ItemStackTable.class).addInventory(lastDeath.getInventory(), player);
-            }
-        });
+        RaidCraft.getTable(DeathsTable.class).addDeath(lastDeath, player);
     }
 }
