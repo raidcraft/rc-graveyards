@@ -105,6 +105,7 @@ public class PlayerManager {
             ItemStack item;
             try {
                 item = itemStorage.getObject(storedItem.getStorageId());
+                itemStorage.removeObject(storedItem.getStorageId());
             } catch (StorageException e) {
                 continue;
             }
@@ -125,6 +126,7 @@ public class PlayerManager {
             ItemStack item;
             try {
                 item = itemStorage.getObject(storedItem.getStorageId());
+                itemStorage.removeObject(storedItem.getStorageId());
             } catch (StorageException e) {
                 continue;
             }
