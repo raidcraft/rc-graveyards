@@ -1,6 +1,7 @@
 package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.items.CustomItemException;
 import de.raidcraft.api.items.CustomItemStack;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
@@ -131,7 +132,12 @@ public class CorpseManager {
                     if (customItem == null) {
                         continue;
                     }
-                    customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
+                    try {
+                        customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
+                        customItem.rebuild(player);
+                        itemStack = customItem;
+                    } catch (CustomItemException ignored) {
+                    }
                 }
                 else {
                     if(reason.isEquipmentOnly()) continue;
