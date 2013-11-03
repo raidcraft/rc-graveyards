@@ -204,6 +204,7 @@ public class PlayerListener implements Listener {
         if(graveyardPlayer == null) return;
         if(!graveyardPlayer.isGhost()) return;
         if(event.getAction() == Action.PHYSICAL) return;
+        // ender pearl warping
         if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
             if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                 event.setCancelled(true);
@@ -211,6 +212,19 @@ public class PlayerListener implements Listener {
                 return;
             }
             else if(event.getAction() == Action.RIGHT_CLICK_AIR) {
+                return;
+            }
+        }
+        // boat placing
+        if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.BOAT) {
+            if(event.getAction() == Action.RIGHT_CLICK_AIR || (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
+                    event.getClickedBlock().getType() != Material.WATER && event.getClickedBlock().getType() != Material.STATIONARY_WATER)) {
+                event.setCancelled(true);
+                player.sendMessage(ChatColor.RED + "Du musst das Boot auf dem Wasser platzieren!");
+                return;
+            }
+            else if(event.getAction() == Action.RIGHT_CLICK_BLOCK &&
+                    (event.getClickedBlock().getType() == Material.WATER || event.getClickedBlock().getType() == Material.STATIONARY_WATER)) {
                 return;
             }
         }
