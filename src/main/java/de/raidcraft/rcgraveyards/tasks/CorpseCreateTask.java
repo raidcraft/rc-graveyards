@@ -19,6 +19,7 @@ public class CorpseCreateTask implements Runnable {
     }
 
     public void run() {
+        if(location.getY() < 0) return;
         CorpseTrait.create(player, location);
     }
 }
