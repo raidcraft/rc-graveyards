@@ -207,14 +207,22 @@ public class PlayerListener implements Listener {
         if(!graveyardPlayer.isGhost()) return;
         if(event.getAction() == Action.PHYSICAL) return;
         // ender pearl warping
-        if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
-            if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                event.setCancelled(true);
-                player.sendMessage(ChatColor.RED + "Du musst mit der Enderperle in die Luft klicken!");
-                return;
-            }
-            else if(event.getAction() == Action.RIGHT_CLICK_AIR) {
-                return;
+        if(event.getPlayer().getItemInHand() != null) {
+            if (event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
+                if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                    event.setCancelled(true);
+                    player.sendMessage(ChatColor.RED + "Du musst mit der Enderperle in die Luft klicken!");
+                    return;
+                } else if (event.getAction() == Action.RIGHT_CLICK_AIR) {
+                    return;
+                }
+            } else if (event.getPlayer().getItemInHand().getType() == Material.COMPASS) {
+                if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR) {
+                    event.setCancelled(true);
+                    player.teleport(LocationUtil.improveLocation(graveyardPlayer.getLastDeathGraveyard().getLocation()));
+                    plugin.getTranslationProvider().msg(player, "ghost.teleport-back",
+                            ChatColor.GREEN + "You have been teleported to the graveyard you spawned at.");
+                }
             }
         }
         // boat placing
