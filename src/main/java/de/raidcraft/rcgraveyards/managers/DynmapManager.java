@@ -30,7 +30,7 @@ public class DynmapManager {
 
     public void addGraveyardMarker(Graveyard graveyard) {
 
-        if (markerAPI == null) {
+        if (markerAPI == null ||graveyardSet == null) {
             return;
         }
 
