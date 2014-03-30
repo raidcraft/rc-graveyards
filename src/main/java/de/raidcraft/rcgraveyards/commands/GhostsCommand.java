@@ -72,7 +72,7 @@ public class GhostsCommand {
             throw new CommandException("Nur Geister können sich zu ihrem letzten Friedhof teleportieren!");
         }
         player.teleport(LocationUtil.improveLocation(graveyardPlayer.getClosestGraveyard(graveyardPlayer.getLastDeath().getLocation()).getLocation()));
-        player.sendMessage(ChatColor.GREEN + "Du wurdest zu deinem Friedhof teleportiert!");
+        plugin.getTranslationProvider().msg(player, "ghost.teleport-back", ChatColor.GREEN + "You have been teleported to the graveyard you spawned at.");
     }
 
     public static class NestedCommands {

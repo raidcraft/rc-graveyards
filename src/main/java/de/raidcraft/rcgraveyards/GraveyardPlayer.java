@@ -5,12 +5,16 @@ import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,12 +63,14 @@ public class GraveyardPlayer {
         return closestGraveyard;
     }
 
+    public Graveyard getLastDeathGraveyard() {
+
+        return getClosestGraveyard(getLastDeath().getLocation());
+    }
+
     public boolean knowGraveyard(Graveyard graveyard) {
 
-        if(graveyards.containsKey(graveyard.getName())) {
-            return true;
-        }
-        return false;
+        return graveyards.containsKey(graveyard.getName());
     }
 
     public void addGraveyard(Graveyard graveyard) {
@@ -90,7 +96,16 @@ public class GraveyardPlayer {
             // clear inventory
             player.getInventory().clear();
             // give compass
-            player.getInventory().setItemInHand(new ItemStack(Material.COMPASS));
+            ItemStack compass = new ItemStack(Material.COMPASS);
+            ItemMeta itemMeta = compass.getItemMeta();
+            itemMeta.setDisplayName(ChatColor.GOLD + plugin.getTranslationProvider().tr(player,
+                    "ghost.compass.title", "Shows you the way to your corpse."));
+            List<String> lore = new ArrayList<>();
+            lore.add(ChatColor.GREEN + plugin.getTranslationProvider().tr(player,
+                    "ghost.compass.right-click", "Right Click: Returns you to the graveyard you spawned at."));
+            itemMeta.setLore(lore);
+            compass.setItemMeta(itemMeta);
+            player.getInventory().setItemInHand(compass);
             // set compass target
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override

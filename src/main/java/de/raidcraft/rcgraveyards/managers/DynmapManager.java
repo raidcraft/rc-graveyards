@@ -2,6 +2,7 @@ package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.rcgraveyards.Graveyard;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;
 import org.dynmap.markers.Marker;
 import org.dynmap.markers.MarkerAPI;
@@ -14,16 +15,16 @@ import org.dynmap.markers.MarkerSet;
  */
 public class DynmapManager {
 
-    private DynmapAPI api;
     private MarkerAPI markerAPI = null;
     private MarkerSet graveyardSet = null;
 
     public DynmapManager() {
 
-        api = (DynmapAPI) Bukkit.getServer().getPluginManager().getPlugin("dynmap");
-        if(api == null) {
+        Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
+        if(dynmap == null) {
             return;
         }
+        DynmapAPI api = (DynmapAPI) dynmap;
         markerAPI = api.getMarkerAPI();
         graveyardSet = markerAPI.getMarkerSet("friedhoefe");
     }
