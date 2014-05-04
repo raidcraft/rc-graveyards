@@ -21,12 +21,12 @@
     <groupId>de.raidcraft</groupId>
     <artifactId>rcgraveyards</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.5-SNAPSHOT</version>
+    <version>1.1.5</version>
     <name>RCGraveyards</name>
 
     <scm>
         <developerConnection>scm:git:ssh://git@raid-craft.de:22109/raid-craft-de/${project.artifactId}.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>rcgraveyards-1.1.5</tag>
     </scm>
 
     <parent>
