@@ -25,7 +25,7 @@
     <name>RCGraveyards</name>
 
     <scm>
-        <developerConnection>scm:git:ssh://git@git.raid-craft.de:22109/rcgraveyards.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@raid-craft.de:22109/raid-craft-de/skillsandeffects.git</developerConnection>
     </scm>
 
     <parent>
@@ -34,19 +34,7 @@
         <version>RELEASE</version>
     </parent>
 
-    <repositories>
-        <repository>
-            <id>raidcraft</id>
-            <url>http://nexus.raid-craft.de/content/groups/public/</url>
-        </repository>
-    </repositories>
-
     <dependencies>
-        <dependency>
-            <groupId>de.raidcraft</groupId>
-            <artifactId>raidcraft-api</artifactId>
-            <version>${rc.version}</version>
-        </dependency>
         <dependency>
             <groupId>de.raidcraft</groupId>
             <artifactId>skills</artifactId>
@@ -60,7 +48,7 @@
         <dependency>
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizens</artifactId>
-            <version>2.0.9-SNAPSHOT</version>
+            <version>${rc.version}</version>
         </dependency>
         <dependency>
             <groupId>org.dynmap</groupId>
