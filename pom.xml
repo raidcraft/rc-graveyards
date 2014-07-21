@@ -34,7 +34,7 @@
         <dependency>
             <groupId>de.raidcraft</groupId>
             <artifactId>raidcraft-api</artifactId>
-            <version>1.4.2-develop-SNAPSHOT</version>
+            <version>1.4.1-develop-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.raidcraft</groupId>
