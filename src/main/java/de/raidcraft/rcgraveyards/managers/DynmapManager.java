@@ -26,6 +26,7 @@ public class DynmapManager {
         }
         DynmapAPI api = (DynmapAPI) dynmap;
         markerAPI = api.getMarkerAPI();
+        // TODO: i18n
         graveyardSet = markerAPI.getMarkerSet("friedhoefe");
     }
 

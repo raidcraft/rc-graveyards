@@ -77,6 +77,7 @@ public class PlayerListener implements Listener {
         if(graveyard == null) return;
         // let the player rewspawn near the graveyard location
         event.setRespawnLocation(LocationUtil.improveLocation(graveyard.getLocation()));
+        // TODO: i18n
         player.sendMessage("****");
         player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
         player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
@@ -86,11 +87,13 @@ public class PlayerListener implements Listener {
         graveyardPlayer.setGhost(true);
         // create corpse delayed
         if(deathLocation.getY() > 0) {
+            // TODO: why delay ghost spawn?
             Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
         }
         Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerCheckerTask(plugin, graveyard), 20);
     }
 
+    // TODO: performance, own event PlayerChunkMoveEvent?
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 

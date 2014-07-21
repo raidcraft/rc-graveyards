@@ -31,6 +31,7 @@ import java.util.Map;
 public class CorpseManager {
 
     private RCGraveyardsPlugin plugin;
+    // TODO: UUID rework
     private Map<String, NPC> registeredCorpse = new CaseInsensitiveMap<>();
     public final GhostReviverTask delayingReviver = new GhostReviverTask();
 
