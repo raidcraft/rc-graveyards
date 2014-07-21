@@ -5,7 +5,6 @@ import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
-import de.raidcraft.rcgraveyards.tasks.GhosthealerCheckerTask;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
 import org.bukkit.Bukkit;
@@ -90,7 +89,6 @@ public class PlayerListener implements Listener {
             // TODO: why delay ghost spawn?
             Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
         }
-        Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerCheckerTask(plugin, graveyard), 20);
     }
 
     // TODO: performance, own event PlayerChunkMoveEvent?
