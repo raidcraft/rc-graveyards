@@ -3,6 +3,7 @@ package de.raidcraft.rcgraveyards.npc;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.items.Skull;
 import de.raidcraft.api.npc.NPC_Manager;
+import de.raidcraft.api.npc.RC_Traits;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.command.CommandContext;
@@ -35,8 +36,7 @@ public class CorpseTrait extends Trait {
     private String robber;
 
     public CorpseTrait() {
-
-        super("rcgraveyards");
+        super(RC_Traits.GRAVEYARDS);
     }
 
     @Override

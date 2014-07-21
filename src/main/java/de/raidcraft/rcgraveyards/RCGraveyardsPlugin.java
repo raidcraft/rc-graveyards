@@ -4,6 +4,8 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
+import de.raidcraft.api.npc.NPC_Manager;
+import de.raidcraft.api.npc.RC_Traits;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import de.raidcraft.rcgraveyards.commands.GhostsCommand;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
@@ -64,7 +66,11 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerEvents(new MobListener());
         registerEvents(ghostManager);
 
-        loadCitizens();
+        // load NPC stuff
+        registerEvents(new NPCListener());
+        NPC_Manager.getInstance().registerTrait(CorpseTrait.class, RC_Traits.GRAVEYARDS);
+        NPC_Manager.getInstance().loadNPCs(this.getName());
+        // TODO: why reload?
         reload();
     }
 
@@ -106,9 +112,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
     private void loadCitizens() {
 
         try {
-            registerEvents(new NPCListener());
-            citizens = (Citizens) Bukkit.getPluginManager().getPlugin("Citizens");
-            citizens.getTraitFactory().registerTrait(TraitInfo.create(CorpseTrait.class).withName("rcgraveyards"));
+
         } catch (Exception e) {
             RaidCraft.LOGGER.warning("[RCConv] Can't load NPC stuff! Citizens not found!");
         }
@@ -142,10 +146,5 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public CorpseManager getCorpseManager() {
 
         return corpseManager;
-    }
-
-    public Citizens getCitizens() {
-
-        return citizens;
     }
 }
