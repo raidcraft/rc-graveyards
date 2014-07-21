@@ -4,7 +4,7 @@
     <groupId>de.raidcraft</groupId>
     <artifactId>rcgraveyards</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.6-SNAPSHOT</version>
+    <version>1.1.6-develop-SNAPSHOT</version>
     <name>RCGraveyards</name>
 
     <scm>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>de.raidcraft</groupId>
             <artifactId>raidcraft-api</artifactId>
-            <version>${rc.version}</version>
+            <version>1.4.2-develop-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.raidcraft</groupId>
