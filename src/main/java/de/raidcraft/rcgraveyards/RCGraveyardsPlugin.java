@@ -18,7 +18,6 @@ import de.raidcraft.rcgraveyards.managers.*;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.npc.NPCListener;
 import de.raidcraft.rcgraveyards.tables.*;
-import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.Bukkit;
 
@@ -39,7 +38,6 @@ public class RCGraveyardsPlugin extends BasePlugin {
     private DynmapManager dynmapManager;
     private GhostManager ghostManager;
     private CorpseManager corpseManager;
-    private Citizens citizens;
 
     @Override
     public void enable() {

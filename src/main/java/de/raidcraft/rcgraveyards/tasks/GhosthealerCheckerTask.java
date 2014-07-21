@@ -3,7 +3,6 @@ package de.raidcraft.rcgraveyards.tasks;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcconversations.RCConversationsPlugin;
 import de.raidcraft.rcconversations.npc.ConversationsTrait;
-import de.raidcraft.rcconversations.npc.NPCRegistry;
 import de.raidcraft.rcconversations.util.ChunkLocation;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
@@ -27,32 +26,32 @@ public class GhosthealerCheckerTask implements Runnable {
 
     @Override
     public void run() {
-
+        // TODO: make it better
         // check a second time
-        boolean found = false;
-        for(ChunkLocation cl : NPCRegistry.INST.getAffectedChunkLocations(graveyard.getLocation().getChunk())) {
-            for(Entity entity : graveyard.getLocation().getChunk().getWorld().getChunkAt(cl.getX(), cl.getZ()).getEntities()) {
-                if(!(entity instanceof LivingEntity)) continue;
-                if(entity.getLocation().distance(graveyard.getLocation()) <= 5) {
-                    NPC npc = RaidCraft.getComponent(RCConversationsPlugin.class).getCitizens().getNPCRegistry().getNPC(entity);
-                    if(npc == null) continue;
-                    ConversationsTrait trait = npc.getTrait(ConversationsTrait.class);
-                    if(!trait.getConversationName().equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) continue;
-
-                    if(found) {
-                        NPCRegistry.INST.unregisterNPC(npc);
-                        npc.destroy();
-                    }
-                    else {
-                        found = true;
-                    }
-                }
-            }
-        }
-
-        if(!found) {
-            RaidCraft.LOGGER.warning("[Graveyards] Created new Geisterheiler in " + graveyard.getFriendlyName());
-            ConversationsTrait.create(graveyard.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
-        }
-    }
+//        boolean found = false;
+//        for(ChunkLocation cl : NPCRegistry.INST.getAffectedChunkLocations(graveyard.getLocation().getChunk())) {
+//            for(Entity entity : graveyard.getLocation().getChunk().getWorld().getChunkAt(cl.getX(), cl.getZ()).getEntities()) {
+//                if(!(entity instanceof LivingEntity)) continue;
+//                if(entity.getLocation().distance(graveyard.getLocation()) <= 5) {
+//                    NPC npc = RaidCraft.getComponent(RCConversationsPlugin.class).getCitizens().getNPCRegistry().getNPC(entity);
+//                    if(npc == null) continue;
+//                    ConversationsTrait trait = npc.getTrait(ConversationsTrait.class);
+//                    if(!trait.getConversationName().equalsIgnoreCase(plugin.getConfig().necromancerConversationName)) continue;
+//
+//                    if(found) {
+//                        NPCRegistry.INST.unregisterNPC(npc);
+//                        npc.destroy();
+//                    }
+//                    else {
+//                        found = true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        if(!found) {
+//            RaidCraft.LOGGER.warning("[Graveyards] Created new Geisterheiler in " + graveyard.getFriendlyName());
+//            ConversationsTrait.create(graveyard.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
+//        }
+//    }
 }
