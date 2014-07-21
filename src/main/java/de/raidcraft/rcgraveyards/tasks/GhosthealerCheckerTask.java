@@ -47,7 +47,7 @@ public class GhosthealerCheckerTask implements Runnable {
 //                    }
 //                }
 //            }
-//        }
+        }
 //
 //        if(!found) {
 //            RaidCraft.LOGGER.warning("[Graveyards] Created new Geisterheiler in " + graveyard.getFriendlyName());
