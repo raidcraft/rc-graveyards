@@ -3,6 +3,7 @@ package de.raidcraft.rcgraveyards.managers;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.items.CustomItemException;
 import de.raidcraft.api.items.CustomItemStack;
+import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
@@ -59,11 +60,12 @@ public class CorpseManager {
     }
 
     public void deleteCorpse(String name) {
-
         NPC npc = registeredCorpse.remove(name.toLowerCase());
-        if(npc != null) {
-            npc.destroy();
+        if(npc == null) {
+            RaidCraft.LOGGER.warning("[Graveyards] Cannot delete Corpse: " + name.toLowerCase());
+            return;
         }
+        NPC_Manager.getInstance().removeNPC(npc, plugin.getName());
     }
 
     public void checkReviver(Player player, String corpseName) {
@@ -77,7 +79,7 @@ public class CorpseManager {
         NPC npc = registeredCorpse.get(corpseName.toLowerCase());
         boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
         String robber = npc.getTrait(CorpseTrait.class).getRobber();
-        long lastDeath = plugin.getPlayerManager().getLastDeath(corpseName, npc.getBukkitEntity().getWorld().getName());
+        long lastDeath = plugin.getPlayerManager().getLastDeath(corpseName, npc.getEntity().getWorld().getName());
 
         if(lastDeath == 0) {
             deleteCorpse(corpseName);

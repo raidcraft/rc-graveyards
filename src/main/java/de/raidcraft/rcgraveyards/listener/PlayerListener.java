@@ -59,6 +59,7 @@ public class PlayerListener implements Listener {
         event.getDrops().clear();
     }
 
+    // TODO: check if double call not possible
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
 

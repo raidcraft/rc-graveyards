@@ -2,6 +2,7 @@ package de.raidcraft.rcgraveyards.npc;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.items.Skull;
+import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.command.CommandContext;
@@ -12,7 +13,6 @@ import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.api.trait.trait.MobType;
 import net.citizensnpcs.api.trait.trait.Owner;
 import net.citizensnpcs.api.trait.trait.Spawned;
-import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -44,7 +44,7 @@ public class CorpseTrait extends Trait {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         npc.getTrait(Equipment.class).set(1, Skull.getSkull(playerName));
-        npc.getBukkitEntity().setMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA, new FixedMetadataValue(plugin, true));
+        npc.getEntity().setMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA, new FixedMetadataValue(plugin, true));
         updateLootIndicator();
     }
 
@@ -77,7 +77,7 @@ public class CorpseTrait extends Trait {
 
     public void updateLootIndicator() {
 
-        if(npc.getBukkitEntity() == null) return;
+        if(npc.getEntity() == null) return;
         if(looted) {
             npc.getTrait(Equipment.class).set(0, new ItemStack(Material.AIR));
         }
@@ -89,28 +89,17 @@ public class CorpseTrait extends Trait {
 
     public static void create(Player player, Location location) {
 
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.SKELETON, player.getName());
+        NPC npc = NPC_Manager.getInstance().createPersistNpc(
+                    player.getName(), RaidCraft.getComponent(RCGraveyardsPlugin.class).getName());
+        npc.setBukkitEntityType(EntityType.SKELETON);
+        npc.setProtected(true);
+        npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
+
         npc.addTrait(CorpseTrait.class);
         npc.getTrait(CorpseTrait.class).setPlayerName(player.getName());
         npc.getTrait(CorpseTrait.class).setLooted(false, null);
 
-        // add traits
-        npc.addTrait(MobType.class);
-        npc.addTrait(Spawned.class);
-        npc.addTrait(LookClose.class);
-        npc.addTrait(Owner.class);
-        npc.addTrait(Equipment.class);
-
-
-        // configure traits
-        npc.getTrait(MobType.class).setType(EntityType.SKELETON);
-        npc.getTrait(Spawned.class).setSpawned(true);
-        npc.getTrait(LookClose.class).lookClose(true);
-        npc.getTrait(Owner.class).setOwner("rcgraveyards");
-        npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
-
         npc.spawn(location);
-
-        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCitizens().storeNPCs(new CommandContext(new String[]{}));
+        NPC_Manager.getInstance().store(RaidCraft.getComponent(RCGraveyardsPlugin.class).getName());
     }
 }
