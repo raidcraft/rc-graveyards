@@ -40,7 +40,8 @@ public class ItemStackTable extends Table {
                             "`itemmeta` TEXT NOT NULL , \n" +
                             "`equipment` TINYINT NOT NULL , \n" +
                             "PRIMARY KEY ( `id` )\n" +
-                            ")");
+                            ")"
+            );
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,7 +60,7 @@ public class ItemStackTable extends Table {
             statement = getConnection().prepareStatement(query);
 
             int i = 0;
-            for(ItemStack item : items) {
+            for (ItemStack item : items) {
                 statement.setString(1, player.getName().toLowerCase());
                 statement.setString(2, player.getWorld().getName());
                 statement.setString(3, item.getType().name());
@@ -68,13 +69,13 @@ public class ItemStackTable extends Table {
                 statement.setInt(6, item.getAmount());
 
                 boolean equipment = false;
-                if(CustomItemUtil.isEquipment(item)) equipment = true;
+                if (CustomItemUtil.isEquipment(item)) equipment = true;
                 statement.setInt(7, (equipment) ? 1 : 0);
                 statement.executeUpdate();
 
                 i++;
 
-                if(i % 100 == 0) {
+                if (i % 100 == 0) {
                     getConnection().commit();
                 }
             }
@@ -95,7 +96,7 @@ public class ItemStackTable extends Table {
 
         List<ItemStack> items = new ArrayList<>();
         String withoutEquipmentFilter = "";
-        if(withoutEquipment) {
+        if (withoutEquipment) {
             withoutEquipmentFilter = "AND equipment = '0'";
         }
         try {
@@ -110,7 +111,7 @@ public class ItemStackTable extends Table {
                 );
 
                 String itemData = resultSet.getString("itemmeta");
-                itemStack.setItemMeta((ItemMeta)SerializationUtil.fromByteStream(itemData, itemStack.getType()));
+                itemStack.setItemMeta((ItemMeta) SerializationUtil.fromByteStream(itemData, itemStack.getType()));
                 items.add(itemStack);
             }
             resultSet.close();
@@ -128,7 +129,7 @@ public class ItemStackTable extends Table {
     public void delete(String player, String world, boolean withoutEquipment) {
 
         String withoutEquipmentFilter = "";
-        if(withoutEquipment) {
+        if (withoutEquipment) {
             withoutEquipmentFilter = "AND equipment = '0'";
         }
         try {

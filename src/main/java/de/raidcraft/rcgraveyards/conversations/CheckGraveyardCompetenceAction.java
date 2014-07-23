@@ -27,7 +27,7 @@ public class CheckGraveyardCompetenceAction extends AbstractAction {
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
 
-        if(graveyardPlayer.getLastDeath().getLocation() == null) {
+        if (graveyardPlayer.getLastDeath().getLocation() == null) {
             changeStage(conversation, failure);
         }
 
@@ -36,23 +36,23 @@ public class CheckGraveyardCompetenceAction extends AbstractAction {
         Graveyard necroGraveyard = plugin.getGraveyardManager().getClosestGraveyard(conversation.getHost().getLocation());
 
         // destroy npcs without graveyard
-        if(necroGraveyard.getLocation().distance(conversation.getHost().getLocation()) > 5) {
+        if (necroGraveyard.getLocation().distance(conversation.getHost().getLocation()) > 5) {
             conversation.endConversation(EndReason.FAILURE);
-            if(conversation.getHost() instanceof NPCHost) {
-                ((NPCHost)conversation.getHost()).getNPC().destroy();
+            if (conversation.getHost() instanceof NPCHost) {
+                ((NPCHost) conversation.getHost()).getNPC().destroy();
             }
         }
 
-        if(playerGraveyard.getName().equalsIgnoreCase(necroGraveyard.getName())) {
+        if (playerGraveyard.getName().equalsIgnoreCase(necroGraveyard.getName())) {
             changeStage(conversation, success);
-        }
-        else {
+        } else {
             changeStage(conversation, failure);
         }
     }
 
     private void changeStage(Conversation conversation, String stage) {
-        if(stage != null) {
+
+        if (stage != null) {
             conversation.setCurrentStage(stage);
             conversation.triggerCurrentStage();
         }

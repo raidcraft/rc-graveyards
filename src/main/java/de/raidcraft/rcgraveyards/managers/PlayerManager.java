@@ -44,9 +44,9 @@ public class PlayerManager {
 
         GraveyardPlayer graveyardPlayer = players.get(player);
         // TODO: sense?
-        if(graveyardPlayer == null) {
-            for(Map.Entry<String, GraveyardPlayer> entry : players.entrySet()) {
-                if(entry.getKey().toLowerCase().startsWith(player.toLowerCase())) {
+        if (graveyardPlayer == null) {
+            for (Map.Entry<String, GraveyardPlayer> entry : players.entrySet()) {
+                if (entry.getKey().toLowerCase().startsWith(player.toLowerCase())) {
                     graveyardPlayer = entry.getValue();
                 }
             }
@@ -61,8 +61,8 @@ public class PlayerManager {
 
     public void updatePlayerVisibility() {
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            if(player.hasPermission("rcgraveyards.seeall")) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (player.hasPermission("rcgraveyards.seeall")) {
                 continue;
             }
             updatePlayerVisibility(player);
@@ -72,24 +72,21 @@ public class PlayerManager {
     public void updatePlayerVisibility(Player player) {
 
         boolean ghost = plugin.getGhostManager().isGhost(player);
-        for(Player otherPlayer : Bukkit.getOnlinePlayers()) {
+        for (Player otherPlayer : Bukkit.getOnlinePlayers()) {
 
-            if(otherPlayer.hasPermission("rcgraveyards.seeall")) {
+            if (otherPlayer.hasPermission("rcgraveyards.seeall")) {
                 continue;
             }
-            if(plugin.getGhostManager().isGhost(otherPlayer)) {
-                if(ghost) {
+            if (plugin.getGhostManager().isGhost(otherPlayer)) {
+                if (ghost) {
                     player.showPlayer(otherPlayer);
-                }
-                else {
+                } else {
                     player.hidePlayer(otherPlayer);
                 }
-            }
-            else {
-                if(ghost) {
+            } else {
+                if (ghost) {
                     player.hidePlayer(otherPlayer);
-                }
-                else {
+                } else {
                     player.showPlayer(otherPlayer);
                 }
             }
@@ -103,7 +100,7 @@ public class PlayerManager {
         List<TStoredItem> storedItems = RaidCraft.getDatabase(RCGraveyardsPlugin.class)
                 .find(TStoredItem.class).where().ieq("player", corpseName).ieq("world", world).eq("lootable", true).findList();
 
-        for(TStoredItem storedItem : storedItems) {
+        for (TStoredItem storedItem : storedItems) {
             ItemStack item;
             try {
                 item = itemStorage.getObject(storedItem.getStorageId());
@@ -124,7 +121,7 @@ public class PlayerManager {
         List<TStoredItem> storedItems = RaidCraft.getDatabase(RCGraveyardsPlugin.class)
                 .find(TStoredItem.class).where().ieq("player", corpseName).ieq("world", world).findList();
 
-        for(TStoredItem storedItem : storedItems) {
+        for (TStoredItem storedItem : storedItems) {
             ItemStack item;
             try {
                 item = itemStorage.getObject(storedItem.getStorageId());

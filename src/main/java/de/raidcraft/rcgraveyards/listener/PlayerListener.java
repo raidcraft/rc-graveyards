@@ -22,7 +22,13 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 /**
  * @author Philip Urban
@@ -70,10 +76,10 @@ public class PlayerListener implements Listener {
         }
 
         Location deathLocation = graveyardPlayer.getLastDeath().getLocation();
-        if(deathLocation == null) return;
+        if (deathLocation == null) return;
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
-        if(graveyard == null) return;
+        if (graveyard == null) return;
         // let the player rewspawn near the graveyard location
         event.setRespawnLocation(LocationUtil.improveLocation(graveyard.getLocation()));
         // TODO: i18n
@@ -85,7 +91,7 @@ public class PlayerListener implements Listener {
         player.sendMessage("****");
         graveyardPlayer.setGhost(true);
         // create corpse delayed
-        if(deathLocation.getY() > 0) {
+        if (deathLocation.getY() > 0) {
             // TODO: why delay ghost spawn?
             Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
         }
@@ -95,23 +101,23 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 
-        if(!MovementChecker.INST.hasMoved(event.getPlayer().getName(), event.getTo())) {
+        if (!MovementChecker.INST.hasMoved(event.getPlayer().getName(), event.getTo())) {
             return;
         }
         MovementChecker.INST.setPlayerLocation(event.getPlayer().getName(), event.getTo());
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Graveyard graveyard = plugin.getGraveyardManager().getGraveyard(event.getPlayer().getLocation());
-        if(graveyard == null) return;
+        if (graveyard == null) return;
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getPlayer().getName());
         if (graveyardPlayer == null) {
             return;
         }
-        if(graveyardPlayer.knowGraveyard(graveyard)) {
+        if (graveyardPlayer.knowGraveyard(graveyard)) {
             return;
         }
 
-        if(!graveyardPlayer.isGhost()) {
+        if (!graveyardPlayer.isGhost()) {
             graveyardPlayer.addGraveyard(graveyard);
             event.getPlayer().sendMessage(ChatColor.DARK_GREEN + "Du hast den Friedhof " + ChatColor.GOLD + graveyard.getFriendlyName() + ChatColor.DARK_GREEN + " gefunden!");
         }
@@ -131,7 +137,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(graveyardPlayer.isGhost()) event.setCancelled(true);
+        if (graveyardPlayer.isGhost()) event.setCancelled(true);
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
@@ -144,7 +150,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if(graveyardPlayer.isGhost()) {
+        if (graveyardPlayer.isGhost()) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Du kannst als Geist keine Items droppen!");
         }
@@ -153,17 +159,17 @@ public class PlayerListener implements Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void onPlayerDamage(EntityDamageEvent event) {
 
-        if(!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player)) return;
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = (Player)event.getEntity();
+        Player player = (Player) event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         if (graveyardPlayer == null) {
             return;
         }
 
-        if(graveyardPlayer.isGhost()) {
-            if(event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
+        if (graveyardPlayer.isGhost()) {
+            if (event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK || event.getCause() == EntityDamageEvent.DamageCause.FIRE) {
                 player.setFireTicks(0);
             }
             if (event.getCause() == EntityDamageEvent.DamageCause.VOID) {
@@ -179,14 +185,14 @@ public class PlayerListener implements Listener {
     public void onLivingEntityDamage(EntityDamageByEntityEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        if(event.getDamager() instanceof Player) {
-            Player player = (Player)event.getDamager();
+        if (event.getDamager() instanceof Player) {
+            Player player = (Player) event.getDamager();
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
             if (graveyardPlayer == null) {
                 return;
             }
 
-            if(graveyardPlayer.isGhost()) event.setCancelled(true);
+            if (graveyardPlayer.isGhost()) event.setCancelled(true);
         } else if (event.getEntity() instanceof Player && event.getDamager() instanceof Monster) {
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(((Player) event.getEntity()).getName());
             if (graveyardPlayer == null || !graveyardPlayer.isGhost()) {
@@ -205,11 +211,11 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
-        if(graveyardPlayer == null) return;
-        if(!graveyardPlayer.isGhost()) return;
-        if(event.getAction() == Action.PHYSICAL) return;
+        if (graveyardPlayer == null) return;
+        if (!graveyardPlayer.isGhost()) return;
+        if (event.getAction() == Action.PHYSICAL) return;
         // ender pearl warping
-        if(event.getPlayer().getItemInHand() != null) {
+        if (event.getPlayer().getItemInHand() != null) {
             if (event.getPlayer().getItemInHand().getType() == Material.ENDER_PEARL) {
                 if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
                     event.setCancelled(true);
@@ -228,42 +234,43 @@ public class PlayerListener implements Listener {
             }
         }
         // boat placing
-        if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.BOAT) {
-            if(event.getAction() == Action.RIGHT_CLICK_AIR || (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.BOAT) {
+            if (event.getAction() == Action.RIGHT_CLICK_AIR || (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
                     event.getClickedBlock().getType() != Material.WATER && event.getClickedBlock().getType() != Material.STATIONARY_WATER)) {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.RED + "Du musst das Boot auf dem Wasser platzieren!");
                 return;
-            }
-            else if(event.getAction() == Action.RIGHT_CLICK_BLOCK &&
+            } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
                     (event.getClickedBlock().getType() == Material.WATER || event.getClickedBlock().getType() == Material.STATIONARY_WATER)) {
                 return;
             }
         }
-        if(event.getClickedBlock() != null
+        if (event.getClickedBlock() != null
                 && (event.getClickedBlock().getType() == Material.WOOD_DOOR
                 || event.getClickedBlock().getType() == Material.WOOD_BUTTON
                 || event.getClickedBlock().getType() == Material.STONE_BUTTON
                 || event.getClickedBlock().getType() == Material.LEVER
-        )) return;
+        )) {
+            return;
+        }
 
         event.setCancelled(true);
         player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
     }
 
-    @EventHandler(ignoreCancelled = true,priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     public void inHunger(FoodLevelChangeEvent event) {
 
-        if(event.getEntityType() != EntityType.PLAYER) return;
+        if (event.getEntityType() != EntityType.PLAYER) return;
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = (Player)event.getEntity();
+        Player player = (Player) event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
         if (graveyardPlayer == null) {
             return;
         }
 
-        if(graveyardPlayer.isGhost()) {
+        if (graveyardPlayer.isGhost()) {
             event.setCancelled(true);
         }
     }

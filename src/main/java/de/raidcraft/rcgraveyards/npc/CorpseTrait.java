@@ -6,14 +6,10 @@ import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.api.npc.RC_Traits;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.command.CommandContext;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Equipment;
-import net.citizensnpcs.api.trait.trait.MobType;
-import net.citizensnpcs.api.trait.trait.Owner;
-import net.citizensnpcs.api.trait.trait.Spawned;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -36,6 +32,7 @@ public class CorpseTrait extends Trait {
     private String robber;
 
     public CorpseTrait() {
+
         super(RC_Traits.GRAVEYARDS);
     }
 
@@ -77,11 +74,10 @@ public class CorpseTrait extends Trait {
 
     public void updateLootIndicator() {
 
-        if(npc.getEntity() == null) return;
-        if(looted) {
+        if (npc.getEntity() == null) return;
+        if (looted) {
             npc.getTrait(Equipment.class).set(0, new ItemStack(Material.AIR));
-        }
-        else {
+        } else {
             Material material = Material.getMaterial(RaidCraft.getComponent(RCGraveyardsPlugin.class).getConfig().corpseLootIndicatorMaterial);
             npc.getTrait(Equipment.class).set(0, new ItemStack(material));
         }
@@ -90,7 +86,7 @@ public class CorpseTrait extends Trait {
     public static void create(Player player, Location location) {
 
         NPC npc = NPC_Manager.getInstance().createPersistNpc(
-                    player.getName(), RaidCraft.getComponent(RCGraveyardsPlugin.class).getName());
+                player.getName(), RaidCraft.getComponent(RCGraveyardsPlugin.class).getName());
         npc.setBukkitEntityType(EntityType.SKELETON);
         npc.setProtected(true);
         npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));

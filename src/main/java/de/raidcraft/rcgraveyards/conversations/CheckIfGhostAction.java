@@ -24,16 +24,16 @@ public class CheckIfGhostAction extends AbstractAction {
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);
 
-        if(graveyardPlayer.isGhost()) {
+        if (graveyardPlayer.isGhost()) {
             changeStage(conversation, success);
-        }
-        else {
+        } else {
             changeStage(conversation, failure);
         }
     }
 
     private void changeStage(Conversation conversation, String stage) {
-        if(stage != null) {
+
+        if (stage != null) {
             conversation.setCurrentStage(stage);
             conversation.triggerCurrentStage();
         }

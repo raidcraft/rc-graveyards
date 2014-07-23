@@ -27,7 +27,7 @@ public class GhostReviverTask implements Runnable {
 
     public boolean addGhostToRevive(Player player, ReviveInformation reviveInformation) {
 
-        if(ghosts.containsKey(player)) {
+        if (ghosts.containsKey(player)) {
             return false;
         }
         reviveInformation.increaseReviveDelay();
@@ -39,9 +39,9 @@ public class GhostReviverTask implements Runnable {
     public void run() {
 
         Map<Player, ReviveInformation> ghostsCopy = new HashMap<>(ghosts);
-        for(Map.Entry<Player, ReviveInformation> entry : ghostsCopy.entrySet()) {
+        for (Map.Entry<Player, ReviveInformation> entry : ghostsCopy.entrySet()) {
 
-            if(!entry.getKey().isOnline()) {
+            if (!entry.getKey().isOnline()) {
                 ghosts.remove(entry.getKey());
                 continue;
             }
@@ -49,11 +49,11 @@ public class GhostReviverTask implements Runnable {
             ReviveInformation info = entry.getValue();
             info.decreaseReviveDelay();
             int delay = info.getReviveDelay();
-            if(delay > 10) continue;
-            if(delay <= 0) {
+            if (delay > 10) continue;
+            if (delay <= 0) {
                 entry.getKey().sendMessage(ChatColor.GREEN + "Du bist wieder lebendig.");
-                if(info.isLooted() && !info.getReason().isEquipmentOnly()) {
-                    entry.getKey().sendMessage(ChatColor.GREEN + "Deine Leiche wurde jedoch von " + ChatColor.YELLOW +  info.getRobber() + ChatColor.GREEN + " ausgeraubt!");
+                if (info.isLooted() && !info.getReason().isEquipmentOnly()) {
+                    entry.getKey().sendMessage(ChatColor.GREEN + "Deine Leiche wurde jedoch von " + ChatColor.YELLOW + info.getRobber() + ChatColor.GREEN + " ausgeraubt!");
                 }
                 RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().reviveGhost(entry.getKey(), info.getReason());
                 ghosts.remove(entry.getKey());

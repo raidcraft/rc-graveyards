@@ -36,7 +36,8 @@ public class DeathsTable extends Table {
                             "`y` INT( 11 ) NOT NULL ,\n" +
                             "`z` INT( 11 ) NOT NULL ,\n" +
                             "PRIMARY KEY ( `id` )\n" +
-                            ")");
+                            ")"
+            );
         } catch (SQLException e) {
             e.printStackTrace();
         }

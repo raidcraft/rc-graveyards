@@ -21,7 +21,7 @@ public class DynmapManager {
     public DynmapManager() {
 
         Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
-        if(dynmap == null) {
+        if (dynmap == null) {
             return;
         }
         DynmapAPI api = (DynmapAPI) dynmap;
@@ -32,7 +32,7 @@ public class DynmapManager {
 
     public void addGraveyardMarker(Graveyard graveyard) {
 
-        if (markerAPI == null ||graveyardSet == null) {
+        if (markerAPI == null || graveyardSet == null) {
             return;
         }
 
