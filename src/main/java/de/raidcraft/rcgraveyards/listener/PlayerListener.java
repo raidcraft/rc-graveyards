@@ -5,7 +5,6 @@ import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
-import de.raidcraft.rcgraveyards.tasks.GhosthealerCheckerTask;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
 import org.bukkit.Bukkit;
@@ -52,13 +51,14 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
-        graveyardPlayer.getLastDeath().setLocation(player.getLocation().clone());
+        graveyardPlayer.getLastDeath().setLocation(player.getLocation());
         graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
         graveyardPlayer.getLastDeath().saveInventory(event.getDrops());
         graveyardPlayer.save();
         event.getDrops().clear();
     }
 
+    // TODO: check if double call not possible
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
 
@@ -76,6 +76,7 @@ public class PlayerListener implements Listener {
         if(graveyard == null) return;
         // let the player rewspawn near the graveyard location
         event.setRespawnLocation(LocationUtil.improveLocation(graveyard.getLocation()));
+        // TODO: i18n
         player.sendMessage("****");
         player.sendMessage(ChatColor.RED + "Du bist am Friedhof " + ChatColor.YELLOW + graveyard.getFriendlyName() + ChatColor.RED + " als Geist respawned.");
         player.sendMessage(ChatColor.GOLD + "Der Kompass zeigt dir den Weg zurück zu deiner Leiche und deinem Inventar.");
@@ -85,11 +86,12 @@ public class PlayerListener implements Listener {
         graveyardPlayer.setGhost(true);
         // create corpse delayed
         if(deathLocation.getY() > 0) {
+            // TODO: why delay ghost spawn?
             Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
         }
-        Bukkit.getScheduler().runTaskLater(plugin, new GhosthealerCheckerTask(plugin, graveyard), 20);
     }
 
+    // TODO: performance, own event PlayerChunkMoveEvent?
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent event) {
 

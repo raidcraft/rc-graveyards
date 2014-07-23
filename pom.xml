@@ -1,27 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Copyright (C) 2011 RaidCraft <http://www.raid-craft.de>
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU General Public License as published by
-  ~ the Free Software Foundation, either version 3 of the License, or
-  ~ (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  ~ GNU General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU General Public License
-  ~ along with this program. If not, see <http://www.gnu.org/licenses />.
-  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.raidcraft</groupId>
     <artifactId>rcgraveyards</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.6-SNAPSHOT</version>
+    <version>1.1.6-develop-SNAPSHOT</version>
     <name>RCGraveyards</name>
 
     <scm>
@@ -32,8 +15,19 @@
     <parent>
         <groupId>de.raidcraft</groupId>
         <artifactId>masterpom</artifactId>
-        <version>RELEASE</version>
+        <version>LATEST</version>
     </parent>
+
+    <repositories>
+        <repository>
+            <id>raidcraft</id>
+            <url>http://nexus.raid-craft.de/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>Citizens</id>
+            <url>http://repo.citizensnpcs.co</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -43,18 +37,18 @@
         </dependency>
         <dependency>
             <groupId>de.raidcraft</groupId>
+            <artifactId>raidcraft-api</artifactId>
+            <version>1.4.2-develop-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>de.raidcraft</groupId>
             <artifactId>rcconversations</artifactId>
-            <version>${rc.version}</version>
+            <version>1.1.7-develop-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.citizensnpcs</groupId>
-            <artifactId>citizens</artifactId>
-            <version>${rc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.dynmap</groupId>
-            <artifactId>dynmap</artifactId>
-            <version>${rc.version}</version>
+            <artifactId>citizensapi</artifactId>
+            <version>2.0.12-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

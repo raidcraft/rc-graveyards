@@ -23,7 +23,7 @@ public class GhostManager implements Listener {
     public GhostManager(Plugin plugin) {
 
         createTask(plugin);
-
+// TODO: finish packet hiding
 //        ProtocolLibrary.getProtocolManager().addPacketListener(
 //            new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, Packets.Server.ENTITY_METADATA) {
 //                @Override
@@ -57,6 +57,7 @@ public class GhostManager implements Listener {
     }
 
     private void createTask(Plugin plugin) {
+        // TODO: why a delayed task?
         Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
@@ -113,6 +114,8 @@ public class GhostManager implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 2));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Integer.MAX_VALUE, 1));
+        // TODO: ghostfactory? e.g. invisbile 13?
+        // TODO: register more listener to abort player interaction events
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15));
     }
 
@@ -124,6 +127,7 @@ public class GhostManager implements Listener {
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
     }
 
+    // TODO: finish packet manipulation
     private void resetFakes(Player player) {
 
 //        try {

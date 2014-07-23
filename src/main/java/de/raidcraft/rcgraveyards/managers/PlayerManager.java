@@ -39,9 +39,11 @@ public class PlayerManager {
         players.remove(player);
     }
 
+    // TODO: uuid rework
     public GraveyardPlayer getGraveyardPlayer(String player) {
 
         GraveyardPlayer graveyardPlayer = players.get(player);
+        // TODO: sense?
         if(graveyardPlayer == null) {
             for(Map.Entry<String, GraveyardPlayer> entry : players.entrySet()) {
                 if(entry.getKey().toLowerCase().startsWith(player.toLowerCase())) {

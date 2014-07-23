@@ -2,11 +2,14 @@ package de.raidcraft.rcgraveyards.commands;
 
 import com.sk89q.minecraft.util.commands.*;
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.rcconversations.npc.ConversationsTrait;
+import de.raidcraft.rcconversations.npc.NPC_Conservations_Manager;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -82,7 +85,8 @@ public class GraveyardsCommands {
 
             Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getName());
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
-            ConversationsTrait.create(player.getLocation(), plugin.getConfig().necromancerConversationName, "Geisterheiler", false);
+            NPC_Conservations_Manager.getInstance().spawnPersistNpcConservations(
+                    player.getLocation(), "Geisterheiler", plugin.getName(),  plugin.getConfig().necromancerConversationName);
             sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name +  ChatColor.GREEN + " wurde erstellt!");
         }
 
@@ -166,9 +170,11 @@ public class GraveyardsCommands {
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
             Player player = (Player)sender;
             GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+            if(graveyardPlayer == null) {
+                player.sendMessage(ChatColor.GREEN + "Todespunkt wurde nicht gefunden!");
+            }
 
             player.setCompassTarget(graveyardPlayer.getLastDeath().getLocation());
-
             player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun auf deinen letzen Todespunkt!");
         }
     }
