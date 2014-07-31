@@ -85,7 +85,7 @@ public class GraveyardsCommands {
                 radius = context.getInteger(2);
             }
 
-            Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getName());
+            Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getUniqueId());
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
             NPC_Conservations_Manager.getInstance().spawnPersistNpcConservations(
                     player.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);

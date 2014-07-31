@@ -56,7 +56,7 @@ public class Death {
             int storedItemId = itemStorage.storeObject(itemStack);
             TStoredItem storedItem = new TStoredItem();
             storedItem.setStorageId(storedItemId);
-            storedItem.setPlayer(hero.getPlayer().getName());
+            storedItem.setPlayerId(hero.getPlayer().getUniqueId());
             storedItem.setWorld(hero.getPlayer().getWorld().getName());
             storedItem.setLootable(lootable);
             RaidCraft.getDatabase(RCGraveyardsPlugin.class).save(storedItem);

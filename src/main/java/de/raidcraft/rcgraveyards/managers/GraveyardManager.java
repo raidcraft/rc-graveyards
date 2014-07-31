@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -113,7 +114,7 @@ public class GraveyardManager {
         return closestGraveyard;
     }
 
-    public List<Graveyard> getPlayerGraveyards(String player) {
+    public List<Graveyard> getPlayerGraveyards(UUID player) {
 
         List<Graveyard> graveyards = new ArrayList<>();
         List<String> graveyardNames = RaidCraft.getTable(PlayerGraveyardsTable.class).getPlayerAssignments(player);

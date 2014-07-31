@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -54,7 +55,7 @@ public class PlayerManager {
         return graveyardPlayer;
     }
 
-    public long getLastDeath(String player, String world) {
+    public long getLastDeath(UUID player, String world) {
 
         return RaidCraft.getTable(DeathsTable.class).getLastDeath(player, world);
     }

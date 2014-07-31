@@ -30,7 +30,8 @@ public class GraveyardPlayer {
     public GraveyardPlayer(Player player) {
 
         this.player = player;
-        for (Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getPlayerGraveyards(player.getName())) {
+        for (Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class)
+                .getGraveyardManager().getPlayerGraveyards(player.getUniqueId())) {
             graveyards.put(graveyard.getName(), graveyard);
         }
 
@@ -75,7 +76,7 @@ public class GraveyardPlayer {
     public void addGraveyard(Graveyard graveyard) {
 
         graveyards.put(graveyard.getName(), graveyard);
-        RaidCraft.getTable(PlayerGraveyardsTable.class).addAssignment(player.getName(), graveyard);
+        RaidCraft.getTable(PlayerGraveyardsTable.class).addAssignment(player.getUniqueId(), graveyard);
     }
 
     public boolean isGhost() {

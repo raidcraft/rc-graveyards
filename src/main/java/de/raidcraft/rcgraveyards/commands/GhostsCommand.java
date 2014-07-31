@@ -11,11 +11,15 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
+import de.raidcraft.util.UUIDUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -102,9 +106,16 @@ public class GhostsCommand {
             }
 
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-            Player player = (Player) sender;
+            UUID playerId = UUIDUtil.convertPlayer(context.getString(0));
+            if (playerId == null) {
+                throw new CommandException("Spieler '" + context.getString(0) + "' wurde nicht gefunden!");
+            }
+            Player player = Bukkit.getPlayer(playerId);
+            if (player == null) {
+                throw new CommandException("Spieler '" + context.getString(0) + "' ist nicth online!");
+            }
 
-            Location deathLocation = RaidCraft.getTable(DeathsTable.class).getDeathLocation(context.getString(0), player.getWorld());
+            Location deathLocation = RaidCraft.getTable(DeathsTable.class).getDeathLocation(player.getUniqueId(), player.getWorld());
             if (deathLocation == null) {
                 throw new CommandException("Es wurde für den Spieler '" + context.getString(0) + "' keinen Todespunkt gefunden!");
             }

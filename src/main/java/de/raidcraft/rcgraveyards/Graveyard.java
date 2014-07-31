@@ -36,4 +36,9 @@ public class Graveyard {
 
         this(name, location, size, main, radius, creator, DateUtil.getCurrentDateString());
     }
+
+    public String getFriendlyName() {
+
+        return name.replace("_", " ");
+    }
 }
