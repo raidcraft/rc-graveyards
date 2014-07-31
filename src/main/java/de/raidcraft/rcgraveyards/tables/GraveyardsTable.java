@@ -89,7 +89,7 @@ public class GraveyardsTable extends Table {
                         , resultSet.getInt("size")
                         , resultSet.getBoolean("main")
                         , resultSet.getInt("radius")
-                        , UUID.fromString(resultSet.getString("creator"))
+                        , UUID.fromString(resultSet.getString("creator_id"))
                         , resultSet.getString("created"));
 
                 graveyards.add(graveyard);
