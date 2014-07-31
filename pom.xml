@@ -34,7 +34,19 @@
         <version>RELEASE</version>
     </parent>
 
+    <repositories>
+        <repository>
+            <id>raidcraft</id>
+            <url>http://nexus.raid-craft.de/content/groups/public/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
+        <dependency>
+            <groupId>de.raidcraft</groupId>
+            <artifactId>raidcraft-api</artifactId>
+            <version>1.4.5-develop-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>de.raidcraft</groupId>
             <artifactId>skills</artifactId>
@@ -48,11 +60,6 @@
         <dependency>
             <groupId>net.citizensnpcs</groupId>
             <artifactId>citizens</artifactId>
-            <version>${rc.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.dynmap</groupId>
-            <artifactId>dynmap</artifactId>
             <version>${rc.version}</version>
         </dependency>
     </dependencies>
