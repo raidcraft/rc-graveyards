@@ -50,7 +50,7 @@ public class GhostsCommand {
         Player player = (Player) sender;
         String target = player.getName();
         if (context.argsLength() > 0) target = context.getString(0);
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(target);
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
         if (graveyardPlayer == null) {
             throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
         }
@@ -74,7 +74,7 @@ public class GhostsCommand {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player) sender;
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
 
         if (!graveyardPlayer.isGhost()) {
             throw new CommandException("Nur Geister können sich zu ihrem letzten Friedhof teleportieren!");

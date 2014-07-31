@@ -1,26 +1,26 @@
 package de.raidcraft.rcgraveyards.util;
 
+import lombok.Getter;
+
+import java.util.UUID;
+
 /**
  * @author Philip Urban
  */
+@Getter
 public class ReviveInformation {
 
     private int reviveDelay;
     private boolean looted;
-    private String robber;
+    private UUID robberId;
     private ReviveReason reason;
 
-    public ReviveInformation(int reviveDelay, boolean looted, String robber, ReviveReason reason) {
+    public ReviveInformation(int reviveDelay, boolean looted, UUID robberId, ReviveReason reason) {
 
         this.reviveDelay = reviveDelay;
         this.looted = looted;
-        this.robber = robber;
+        this.robberId = robberId;
         this.reason = reason;
-    }
-
-    public int getReviveDelay() {
-
-        return reviveDelay;
     }
 
     public void increaseReviveDelay() {
@@ -31,20 +31,5 @@ public class ReviveInformation {
     public void decreaseReviveDelay() {
 
         this.reviveDelay--;
-    }
-
-    public boolean isLooted() {
-
-        return looted;
-    }
-
-    public String getRobber() {
-
-        return robber;
-    }
-
-    public ReviveReason getReason() {
-
-        return reason;
     }
 }

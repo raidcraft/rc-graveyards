@@ -174,7 +174,7 @@ public class GraveyardsCommands {
 
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
             Player player = (Player) sender;
-            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
             if (graveyardPlayer == null) {
                 player.sendMessage(ChatColor.GREEN + "Todespunkt wurde nicht gefunden!");
             }

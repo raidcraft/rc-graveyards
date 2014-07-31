@@ -23,7 +23,7 @@ import java.util.UUID;
 public class PlayerManager {
 
     private RCGraveyardsPlugin plugin;
-    private Map<String, GraveyardPlayer> players = new HashMap<>();
+    private Map<UUID, GraveyardPlayer> players = new HashMap<>();
 
     public PlayerManager(RCGraveyardsPlugin plugin) {
 
@@ -32,7 +32,7 @@ public class PlayerManager {
 
     public void login(Player player) {
 
-        players.put(player.getName(), new GraveyardPlayer(player));
+        players.put(player.getUniqueId(), new GraveyardPlayer(player));
     }
 
     public void logout(String player) {
@@ -40,19 +40,8 @@ public class PlayerManager {
         players.remove(player);
     }
 
-    // TODO: uuid rework
-    public GraveyardPlayer getGraveyardPlayer(String player) {
-
-        GraveyardPlayer graveyardPlayer = players.get(player);
-        // TODO: sense?
-        if (graveyardPlayer == null) {
-            for (Map.Entry<String, GraveyardPlayer> entry : players.entrySet()) {
-                if (entry.getKey().toLowerCase().startsWith(player.toLowerCase())) {
-                    graveyardPlayer = entry.getValue();
-                }
-            }
-        }
-        return graveyardPlayer;
+    public GraveyardPlayer getGraveyardPlayer(UUID player) {
+        return players.get(player);
     }
 
     public long getLastDeath(UUID player, String world) {
@@ -94,12 +83,12 @@ public class PlayerManager {
         }
     }
 
-    public List<ItemStack> getLootableDeathInventory(String corpseName, String world) {
+    public List<ItemStack> getLootableDeathInventory(UUID corpseId, String world) {
 
         ItemStorage itemStorage = new ItemStorage("graveyards");
         List<ItemStack> items = new ArrayList<>();
         List<TStoredItem> storedItems = RaidCraft.getDatabase(RCGraveyardsPlugin.class)
-                .find(TStoredItem.class).where().ieq("player", corpseName).ieq("world", world).eq("lootable", true).findList();
+                .find(TStoredItem.class).where().ieq("player_id", corpseId.toString()).ieq("world", world).eq("lootable", true).findList();
 
         for (TStoredItem storedItem : storedItems) {
             ItemStack item;
@@ -115,12 +104,12 @@ public class PlayerManager {
         return items;
     }
 
-    public List<ItemStack> getDeathInventory(String corpseName, String world) {
+    public List<ItemStack> getDeathInventory(UUID corpseId, String world) {
 
         ItemStorage itemStorage = new ItemStorage("graveyards");
         List<ItemStack> items = new ArrayList<>();
         List<TStoredItem> storedItems = RaidCraft.getDatabase(RCGraveyardsPlugin.class)
-                .find(TStoredItem.class).where().ieq("player", corpseName).ieq("world", world).findList();
+                .find(TStoredItem.class).where().ieq("player_id", corpseId.toString()).ieq("world", world).findList();
 
         for (TStoredItem storedItem : storedItems) {
             ItemStack item;
