@@ -33,7 +33,8 @@ public class PlayerGraveyardsTable extends Table {
                             "`graveyard` VARCHAR( 32 ) NOT NULL, " +
                             "`discovered` VARCHAR ( 32 ) NOT NULL, " +
                             "PRIMARY KEY ( `id` )" +
-                            ")").execute();
+                            ")"
+            ).execute();
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
         }

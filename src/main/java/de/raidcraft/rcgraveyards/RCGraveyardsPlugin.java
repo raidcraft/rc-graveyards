@@ -4,6 +4,8 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
+import de.raidcraft.api.npc.NPC_Manager;
+import de.raidcraft.api.npc.RC_Traits;
 import de.raidcraft.rcconversations.actions.ActionManager;
 import de.raidcraft.rcgraveyards.commands.GhostsCommand;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
@@ -12,13 +14,17 @@ import de.raidcraft.rcgraveyards.conversations.CheckIfGhostAction;
 import de.raidcraft.rcgraveyards.conversations.ReviveGhostAction;
 import de.raidcraft.rcgraveyards.listener.MobListener;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
-import de.raidcraft.rcgraveyards.managers.*;
+import de.raidcraft.rcgraveyards.managers.CorpseManager;
+import de.raidcraft.rcgraveyards.managers.DynmapManager;
+import de.raidcraft.rcgraveyards.managers.GhostManager;
+import de.raidcraft.rcgraveyards.managers.GraveyardManager;
+import de.raidcraft.rcgraveyards.managers.PlayerManager;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.npc.NPCListener;
-import de.raidcraft.rcgraveyards.tables.*;
-import net.citizensnpcs.Citizens;
-import net.citizensnpcs.api.trait.TraitInfo;
-import org.bukkit.Bukkit;
+import de.raidcraft.rcgraveyards.tables.DeathsTable;
+import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
+import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import de.raidcraft.rcgraveyards.tables.TStoredItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +43,6 @@ public class RCGraveyardsPlugin extends BasePlugin {
     private DynmapManager dynmapManager;
     private GhostManager ghostManager;
     private CorpseManager corpseManager;
-    private Citizens citizens;
 
     @Override
     public void enable() {
@@ -64,7 +69,11 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerEvents(new MobListener());
         registerEvents(ghostManager);
 
-        loadCitizens();
+        // load NPC stuff
+        registerEvents(new NPCListener());
+        NPC_Manager.getInstance().registerTrait(CorpseTrait.class, RC_Traits.GRAVEYARDS);
+        NPC_Manager.getInstance().loadNPCs(this.getName());
+        // TODO: why reload?
         reload();
     }
 
@@ -90,25 +99,28 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     public class LocalConfiguration extends ConfigurationBase<RCGraveyardsPlugin> {
 
-        @Setting("corpse-exist-duration") public int corpseDuration = 432000; // in seconds
-        @Setting("ghost-revive-delay") public int ghostReviveDuration = 15; // in seconds
-        @Setting("corpse-loot-item-indicator-material") public String corpseLootIndicatorMaterial = "DIAMOND";
-        @Setting("necromancer-conversation-name") public String necromancerConversationName = "graveyard-necromancer";
+        @Setting("corpse-exist-duration")
+        public int corpseDuration = 432000; // in seconds
+        @Setting("ghost-revive-delay")
+        public int ghostReviveDuration = 15; // in seconds
+        @Setting("corpse-loot-item-indicator-material")
+        public String corpseLootIndicatorMaterial = "DIAMOND";
+        @Setting("necromancer-conversation-name")
+        public String necromancerConversationName = "graveyard-necromancer";
 
         public LocalConfiguration(RCGraveyardsPlugin plugin) {
 
             super(plugin, "config.yml");
         }
 
-        @Setting("default-graveyard-size") public int defaultSize = 10;
+        @Setting("default-graveyard-size")
+        public int defaultSize = 10;
     }
 
     private void loadCitizens() {
 
         try {
-            registerEvents(new NPCListener());
-            citizens = (Citizens) Bukkit.getPluginManager().getPlugin("Citizens");
-            citizens.getTraitFactory().registerTrait(TraitInfo.create(CorpseTrait.class).withName("rcgraveyards"));
+
         } catch (Exception e) {
             RaidCraft.LOGGER.warning("[RCConv] Can't load NPC stuff! Citizens not found!");
         }
@@ -142,10 +154,5 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public CorpseManager getCorpseManager() {
 
         return corpseManager;
-    }
-
-    public Citizens getCitizens() {
-
-        return citizens;
     }
 }

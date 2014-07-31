@@ -30,16 +30,15 @@ public class GraveyardPlayer {
     public GraveyardPlayer(Player player) {
 
         this.player = player;
-        for(Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getPlayerGraveyards(player.getName())) {
+        for (Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class).getGraveyardManager().getPlayerGraveyards(player.getName())) {
             graveyards.put(graveyard.getName(), graveyard);
         }
 
         // load from database
         lastDeath = RaidCraft.getTable(DeathsTable.class).getDeath(player);
-        if(lastDeath == null) {
+        if (lastDeath == null) {
             lastDeath = new Death(player);
-        }
-        else {
+        } else {
             setGhost(true);
         }
     }
@@ -53,8 +52,8 @@ public class GraveyardPlayer {
 
         double distance = 0;
         Graveyard closestGraveyard = null;
-        for(Map.Entry<String, Graveyard> entry : graveyards.entrySet()) {
-            if((closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance)
+        for (Map.Entry<String, Graveyard> entry : graveyards.entrySet()) {
+            if ((closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance)
                     && (entry.getValue().getRadius() == 0 || entry.getValue().getRadius() >= distance)) {
                 closestGraveyard = entry.getValue();
                 distance = entry.getValue().getLocation().distance(location);
@@ -90,7 +89,7 @@ public class GraveyardPlayer {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
 
         // set player opacity
-        if(ghost) {
+        if (ghost) {
             // set as ghost
             plugin.getGhostManager().setGhost(player, true);
             // clear inventory
@@ -110,15 +109,15 @@ public class GraveyardPlayer {
             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                 @Override
                 public void run() {
+
                     player.setCompassTarget(lastDeath.getLocation());
                 }
-            },1);
+            }, 1);
 
             PlayerInventoryUtil.putInInventory(player, new ItemStack(Material.ENDER_PEARL, 64));
             PlayerInventoryUtil.putInInventory(player, new ItemStack(Material.BOAT, 2));
             save();
-        }
-        else {
+        } else {
             player.setFireTicks(0);
             plugin.getGhostManager().setGhost(player, false);
             // delete db entries

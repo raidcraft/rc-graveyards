@@ -25,7 +25,7 @@ public class ReviveGhostAction extends AbstractAction {
 
         int delay = args.getInt("delay", 0);
 
-        if(delay > 0) {
+        if (delay > 0) {
             conversation.getPlayer().sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + delay + " Sek. zurück!");
         }
 

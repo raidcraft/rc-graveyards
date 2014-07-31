@@ -49,8 +49,8 @@ public class Death {
     public void saveInventory(List<ItemStack> items) {
 
         ItemStorage itemStorage = new ItemStorage("graveyards");
-        for(ItemStack itemStack : items) {
-            if(itemStack == null || itemStack.getType() == Material.AIR) continue;
+        for (ItemStack itemStack : items) {
+            if (itemStack == null || itemStack.getType() == Material.AIR) continue;
 
             boolean lootable = CustomItemUtil.isEquipment(itemStack);
             int storedItemId = itemStorage.storeObject(itemStack);

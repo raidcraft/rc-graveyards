@@ -1,6 +1,10 @@
 package de.raidcraft.rcgraveyards.commands;
 
-import com.sk89q.minecraft.util.commands.*;
+import com.sk89q.minecraft.util.commands.Command;
+import com.sk89q.minecraft.util.commands.CommandContext;
+import com.sk89q.minecraft.util.commands.CommandException;
+import com.sk89q.minecraft.util.commands.CommandPermissions;
+import com.sk89q.minecraft.util.commands.NestedCommand;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
@@ -28,6 +32,7 @@ public class GhostsCommand {
     )
     @NestedCommand(NestedCommands.class)
     public void rcg(CommandContext context, CommandSender sender) throws CommandException {
+
     }
 
     @Command(
@@ -38,22 +43,21 @@ public class GhostsCommand {
     public void revive(CommandContext context, CommandSender sender) throws CommandException {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = (Player)sender;
+        Player player = (Player) sender;
         String target = player.getName();
-        if(context.argsLength() > 0) target = context.getString(0);
+        if (context.argsLength() > 0) target = context.getString(0);
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(target);
-        if(graveyardPlayer == null) {
+        if (graveyardPlayer == null) {
             throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
         }
-        if(plugin.getGhostManager().isGhost(graveyardPlayer.getPlayer())) {
+        if (plugin.getGhostManager().isGhost(graveyardPlayer.getPlayer())) {
             plugin.getCorpseManager().reviveGhost(graveyardPlayer.getPlayer(), ReviveReason.COMMAND);
             graveyardPlayer.getPlayer().teleport(graveyardPlayer.getLastDeath().getLocation());
-            if(!sender.getName().equalsIgnoreCase(target)) {
+            if (!sender.getName().equalsIgnoreCase(target)) {
                 player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW + graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
             }
             graveyardPlayer.getPlayer().sendMessage(ChatColor.GREEN + sender.getName() + " hat dich wiederbelebt!");
-        }
-        else {
+        } else {
             throw new CommandException("Der Spieler " + target + " ist kein Geist!");
         }
     }
@@ -65,10 +69,10 @@ public class GhostsCommand {
     public void friedhof(CommandContext context, CommandSender sender) throws CommandException {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = (Player)sender;
+        Player player = (Player) sender;
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
 
-        if(!graveyardPlayer.isGhost()) {
+        if (!graveyardPlayer.isGhost()) {
             throw new CommandException("Nur Geister können sich zu ihrem letzten Friedhof teleportieren!");
         }
         player.teleport(LocationUtil.improveLocation(graveyardPlayer.getClosestGraveyard(graveyardPlayer.getLastDeath().getLocation()).getLocation()));
@@ -92,16 +96,16 @@ public class GhostsCommand {
         @CommandPermissions("rcgraveyards.admin")
         public void warp(CommandContext context, CommandSender sender) throws CommandException {
 
-            if(sender instanceof ConsoleCommandSender) {
+            if (sender instanceof ConsoleCommandSender) {
                 sender.sendMessage("Player context required!");
                 return;
             }
 
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-            Player player = (Player)sender;
+            Player player = (Player) sender;
 
             Location deathLocation = RaidCraft.getTable(DeathsTable.class).getDeathLocation(context.getString(0), player.getWorld());
-            if(deathLocation == null) {
+            if (deathLocation == null) {
                 throw new CommandException("Es wurde für den Spieler '" + context.getString(0) + "' keinen Todespunkt gefunden!");
             }
 

@@ -35,35 +35,35 @@ public class GraveyardManager {
         sortedGraveyards.clear();
         graveyardsByName.clear();
 
-        for(World world : Bukkit.getWorlds()) {
+        for (World world : Bukkit.getWorlds()) {
             List<Graveyard> graveyards = RaidCraft.getTable(GraveyardsTable.class).getAll(world.getName());
-            for(Graveyard graveyard : graveyards) {
+            for (Graveyard graveyard : graveyards) {
                 graveyardsByName.put(graveyard.getName().toLowerCase(), graveyard);
 
                 int x, y, z;
                 int xDiff = graveyard.getSize();
                 int yDiff = graveyard.getSize();
                 int zDiff = graveyard.getSize();
-                for(int i = 0; i <= xDiff; i++) {
+                for (int i = 0; i <= xDiff; i++) {
                     x = (graveyard.getLocation().getBlockX() - graveyard.getSize() / 2) + i;
-                    for(int j = 0; j <= yDiff; j++) {
+                    for (int j = 0; j <= yDiff; j++) {
                         y = (graveyard.getLocation().getBlockY() - graveyard.getSize() / 2) + j;
-                        for(int k = 0; k <= zDiff; k++) {
+                        for (int k = 0; k <= zDiff; k++) {
                             z = (graveyard.getLocation().getBlockZ() - graveyard.getSize() / 2) + k;
 
-                            if(!sortedGraveyards.containsKey(world.getName())) {
+                            if (!sortedGraveyards.containsKey(world.getName())) {
                                 sortedGraveyards.put(world.getName(), new HashMap<Integer, Map<Integer, Map<Integer, Graveyard>>>());
                             }
 
-                            if(!sortedGraveyards.get(world.getName()).containsKey(x)) {
+                            if (!sortedGraveyards.get(world.getName()).containsKey(x)) {
                                 sortedGraveyards.get(world.getName()).put(x, new HashMap<Integer, Map<Integer, Graveyard>>());
                             }
 
-                            if(!sortedGraveyards.get(world.getName()).get(x).containsKey(y)) {
+                            if (!sortedGraveyards.get(world.getName()).get(x).containsKey(y)) {
                                 sortedGraveyards.get(world.getName()).get(x).put(y, new HashMap<Integer, Graveyard>());
                             }
 
-                            if(!sortedGraveyards.get(world.getName()).get(x).get(y).containsKey(z)) {
+                            if (!sortedGraveyards.get(world.getName()).get(x).get(y).containsKey(z)) {
                                 sortedGraveyards.get(world.getName()).get(x).get(y).put(z, graveyard);
                             }
                         }
@@ -86,10 +86,10 @@ public class GraveyardManager {
         int y = location.getBlockY();
         int z = location.getBlockZ();
 
-        if(sortedGraveyards.containsKey(worldName)) {
-            if(sortedGraveyards.get(worldName).containsKey(x)) {
-                if(sortedGraveyards.get(worldName).get(x).containsKey(y)) {
-                    if(sortedGraveyards.get(worldName).get(x).get(y).containsKey(z)) {
+        if (sortedGraveyards.containsKey(worldName)) {
+            if (sortedGraveyards.get(worldName).containsKey(x)) {
+                if (sortedGraveyards.get(worldName).get(x).containsKey(y)) {
+                    if (sortedGraveyards.get(worldName).get(x).get(y).containsKey(z)) {
                         return sortedGraveyards.get(worldName).get(x).get(y).get(z);
                     }
                 }
@@ -102,9 +102,9 @@ public class GraveyardManager {
 
         double distance = 0;
         Graveyard closestGraveyard = null;
-        for(Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
+        for (Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
             double newDistance = entry.getValue().getLocation().distance(location);
-            if(closestGraveyard == null || newDistance < distance
+            if (closestGraveyard == null || newDistance < distance
                     && (entry.getValue().getRadius() == 0 || entry.getValue().getRadius() >= newDistance)) {
                 closestGraveyard = entry.getValue();
                 distance = entry.getValue().getLocation().distance(location);
@@ -117,15 +117,15 @@ public class GraveyardManager {
 
         List<Graveyard> graveyards = new ArrayList<>();
         List<String> graveyardNames = RaidCraft.getTable(PlayerGraveyardsTable.class).getPlayerAssignments(player);
-        for(String graveyardName : graveyardNames) {
+        for (String graveyardName : graveyardNames) {
 
             Graveyard graveyard = getGraveyard(graveyardName);
-            if(graveyard != null) {
+            if (graveyard != null) {
                 graveyards.add(graveyard);
             }
         }
-        for(Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
-            if(entry.getValue().isMain() && !graveyards.contains(entry.getValue())) {
+        for (Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
+            if (entry.getValue().isMain() && !graveyards.contains(entry.getValue())) {
                 graveyards.add(entry.getValue());
             }
         }
@@ -137,7 +137,7 @@ public class GraveyardManager {
 
         List<Graveyard> graveyards = new ArrayList<>();
 
-        for(Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
+        for (Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
             graveyards.add(entry.getValue());
         }
         return graveyards;
@@ -151,6 +151,7 @@ public class GraveyardManager {
     }
 
     public void deleteGraveyard(Graveyard graveyard) {
+
         RaidCraft.getTable(GraveyardsTable.class).delete(graveyard.getName());
         plugin.getDynmapManager().removeMarker(graveyard);
         reload();

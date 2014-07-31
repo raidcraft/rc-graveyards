@@ -21,17 +21,18 @@ public class DynmapManager {
     public DynmapManager() {
 
         Plugin dynmap = Bukkit.getServer().getPluginManager().getPlugin("dynmap");
-        if(dynmap == null) {
+        if (dynmap == null) {
             return;
         }
         DynmapAPI api = (DynmapAPI) dynmap;
         markerAPI = api.getMarkerAPI();
+        // TODO: i18n
         graveyardSet = markerAPI.getMarkerSet("friedhoefe");
     }
 
     public void addGraveyardMarker(Graveyard graveyard) {
 
-        if (markerAPI == null ||graveyardSet == null) {
+        if (markerAPI == null || graveyardSet == null) {
             return;
         }
 

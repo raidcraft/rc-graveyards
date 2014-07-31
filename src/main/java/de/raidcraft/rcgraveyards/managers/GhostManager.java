@@ -23,45 +23,47 @@ public class GhostManager implements Listener {
     public GhostManager(Plugin plugin) {
 
         createTask(plugin);
-
-//        ProtocolLibrary.getProtocolManager().addPacketListener(
-//            new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, Packets.Server.ENTITY_METADATA) {
-//                @Override
-//                public void onPacketSending(PacketEvent event) {
-//                    if(!isGhost(event.getPlayer())) return;
-//                    switch (event.getPacketID()) {
-//                        case Packets.Server.ENTITY_METADATA:
-//                            Packet28EntityMetadata packet28 = new Packet28EntityMetadata(event.getPacket());
-//                            Entity entity = packet28.getEntity(event);
-//                            if(entity.hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) return;
-//
-//                            WrappedDataWatcher watcher = new WrappedDataWatcher(packet28.getEntityMetadata());
-//                            Byte flag = watcher.getByte(0);
-//                            if (flag != null) {
-//                                packet28 = new Packet28EntityMetadata(packet28.getHandle().deepClone());
-//                                watcher = new WrappedDataWatcher(packet28.getEntityMetadata());
-//
-//                                if(entity instanceof Sheep) {
-//                                    Byte woolState = watcher.getByte(16);
-//                                    watcher.setObject(16, (byte) (woolState | 16));
-//                                }
-//
-//                                watcher.setObject(0, (byte) (flag | 32));
-//                                event.setPacket(packet28.getHandle());
-//                            }
-//                            break;
-//                    }
-//                }
-//            }
-//        );
+        // TODO: finish packet hiding
+        //        ProtocolLibrary.getProtocolManager().addPacketListener(
+        //            new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, Packets.Server.ENTITY_METADATA) {
+        //                @Override
+        //                public void onPacketSending(PacketEvent event) {
+        //                    if(!isGhost(event.getPlayer())) return;
+        //                    switch (event.getPacketID()) {
+        //                        case Packets.Server.ENTITY_METADATA:
+        //                            Packet28EntityMetadata packet28 = new Packet28EntityMetadata(event.getPacket());
+        //                            Entity entity = packet28.getEntity(event);
+        //                            if(entity.hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) return;
+        //
+        //                            WrappedDataWatcher watcher = new WrappedDataWatcher(packet28.getEntityMetadata());
+        //                            Byte flag = watcher.getByte(0);
+        //                            if (flag != null) {
+        //                                packet28 = new Packet28EntityMetadata(packet28.getHandle().deepClone());
+        //                                watcher = new WrappedDataWatcher(packet28.getEntityMetadata());
+        //
+        //                                if(entity instanceof Sheep) {
+        //                                    Byte woolState = watcher.getByte(16);
+        //                                    watcher.setObject(16, (byte) (woolState | 16));
+        //                                }
+        //
+        //                                watcher.setObject(0, (byte) (flag | 32));
+        //                                event.setPacket(packet28.getHandle());
+        //                            }
+        //                            break;
+        //                    }
+        //                }
+        //            }
+        //        );
     }
 
     private void createTask(Plugin plugin) {
+        // TODO: why a delayed task?
         Bukkit.getScheduler().runTaskTimer(plugin, new Runnable() {
             @Override
             public void run() {
-                for(Player player : Bukkit.getOnlinePlayers()) {
-                    if(isGhost(player)) {
+
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (isGhost(player)) {
                         addPotionEffects(player);
                     }
                 }
@@ -71,10 +73,13 @@ public class GhostManager implements Listener {
 
     /**
      * Determine if the given player is tracked by this ghost manager and is a ghost.
+     *
      * @param player - the player to test.
+     *
      * @return TRUE if it is, FALSE otherwise.
      */
     public boolean isGhost(Player player) {
+
         return player != null && ghosts.contains(player);
     }
 
@@ -85,7 +90,8 @@ public class GhostManager implements Listener {
 
     /**
      * Set wheter or not a given player is a ghost.
-     * @param player - the player to set as a ghost.
+     *
+     * @param player  - the player to set as a ghost.
      * @param isGhost - TRUE to make the given player into a ghost, FALSE otherwise.
      */
     public void setGhost(Player player, boolean isGhost) {
@@ -113,6 +119,8 @@ public class GhostManager implements Listener {
         player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
         player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 2));
         player.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, Integer.MAX_VALUE, 1));
+        // TODO: ghostfactory? e.g. invisbile 13?
+        // TODO: register more listener to abort player interaction events
         player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 15));
     }
 
@@ -124,25 +132,26 @@ public class GhostManager implements Listener {
         player.removePotionEffect(PotionEffectType.INVISIBILITY);
     }
 
+    // TODO: finish packet manipulation
     private void resetFakes(Player player) {
 
-//        try {
-//            for(Entity entity : player.getNearbyEntities(16, 16, 16)) {
-//
-//                if(!(entity instanceof LivingEntity)) continue;
-//
-//                PacketContainer packetContainer = ProtocolLibrary.getProtocolManager().createPacket(
-//                        Packets.Server.MAP_CHUNK);
-//
-//                Packet33ChunkData packet = new Packet33ChunkData(packetContainer);
-//                packet.
-//                packet.setEntityId(entity.getEntityId());
-//                WrappedDataWatcher watcher = new WrappedDataWatcher(packet.getEntityMetadata());
-//                watcher
-//
-//                ProtocolLibrary.getProtocolManager().sendServerPacket(player, packetContainer);
-//            }
-//        } catch (InvocationTargetException e) {
-//        }
+        //        try {
+        //            for(Entity entity : player.getNearbyEntities(16, 16, 16)) {
+        //
+        //                if(!(entity instanceof LivingEntity)) continue;
+        //
+        //                PacketContainer packetContainer = ProtocolLibrary.getProtocolManager().createPacket(
+        //                        Packets.Server.MAP_CHUNK);
+        //
+        //                Packet33ChunkData packet = new Packet33ChunkData(packetContainer);
+        //                packet.
+        //                packet.setEntityId(entity.getEntityId());
+        //                WrappedDataWatcher watcher = new WrappedDataWatcher(packet.getEntityMetadata());
+        //                watcher
+        //
+        //                ProtocolLibrary.getProtocolManager().sendServerPacket(player, packetContainer);
+        //            }
+        //        } catch (InvocationTargetException e) {
+        //        }
     }
 }

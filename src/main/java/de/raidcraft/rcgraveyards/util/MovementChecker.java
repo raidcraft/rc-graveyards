@@ -15,16 +15,18 @@ public class MovementChecker {
     private Map<String, Location> playerLocations = new HashMap<>();
 
     public void setPlayerLocation(String player, Location location) {
+
         playerLocations.put(player, location);
     }
 
     public boolean hasMoved(String player, Location newLocation) {
+
         Location location = playerLocations.get(player);
-        if(location == null) {
+        if (location == null) {
             return true;
         }
 
-        if(newLocation.getBlockX() == location.getBlockX() &&
+        if (newLocation.getBlockX() == location.getBlockX() &&
                 newLocation.getBlockY() == location.getBlockY() &&
                 newLocation.getBlockZ() == location.getBlockZ()) {
             return false;

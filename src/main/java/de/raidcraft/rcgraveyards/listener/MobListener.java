@@ -17,11 +17,11 @@ public class MobListener implements Listener {
     public void onMobTargeting(EntityTargetLivingEntityEvent event) {
 
         Player target;
-        if(!(event.getTarget() instanceof Player)) {
+        if (!(event.getTarget() instanceof Player)) {
             return;
         }
-        target = (Player)event.getTarget();
-        if(RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(target)) {
+        target = (Player) event.getTarget();
+        if (RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(target)) {
             event.setCancelled(true);
         }
     }
