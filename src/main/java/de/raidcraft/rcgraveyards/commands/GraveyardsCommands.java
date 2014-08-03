@@ -10,10 +10,14 @@ import de.raidcraft.rcconversations.npc.NPC_Conservations_Manager;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import de.raidcraft.reference.Colors;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 /**
  * @author Philip Urban
@@ -181,6 +185,27 @@ public class GraveyardsCommands {
 
             player.setCompassTarget(graveyardPlayer.getLastDeath().getLocation());
             player.sendMessage(ChatColor.GREEN + "Dein Kompass zeigt nun auf deinen letzen Todespunkt!");
+        }
+
+        @Command(
+                aliases = {"discovered", "explored", "visited"},
+                desc = "Show all discovered Graveyards"
+        )
+        public void discovered(CommandContext context, CommandSender sender) throws CommandException {
+
+            Player player = (Player) sender;
+            String list = "";
+            List<String> graveyardNames = RaidCraft.getTable(PlayerGraveyardsTable.class)
+                    .getPlayerAssignments(player.getUniqueId());
+            for (String graveyard : graveyardNames) {
+                list += Colors.Chat.INFO + graveyard + ChatColor.WHITE + ", ";
+            }
+            if (list.equals("")) {
+                list = "Du hast keine Friedhöfe entdeckt.";
+            } else {
+                sender.sendMessage(Colors.Chat.SUCCESS + "Folgende Friedhöfe has du bereits entdeckt:");
+            }
+            sender.sendMessage(list);
         }
     }
 }
