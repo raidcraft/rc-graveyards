@@ -62,7 +62,7 @@ public class CorpseTrait extends Trait {
     public void setLooted(boolean looted, UUID robber) {
 
         this.looted = looted;
-        this.robberId = robber.toString();
+        setRobberId(robber);
         updateLootIndicator();
     }
 
@@ -96,6 +96,11 @@ public class CorpseTrait extends Trait {
 
     public void setPlayerId(UUID playerUUID) {
 
+        if (playerUUID == null) {
+            this.playerId = null;
+            return;
+        }
+
         this.playerId = playerUUID.toString();
     }
 
@@ -106,6 +111,10 @@ public class CorpseTrait extends Trait {
 
     public void setRobberId(UUID robberUUID) {
 
+        if (robberUUID == null) {
+            this.robberId = null;
+            return;
+        }
         this.robberId = robberUUID.toString();
     }
 
