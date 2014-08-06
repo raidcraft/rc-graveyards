@@ -25,6 +25,7 @@ import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +73,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
         // load NPC stuff
         registerEvents(new NPCListener());
         NPC_Manager.getInstance().registerTrait(CorpseTrait.class, RC_Traits.GRAVEYARDS);
-        NPC_Manager.getInstance().loadNPCs(this.getName());
-        // TODO: why reload?
-        reload();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () ->
+                NPC_Manager.getInstance().loadNPCs(this.getName()), 8 * 20l);
     }
 
     @Override

@@ -32,15 +32,13 @@ public class CorpseTrait extends Trait {
     @Getter
     @Persist
     private String playerName;
-    @Setter
-    @Getter
+
     @Persist
-    private UUID playerId;
+    private String playerId;
     @Persist
     private boolean looted;
-    @Getter
-    @Persist
-    private UUID robberId;
+
+    private String robberId;
 
     public CorpseTrait() {
 
@@ -64,7 +62,7 @@ public class CorpseTrait extends Trait {
     public void setLooted(boolean looted, UUID robber) {
 
         this.looted = looted;
-        this.robberId = robber;
+        this.robberId = robber.toString();
         updateLootIndicator();
     }
 
@@ -95,4 +93,25 @@ public class CorpseTrait extends Trait {
         npc.spawn(location);
         NPC_Manager.getInstance().store(RaidCraft.getComponent(RCGraveyardsPlugin.class).getName());
     }
+
+    public void setPlayerId(UUID playerUUID) {
+
+        this.playerId = playerUUID.toString();
+    }
+
+    public UUID getPlayerId() {
+
+        return UUID.fromString(this.playerId);
+    }
+
+    public void setRobberId(UUID robberUUID) {
+
+        this.robberId = robberUUID.toString();
+    }
+
+    public UUID getRobberId() {
+
+        return UUID.fromString(robberId);
+    }
+
 }
