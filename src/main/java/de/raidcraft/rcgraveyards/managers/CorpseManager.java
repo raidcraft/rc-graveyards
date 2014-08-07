@@ -77,42 +77,45 @@ public class CorpseManager {
             player.sendMessage(ChatColor.RED + "Interaktion mit der Leiche unterbunden! Du befindest dich im Creativemode!");
             return;
         }
+        try {
+            boolean ghost = plugin.getGhostManager().isGhost(player);
+            NPC npc = registeredCorpse.get(corpseId);
+            boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
+            UUID robberId = npc.getTrait(CorpseTrait.class).getRobberId();
+            long lastDeath = plugin.getPlayerManager().getLastDeath(corpseId, npc.getEntity().getWorld().getName());
 
-        boolean ghost = plugin.getGhostManager().isGhost(player);
-        NPC npc = registeredCorpse.get(corpseId);
-        boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
-        UUID robberId = npc.getTrait(CorpseTrait.class).getRobberId();
-        long lastDeath = plugin.getPlayerManager().getLastDeath(corpseId, npc.getEntity().getWorld().getName());
-
-        if (lastDeath == 0) {
-            deleteCorpse(corpseId);
-            return;
-        }
-
-        if (player.getUniqueId().equals(corpseId)) {
-
-            ReviveReason reason = ReviveReason.FOUND_CORPSE;
-
-            if (lastDeath < System.currentTimeMillis() - plugin.getConfig().corpseDuration * 1000) {
-                reason = ReviveReason.NECROMANCER;
+            if (lastDeath == 0) {
+                deleteCorpse(corpseId);
+                return;
             }
 
-            if (delayingReviver.addGhostToRevive(player, new ReviveInformation(plugin.getConfig().ghostReviveDuration, looted, robberId, reason))) {
-                player.getInventory().clear();
-                player.sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + plugin.getConfig().ghostReviveDuration
-                        + " Sek. zurück. Bringe dich in Sicherheit!");
+            if (player.getUniqueId().equals(corpseId)) {
+
+                ReviveReason reason = ReviveReason.FOUND_CORPSE;
+
+                if (lastDeath < System.currentTimeMillis() - plugin.getConfig().corpseDuration * 1000) {
+                    reason = ReviveReason.NECROMANCER;
+                }
+
+                if (delayingReviver.addGhostToRevive(player, new ReviveInformation(plugin.getConfig().ghostReviveDuration, looted, robberId, reason))) {
+                    player.getInventory().clear();
+                    player.sendMessage(ChatColor.GREEN + "Deine Seele kehrt in " + plugin.getConfig().ghostReviveDuration
+                            + " Sek. zurück. Bringe dich in Sicherheit!");
+                } else {
+                    player.sendMessage(ChatColor.RED + "Deine Seele ist bereits auf den Weg zurück zu dir!");
+                }
+                return;
+            }
+
+            if (ghost) {
+                player.sendMessage(ChatColor.RED + "Du kannst als Geist keine anderen Leichen berauben!");
+            } else if (looted) {
+                player.sendMessage(ChatColor.RED + "Diese Leiche wurde bereits von " + UUIDUtil.getNameFromUUID(robberId) + " ausgeraubt!");
             } else {
-                player.sendMessage(ChatColor.RED + "Deine Seele ist bereits auf den Weg zurück zu dir!");
+                lootCorpse(player, corpseId);
             }
-            return;
-        }
-
-        if (ghost) {
-            player.sendMessage(ChatColor.RED + "Du kannst als Geist keine anderen Leichen berauben!");
-        } else if (looted) {
-            player.sendMessage(ChatColor.RED + "Diese Leiche wurde bereits von " + UUIDUtil.getNameFromUUID(robberId) + " ausgeraubt!");
-        } else {
-            lootCorpse(player, corpseId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
