@@ -47,6 +47,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     @Override
     public void enable() {
+        config = configure(new LocalConfiguration(this));
 
         registerTable(GraveyardsTable.class, new GraveyardsTable());
         registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
@@ -79,8 +80,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     @Override
     public void reload() {
-
-        config = configure(new LocalConfiguration(this));
+        getConfig().reload();
         graveyardManager.reload();
     }
 

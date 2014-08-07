@@ -72,10 +72,7 @@ public class CorpseTrait extends Trait {
         if (looted) {
             npc.getTrait(Equipment.class).set(0, new ItemStack(Material.AIR));
         } else {
-            RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-            RCGraveyardsPlugin.LocalConfiguration config = plugin.getConfig();
-            String corpseLootIndicatorMaterial = config.corpseLootIndicatorMaterial;
-            Material material = Material.getMaterial(corpseLootIndicatorMaterial);
+            Material material = Material.getMaterial(RaidCraft.getComponent(RCGraveyardsPlugin.class).getConfig().corpseLootIndicatorMaterial);
             npc.getTrait(Equipment.class).set(0, new ItemStack(material));
         }
     }
