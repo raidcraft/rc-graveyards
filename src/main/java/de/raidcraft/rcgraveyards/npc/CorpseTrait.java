@@ -105,7 +105,9 @@ public class CorpseTrait extends Trait {
     }
 
     public UUID getPlayerId() {
-
+        if(this.playerId == null) {
+            return null;
+        }
         return UUID.fromString(this.playerId);
     }
 
@@ -119,7 +121,9 @@ public class CorpseTrait extends Trait {
     }
 
     public UUID getRobberId() {
-
+        if(robberId == null) {
+            return null;
+        }
         return UUID.fromString(robberId);
     }
 
