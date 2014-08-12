@@ -12,13 +12,14 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class GhostManager implements Listener {
 
     private static final long UPDATE_DELAY = 20L;
 
     // Players that are actually ghosts
-    private Set<Player> ghosts = new HashSet<>();
+    private Set<UUID> ghosts = new HashSet<>();
 
     public GhostManager(Plugin plugin) {
 
@@ -80,10 +81,10 @@ public class GhostManager implements Listener {
      */
     public boolean isGhost(Player player) {
 
-        return player != null && ghosts.contains(player);
+        return player != null && ghosts.contains(player.getUniqueId());
     }
 
-    public Set<Player> getGhosts() {
+    public Set<UUID> getGhosts() {
 
         return ghosts;
     }
@@ -98,11 +99,11 @@ public class GhostManager implements Listener {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         if (isGhost) {
-            ghosts.add(player);
+            ghosts.add(player.getUniqueId());
             player.setMetadata(RCGraveyardsPlugin.PLAYER_IS_GHOST_METADATA, new FixedMetadataValue(plugin, true));
             addPotionEffects(player);
-        } else if (!isGhost) {
-            ghosts.remove(player);
+        } else {
+            ghosts.remove(player.getUniqueId());
             player.removeMetadata(RCGraveyardsPlugin.PLAYER_IS_GHOST_METADATA, plugin);
             removePotionEffects(player);
             resetFakes(player);

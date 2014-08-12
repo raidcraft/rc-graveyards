@@ -47,7 +47,7 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        plugin.getPlayerManager().logout(event.getPlayer().getName());
+        plugin.getPlayerManager().logout(event.getPlayer());
         plugin.getGhostManager().removePlayer(event.getPlayer());
     }
 

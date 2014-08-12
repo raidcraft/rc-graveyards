@@ -35,9 +35,9 @@ public class PlayerManager {
         players.put(player.getUniqueId(), new GraveyardPlayer(player));
     }
 
-    public void logout(String player) {
+    public void logout(Player player) {
 
-        players.remove(player);
+        players.remove(player.getUniqueId());
     }
 
     public GraveyardPlayer getGraveyardPlayer(UUID player) {
