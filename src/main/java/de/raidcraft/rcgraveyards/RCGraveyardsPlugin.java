@@ -38,6 +38,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public final static String VISIBLE_FOR_GHOSTS_METADATA = "VISIBLE_FOR_GHOSTS";
     public final static String HIDDEN_FOR_LIVING_METADATA = "HIDDEN_FOR_LIVING";
     public final static String PLAYER_IS_GHOST_METADATA = "GHOST";
+    public final static String NPC_REGISTER_SKELETON = "_skeleton";
     private LocalConfiguration config;
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;
@@ -47,6 +48,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     @Override
     public void enable() {
+
         config = configure(new LocalConfiguration(this));
 
         registerTable(GraveyardsTable.class, new GraveyardsTable());
@@ -74,12 +76,15 @@ public class RCGraveyardsPlugin extends BasePlugin {
         // load NPC stuff
         registerEvents(new NPCListener());
         NPC_Manager.getInstance().registerTrait(CorpseTrait.class, RC_Traits.GRAVEYARDS);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () ->
-                NPC_Manager.getInstance().loadNPCs(this.getName()), 8 * 20l);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+            NPC_Manager.getInstance().loadNPCs(this.getName());
+            NPC_Manager.getInstance().loadNPCs(this.getName() + NPC_REGISTER_SKELETON);
+        }, 8 * 20l);
     }
 
     @Override
     public void reload() {
+
         getConfig().reload();
         graveyardManager.reload();
     }

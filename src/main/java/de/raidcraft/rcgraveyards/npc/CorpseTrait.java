@@ -80,7 +80,8 @@ public class CorpseTrait extends Trait {
     public static void create(Player player, Location location) {
 
         NPC npc = NPC_Manager.getInstance().createPersistNpc(
-                player.getName(), RaidCraft.getComponent(RCGraveyardsPlugin.class).getName());
+                player.getName(), RaidCraft.getComponent(RCGraveyardsPlugin.class).getName()
+                + RCGraveyardsPlugin.NPC_REGISTER_SKELETON);
         npc.setBukkitEntityType(EntityType.SKELETON);
         npc.setProtected(true);
         npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
@@ -105,7 +106,8 @@ public class CorpseTrait extends Trait {
     }
 
     public UUID getPlayerId() {
-        if(this.playerId == null) {
+
+        if (this.playerId == null) {
             return null;
         }
         return UUID.fromString(this.playerId);
@@ -121,7 +123,8 @@ public class CorpseTrait extends Trait {
     }
 
     public UUID getRobberId() {
-        if(robberId == null) {
+
+        if (robberId == null) {
             return null;
         }
         return UUID.fromString(robberId);
