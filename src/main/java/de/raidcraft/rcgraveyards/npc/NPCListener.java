@@ -64,7 +64,7 @@ public class NPCListener implements Listener {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
             if (RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())
-                    && !event.getNPC().getBukkitEntity().hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) {
+                    && !event.getNPC().getEntity().hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) {
                 event.setCancelled(true);
                 event.getClicker().sendMessage(ChatColor.RED + "Du kannst als Geist mit niemanden sprechen!");
             }
