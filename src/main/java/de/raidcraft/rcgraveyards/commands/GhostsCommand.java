@@ -49,7 +49,13 @@ public class GhostsCommand {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player) sender;
         String target = player.getName();
-        if (context.argsLength() > 0) target = context.getString(0);
+        if (context.argsLength() > 0) {
+            target = context.getString(0);
+            player = Bukkit.getPlayer(UUIDUtil.convertPlayer(target));
+        }
+        if (player == null) {
+            throw new CommandException("Spieler (" + target + ") existiert nicht");
+        }
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
         if (graveyardPlayer == null) {
             throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
