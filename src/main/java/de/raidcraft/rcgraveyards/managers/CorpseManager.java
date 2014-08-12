@@ -46,7 +46,6 @@ public class CorpseManager {
     public void registerCorpse(NPC npc) {
 
         CorpseTrait trait = npc.getTrait(CorpseTrait.class);
-        deleteCorpse(trait.getPlayerId());
         // player is not death
         if (plugin.getPlayerManager().getLastDeath(trait.getPlayerId(), npc.getEntity().getWorld().getName()) == 0) {
             npc.destroy();
