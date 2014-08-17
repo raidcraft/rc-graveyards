@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -27,7 +28,8 @@ public class PlayerGraveyardsTable extends Table {
             getConnection().prepareStatement(
                     "CREATE TABLE `" + getTableName() + "` (" +
                             "`id` INT NOT NULL AUTO_INCREMENT, " +
-                            "`player` VARCHAR( 32 ) NOT NULL, " +
+                            "`player` VARCHAR( 32 ), " +
+                            "`player_id` VARCHAR( 32 ) NOT NULL, " +
                             "`graveyard` VARCHAR( 32 ) NOT NULL, " +
                             "`discovered` VARCHAR ( 32 ) NOT NULL, " +
                             "PRIMARY KEY ( `id` )" +
@@ -38,10 +40,10 @@ public class PlayerGraveyardsTable extends Table {
         }
     }
 
-    public void addAssignment(String player, Graveyard graveyard) {
+    public void addAssignment(UUID player, Graveyard graveyard) {
 
         try {
-            String query = "INSERT INTO " + getTableName() + " (player, graveyard, discovered) " +
+            String query = "INSERT INTO " + getTableName() + " (player_id, graveyard, discovered) " +
                     "VALUES (" +
                     "'" + player + "'" + "," +
                     "'" + graveyard.getName() + "'" + "," +
@@ -55,12 +57,12 @@ public class PlayerGraveyardsTable extends Table {
         }
     }
 
-    public List<String> getPlayerAssignments(String player) {
+    public List<String> getPlayerAssignments(UUID player) {
 
         List<String> graveyards = new ArrayList<>();
         try {
             ResultSet resultSet = executeQuery(
-                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player + "';");
+                    "SELECT * FROM " + getTableName() + " WHERE player_id = '" + player + "';");
 
             while (resultSet.next()) {
 

@@ -19,7 +19,7 @@ public class CheckIfGhostAction extends AbstractAction {
     public void run(Conversation conversation, ActionArgumentList args) throws ActionArgumentException {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(conversation.getPlayer().getName());
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(conversation.getPlayer().getUniqueId());
 
         String success = args.getString("onsuccess", null);
         String failure = args.getString("onfailure", null);

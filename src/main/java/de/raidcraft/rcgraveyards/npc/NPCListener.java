@@ -24,7 +24,8 @@ public class NPCListener implements Listener {
         if (!checkClickEvent(event)) return;
 
         CorpseTrait trait = event.getNPC().getTrait(CorpseTrait.class);
-        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().checkReviver(event.getClicker(), trait.getPlayerName());
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
+                .checkReviver(event.getClicker(), trait.getPlayerId());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -33,7 +34,8 @@ public class NPCListener implements Listener {
         if (!checkClickEvent(event)) return;
 
         CorpseTrait trait = event.getNPC().getTrait(CorpseTrait.class);
-        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().checkReviver(event.getClicker(), trait.getPlayerName());
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
+                .checkReviver(event.getClicker(), trait.getPlayerId());
     }
 
     @EventHandler
@@ -43,7 +45,8 @@ public class NPCListener implements Listener {
             return;
         }
 
-        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().registerCorpse(event.getNPC());
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
+                .registerCorpse(event.getNPC());
     }
 
     @EventHandler
@@ -53,14 +56,15 @@ public class NPCListener implements Listener {
             return;
         }
 
-        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().unregisterCorpse(event.getNPC());
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
+                .unregisterCorpse(event.getNPC());
     }
 
     private boolean checkClickEvent(NPCClickEvent event) {
 
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
             if (RaidCraft.getComponent(RCGraveyardsPlugin.class).getGhostManager().isGhost(event.getClicker())
-                    && !event.getNPC().getBukkitEntity().hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) {
+                    && !event.getNPC().getEntity().hasMetadata(RCGraveyardsPlugin.VISIBLE_FOR_GHOSTS_METADATA)) {
                 event.setCancelled(true);
                 event.getClicker().sendMessage(ChatColor.RED + "Du kannst als Geist mit niemanden sprechen!");
             }

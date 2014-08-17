@@ -25,6 +25,7 @@ import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public final static String VISIBLE_FOR_GHOSTS_METADATA = "VISIBLE_FOR_GHOSTS";
     public final static String HIDDEN_FOR_LIVING_METADATA = "HIDDEN_FOR_LIVING";
     public final static String PLAYER_IS_GHOST_METADATA = "GHOST";
+    public final static String NPC_REGISTER_SKELETON = "_skeleton";
     private LocalConfiguration config;
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;
@@ -46,6 +48,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     @Override
     public void enable() {
+
+        config = configure(new LocalConfiguration(this));
 
         registerTable(GraveyardsTable.class, new GraveyardsTable());
         registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
@@ -72,15 +76,16 @@ public class RCGraveyardsPlugin extends BasePlugin {
         // load NPC stuff
         registerEvents(new NPCListener());
         NPC_Manager.getInstance().registerTrait(CorpseTrait.class, RC_Traits.GRAVEYARDS);
-        NPC_Manager.getInstance().loadNPCs(this.getName());
-        // TODO: why reload?
-        reload();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
+            NPC_Manager.getInstance().loadNPCs(this.getName());
+            NPC_Manager.getInstance().loadNPCs(this.getName() + NPC_REGISTER_SKELETON);
+        }, 8 * 20l);
     }
 
     @Override
     public void reload() {
 
-        config = configure(new LocalConfiguration(this));
+        getConfig().reload();
         graveyardManager.reload();
     }
 

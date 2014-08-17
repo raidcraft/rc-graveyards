@@ -2,11 +2,15 @@ package de.raidcraft.rcgraveyards;
 
 
 import de.raidcraft.util.DateUtil;
+import lombok.Getter;
 import org.bukkit.Location;
+
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
+@Getter
 public class Graveyard {
 
     private String name;
@@ -14,10 +18,10 @@ public class Graveyard {
     private int size;
     private boolean main;
     private int radius;
-    private String creator;
+    private UUID creator;
     private String creationDate;
 
-    public Graveyard(String name, Location location, int size, boolean main, int radius, String creator, String creationDate) {
+    public Graveyard(String name, Location location, int size, boolean main, int radius, UUID creator, String creationDate) {
 
         this.name = name;
         this.location = location;
@@ -28,48 +32,13 @@ public class Graveyard {
         this.creationDate = creationDate;
     }
 
-    public Graveyard(String name, Location location, int size, boolean main, int radius, String creator) {
+    public Graveyard(String name, Location location, int size, boolean main, int radius, UUID creator) {
 
         this(name, location, size, main, radius, creator, DateUtil.getCurrentDateString());
-    }
-
-    public String getName() {
-
-        return name;
     }
 
     public String getFriendlyName() {
 
         return name.replace("_", " ");
-    }
-
-    public Location getLocation() {
-
-        return location;
-    }
-
-    public int getSize() {
-
-        return size;
-    }
-
-    public boolean isMain() {
-
-        return main;
-    }
-
-    public int getRadius() {
-
-        return radius;
-    }
-
-    public String getCreator() {
-
-        return creator;
-    }
-
-    public String getCreationDate() {
-
-        return creationDate;
     }
 }

@@ -11,11 +11,15 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
+import de.raidcraft.util.UUIDUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -45,8 +49,14 @@ public class GhostsCommand {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player) sender;
         String target = player.getName();
-        if (context.argsLength() > 0) target = context.getString(0);
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(target);
+        if (context.argsLength() > 0) {
+            target = context.getString(0);
+            player = Bukkit.getPlayer(UUIDUtil.convertPlayer(target));
+        }
+        if (player == null) {
+            throw new CommandException("Spieler (" + target + ") existiert nicht");
+        }
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
         if (graveyardPlayer == null) {
             throw new CommandException("Es wurde kein Online-Spieler gefunden mit dem Name: " + target);
         }
@@ -54,7 +64,7 @@ public class GhostsCommand {
             plugin.getCorpseManager().reviveGhost(graveyardPlayer.getPlayer(), ReviveReason.COMMAND);
             graveyardPlayer.getPlayer().teleport(graveyardPlayer.getLastDeath().getLocation());
             if (!sender.getName().equalsIgnoreCase(target)) {
-                player.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW + graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
+                sender.sendMessage(ChatColor.GREEN + "Du hast " + ChatColor.YELLOW + graveyardPlayer.getPlayer().getName() + ChatColor.GREEN + " wiederbelebt!");
             }
             graveyardPlayer.getPlayer().sendMessage(ChatColor.GREEN + sender.getName() + " hat dich wiederbelebt!");
         } else {
@@ -70,7 +80,7 @@ public class GhostsCommand {
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player) sender;
-        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getName());
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
 
         if (!graveyardPlayer.isGhost()) {
             throw new CommandException("Nur Geister können sich zu ihrem letzten Friedhof teleportieren!");
@@ -102,9 +112,16 @@ public class GhostsCommand {
             }
 
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-            Player player = (Player) sender;
+            UUID playerId = UUIDUtil.convertPlayer(context.getString(0));
+            if (playerId == null) {
+                throw new CommandException("Spieler '" + context.getString(0) + "' wurde nicht gefunden!");
+            }
+            Player player = Bukkit.getPlayer(playerId);
+            if (player == null) {
+                throw new CommandException("Spieler '" + context.getString(0) + "' ist nicth online!");
+            }
 
-            Location deathLocation = RaidCraft.getTable(DeathsTable.class).getDeathLocation(context.getString(0), player.getWorld());
+            Location deathLocation = RaidCraft.getTable(DeathsTable.class).getDeathLocation(player.getUniqueId(), player.getWorld());
             if (deathLocation == null) {
                 throw new CommandException("Es wurde für den Spieler '" + context.getString(0) + "' keinen Todespunkt gefunden!");
             }

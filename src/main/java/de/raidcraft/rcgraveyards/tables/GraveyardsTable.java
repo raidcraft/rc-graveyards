@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -37,7 +38,8 @@ public class GraveyardsTable extends Table {
                             "`size` INT( 11 ) NOT NULL ,\n" +
                             "`main` TINYINT( 1 ) NOT NULL, " +
                             "`radius` INT( 11 ) NOT NULL ,\n" +
-                            "`creator` VARCHAR ( 32 ) NOT NULL, " +
+                            "`creator` VARCHAR ( 32 ) , " +
+                            "`creator_id` VARCHAR ( 40 ) NOT NULL, " +
                             "`created` VARCHAR ( 32 ) NOT NULL, " +
                             "PRIMARY KEY ( `id` )" +
                             ")"
@@ -50,7 +52,7 @@ public class GraveyardsTable extends Table {
     public void createGraveyard(Graveyard graveyard) {
 
         try {
-            String query = "INSERT INTO " + getTableName() + " (name, world, x, y, z, size, main, radius, creator, created) " +
+            String query = "INSERT INTO " + getTableName() + " (name, world, x, y, z, size, main, radius, creator_id, created) " +
                     "VALUES (" +
                     "'" + graveyard.getName() + "'" + "," +
                     "'" + graveyard.getLocation().getWorld().getName() + "'" + "," +
@@ -87,7 +89,7 @@ public class GraveyardsTable extends Table {
                         , resultSet.getInt("size")
                         , resultSet.getBoolean("main")
                         , resultSet.getInt("radius")
-                        , resultSet.getString("creator")
+                        , UUID.fromString(resultSet.getString("creator_id"))
                         , resultSet.getString("created"));
 
                 graveyards.add(graveyard);

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -28,7 +29,8 @@ public class DeathsTable extends Table {
             executeUpdate(
                     "CREATE TABLE `" + getTableName() + "` (\n" +
                             "`id` INT NOT NULL AUTO_INCREMENT ,\n" +
-                            "`player` VARCHAR( 32 ) NOT NULL ,\n" +
+                            "`player` VARCHAR( 32 ) ,\n" +
+                            "`player_id` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`date` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`pvp` TINYINT NOT NULL , \n" +
                             "`world` VARCHAR ( 32 ) NOT NULL ,\n" +
@@ -47,9 +49,9 @@ public class DeathsTable extends Table {
 
         delete(player);
         try {
-            String query = "INSERT INTO " + getTableName() + " (player, date, pvp, world, x, y, z) " +
+            String query = "INSERT INTO " + getTableName() + " (player_id, date, pvp, world, x, y, z) " +
                     "VALUES (" +
-                    "'" + player.getName().toLowerCase() + "'" + "," +
+                    "'" + player.getUniqueId() + "'" + "," +
                     "'" + DateUtil.getDateString(death.getTimestamp()) + "'" + "," +
                     "'" + ((death.wasPvp()) ? 1 : 0) + "'" + "," +
                     "'" + death.getLocation().getWorld().getName() + "'" + "," +
@@ -69,7 +71,9 @@ public class DeathsTable extends Table {
 
         try {
             ResultSet resultSet = executeQuery(
-                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
+                    "SELECT * FROM " + getTableName()
+                            + " WHERE player_id = '" + player.getUniqueId()
+                            + "' AND world = '" + player.getWorld().getName() + "'");
 
             while (resultSet.next()) {
 
@@ -86,11 +90,12 @@ public class DeathsTable extends Table {
         return null;
     }
 
-    public long getLastDeath(String player, String world) {
+    public long getLastDeath(UUID player, String world) {
 
         try {
             ResultSet resultSet = executeQuery(
-                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "' AND world = '" + world + "'");
+                    "SELECT * FROM " + getTableName()
+                            + " WHERE player_id = '" + player + "' AND world = '" + world + "'");
 
             while (resultSet.next()) {
                 long timestamp = DateUtil.getTimeStamp(resultSet.getString("date"));
@@ -104,11 +109,13 @@ public class DeathsTable extends Table {
         return 0;
     }
 
-    public Location getDeathLocation(String player, World world) {
+    public Location getDeathLocation(UUID player, World world) {
 
         try {
             ResultSet resultSet = executeQuery(
-                    "SELECT * FROM " + getTableName() + " WHERE player = '" + player.toLowerCase() + "' AND world = '" + world.getName() + "'");
+                    "SELECT * FROM " + getTableName()
+                            + " WHERE player_id = '" + player
+                            + "' AND world = '" + world.getName() + "'");
 
             while (resultSet.next()) {
                 Location deathLocation = new Location(world, resultSet.getInt("x"), resultSet.getInt("y"), resultSet.getInt("z"));
@@ -126,7 +133,9 @@ public class DeathsTable extends Table {
 
         try {
             executeUpdate(
-                    "DELETE FROM " + getTableName() + " WHERE player = '" + player.getName().toLowerCase() + "' AND world = '" + player.getWorld().getName() + "'");
+                    "DELETE FROM " + getTableName()
+                            + " WHERE player_id = '" + player.getUniqueId()
+                            + "' AND world = '" + player.getWorld().getName() + "'");
         } catch (SQLException e) {
             RaidCraft.LOGGER.warning(e.getMessage());
             e.printStackTrace();
