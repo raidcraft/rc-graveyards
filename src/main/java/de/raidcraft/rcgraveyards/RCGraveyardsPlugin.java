@@ -55,8 +55,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
         registerTable(DeathsTable.class, new DeathsTable());
 
-        registerCommands(GraveyardsCommands.class, getName());
-        registerCommands(GhostsCommand.class, getName());
+        registerCommands(GraveyardsCommands.class);
+        registerCommands(GhostsCommand.class);
 
         ActionManager.registerAction(new ReviveGhostAction());
         ActionManager.registerAction(new CheckGraveyardCompetenceAction());
