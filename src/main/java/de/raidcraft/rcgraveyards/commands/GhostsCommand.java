@@ -11,6 +11,7 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
+import de.raidcraft.util.CommandUtil;
 import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,10 +52,7 @@ public class GhostsCommand {
         String target = player.getName();
         if (context.argsLength() > 0) {
             target = context.getString(0);
-            player = Bukkit.getPlayer(UUIDUtil.convertPlayer(target));
-        }
-        if (player == null) {
-            throw new CommandException("Spieler (" + target + ") existiert nicht");
+            player = CommandUtil.grabPlayer(target);
         }
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
         if (graveyardPlayer == null) {
