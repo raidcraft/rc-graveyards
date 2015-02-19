@@ -121,30 +121,7 @@ public class CorpseManager {
 
         player.getInventory().clear();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
-        List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getUniqueId(), player.getWorld().getName());
-        for (ItemStack itemStack : loot) {
-            if (itemStack != null && itemStack.getType() != Material.AIR) {
-                if (CustomItemUtil.isCustomItem(itemStack)) {
-                    double modifier = reason.getDamageLevel().getModifier();
-                    if (graveyardPlayer.getLastDeath().wasPvp()) {
-                        modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
-                    }
-                    CustomItemStack customItem = RaidCraft.getCustomItem(itemStack);
-                    if (customItem == null) {
-                        continue;
-                    }
-                    try {
-                        customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
-                        customItem.rebuild(player);
-                        itemStack = customItem;
-                    } catch (CustomItemException ignored) {
-                    }
-                } else {
-                    if (reason.isEquipmentOnly()) continue;
-                }
-                PlayerInventoryUtil.putInInventory(player, itemStack);
-            }
-        }
+        restoreInventory(graveyardPlayer, reason);
         deleteCorpse(player.getUniqueId());
         graveyardPlayer.setGhost(false);
     }
@@ -163,5 +140,43 @@ public class CorpseManager {
         }
 
         player.sendMessage(ChatColor.GREEN + "Die Leiche von " + npc.getName() + " hat " + loot.size() + " Items fallen gelassen");
+    }
+
+    public void restoreInventory(GraveyardPlayer graveyardPlayer, ReviveReason reason) {
+
+        double modifier = reason.getDamageLevel().getModifier();
+        if (graveyardPlayer.getLastDeath().wasPvp()) {
+            modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
+        }
+        restoreInventory(graveyardPlayer.getPlayer(), modifier);
+    }
+
+    public void restoreInventory(Player player) {
+
+        restoreInventory(player, 0);
+    }
+
+    public void restoreInventory(Player player, double modifier) {
+
+        List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getUniqueId(), player.getWorld().getName());
+        for (ItemStack itemStack : loot) {
+            if (itemStack != null && itemStack.getType() != Material.AIR) {
+                if (modifier > 0 && CustomItemUtil.isCustomItem(itemStack)) {
+                    CustomItemStack customItem = RaidCraft.getCustomItem(itemStack);
+                    if (customItem == null) {
+                        continue;
+                    }
+                    try {
+                        customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
+                        customItem.rebuild(player);
+                        itemStack = customItem;
+                    } catch (CustomItemException ignored) {
+                    }
+                } else {
+                    continue;
+                }
+                PlayerInventoryUtil.putInInventory(player, itemStack);
+            }
+        }
     }
 }

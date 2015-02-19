@@ -29,6 +29,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.plugin.Plugin;
+
+import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * @author Philip Urban
@@ -77,6 +81,27 @@ public class PlayerListener implements Listener {
 
         Location deathLocation = graveyardPlayer.getLastDeath().getLocation();
         if (deathLocation == null) return;
+
+        // check for world guard respawn plugin if support is enabled
+        if (plugin.getConfig().worldGuardRespawnSupport) {
+            Plugin wgSpawnPointFlagPlugin = Bukkit.getPluginManager().getPlugin("WGSpawnPointFlagPlugin");
+            if (wgSpawnPointFlagPlugin != null) {
+                try {
+                    Field listenerField = wgSpawnPointFlagPlugin.getClass().getField("listener");
+                    listenerField.setAccessible(true);
+                    Object listener = listenerField.get(wgSpawnPointFlagPlugin);
+                    Field respawnLocationsField = listener.getClass().getField("respawnLocations");
+                    respawnLocationsField.setAccessible(true);
+                    Map<String, Location> respawnLocation = (Map<String, Location>) respawnLocationsField.get(listener);
+                    if (respawnLocation.containsKey(event.getPlayer().getName())) {
+                        plugin.getCorpseManager().restoreInventory(event.getPlayer());
+                        return;
+                    }
+                } catch (IllegalAccessException | NoSuchFieldException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if (graveyard == null) return;

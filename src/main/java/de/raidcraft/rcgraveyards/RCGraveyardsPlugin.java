@@ -112,6 +112,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
         public String corpseLootIndicatorMaterial = "DIAMOND";
         @Setting("necromancer-conversation-name")
         public String necromancerConversationName = "graveyard-necromancer";
+        @Setting("world-guard-respawn-support")
+        public boolean worldGuardRespawnSupport = true;
 
         public LocalConfiguration(RCGraveyardsPlugin plugin) {
 
