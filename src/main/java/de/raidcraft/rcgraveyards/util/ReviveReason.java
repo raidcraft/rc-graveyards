@@ -7,7 +7,8 @@ public enum ReviveReason {
 
     FOUND_CORPSE(false, EquipmentDamageLevel.LOW),
     NECROMANCER(true, EquipmentDamageLevel.HIGH),
-    COMMAND(false, EquipmentDamageLevel.NO);
+    COMMAND(false, EquipmentDamageLevel.NO),
+    CUSTOM(false, EquipmentDamageLevel.NO);
 
     public boolean equipmentOnly;
     public EquipmentDamageLevel damageLevel;

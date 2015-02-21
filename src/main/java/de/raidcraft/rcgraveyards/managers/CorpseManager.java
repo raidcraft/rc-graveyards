@@ -148,15 +148,15 @@ public class CorpseManager {
         if (graveyardPlayer.getLastDeath().wasPvp()) {
             modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
         }
-        restoreInventory(graveyardPlayer.getPlayer(), modifier);
+        restoreInventory(graveyardPlayer.getPlayer(), modifier, reason);
     }
 
     public void restoreInventory(Player player) {
 
-        restoreInventory(player, 0);
+        restoreInventory(player, 0, ReviveReason.CUSTOM);
     }
 
-    public void restoreInventory(Player player, double modifier) {
+    public void restoreInventory(Player player, double modifier, ReviveReason reason) {
 
         List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getUniqueId(), player.getWorld().getName());
         for (ItemStack itemStack : loot) {
@@ -173,7 +173,7 @@ public class CorpseManager {
                     } catch (CustomItemException ignored) {
                     }
                 } else {
-                    continue;
+                    if (reason.isEquipmentOnly()) continue;
                 }
                 PlayerInventoryUtil.putInInventory(player, itemStack);
             }
