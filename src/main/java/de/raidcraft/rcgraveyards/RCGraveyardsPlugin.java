@@ -28,6 +28,8 @@ import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
 import de.raidcraft.rcgraveyards.trigger.GraveyardsPlayerTrigger;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +68,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
         ActionAPI.register(this)
                 .trigger(new GraveyardsPlayerTrigger())
-                .action("player.revive", new RevivePlayerAction());
+		        .requirement("player.isAlive", (Player player, ConfigurationSection config) -> !getGhostManager().isGhost(player))
+		        .action("player.revive", new RevivePlayerAction());
 
         // init managers
         graveyardManager = new GraveyardManager(this);
