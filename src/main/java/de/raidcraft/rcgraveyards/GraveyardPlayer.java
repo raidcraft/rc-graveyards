@@ -1,9 +1,15 @@
 package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.items.CustomItemException;
+import de.raidcraft.api.items.CustomItemStack;
+import de.raidcraft.rcgraveyards.events.RCGraveyardPlayerRevivedEvent;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
+import de.raidcraft.rcgraveyards.util.EquipmentDamageLevel;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
+import de.raidcraft.rcgraveyards.util.ReviveReason;
+import de.raidcraft.util.CustomItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -83,6 +89,56 @@ public class GraveyardPlayer {
     public boolean isGhost() {
 
         return ghost;
+    }
+
+    public void revive(ReviveReason reason) {
+
+        if (!player.isOnline()) return;
+        if (!isGhost()) return;
+
+        player.getInventory().clear();
+        restoreInventory(reason);
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().deleteCorpse(player.getUniqueId());
+        setGhost(false);
+        RaidCraft.callEvent(new RCGraveyardPlayerRevivedEvent(this, reason));
+    }
+
+    public void restoreInventory(ReviveReason reason) {
+
+        double modifier = reason.getDamageLevel().getModifier();
+        if (getLastDeath().wasPvp()) {
+            modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
+        }
+        restoreInventory(modifier, reason);
+    }
+
+    public void restoreInventory() {
+
+        restoreInventory(0, ReviveReason.CUSTOM);
+    }
+
+    public void restoreInventory(double modifier, ReviveReason reason) {
+
+        List<ItemStack> loot = RaidCraft.getComponent(RCGraveyardsPlugin.class).getPlayerManager().getDeathInventory(player.getUniqueId(), player.getWorld().getName());
+        for (ItemStack itemStack : loot) {
+            if (itemStack != null && itemStack.getType() != Material.AIR) {
+                if (modifier > 0 && CustomItemUtil.isCustomItem(itemStack)) {
+                    CustomItemStack customItem = RaidCraft.getCustomItem(itemStack);
+                    if (customItem == null) {
+                        continue;
+                    }
+                    try {
+                        customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
+                        customItem.rebuild(player);
+                        itemStack = customItem;
+                    } catch (CustomItemException ignored) {
+                    }
+                } else {
+                    if (reason.isEquipmentOnly()) continue;
+                }
+                PlayerInventoryUtil.putInInventory(player, itemStack);
+            }
+        }
     }
 
     public void setGhost(boolean ghost) {

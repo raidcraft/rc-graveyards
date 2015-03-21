@@ -1,12 +1,13 @@
 package de.raidcraft.rcgraveyards;
 
-import de.raidcraft.RaidCraft;
 import de.raidcraft.api.BasePlugin;
+import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.api.npc.RC_Traits;
 import de.raidcraft.rcconversations.actions.ActionManager;
+import de.raidcraft.rcgraveyards.actions.RevivePlayerAction;
 import de.raidcraft.rcgraveyards.commands.GhostsCommand;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
 import de.raidcraft.rcgraveyards.conversations.CheckGraveyardCompetenceAction;
@@ -25,7 +26,10 @@ import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
+import de.raidcraft.rcgraveyards.trigger.GraveyardsPlayerTrigger;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +65,11 @@ public class RCGraveyardsPlugin extends BasePlugin {
         ActionManager.registerAction(new ReviveGhostAction());
         ActionManager.registerAction(new CheckGraveyardCompetenceAction());
         ActionManager.registerAction(new CheckIfGhostAction());
+
+        ActionAPI.register(this)
+                .trigger(new GraveyardsPlayerTrigger())
+		        .requirement("player.isAlive", (Player player, ConfigurationSection config) -> !getGhostManager().isGhost(player))
+		        .action("player.revive", new RevivePlayerAction());
 
         // init managers
         graveyardManager = new GraveyardManager(this);
@@ -122,15 +131,6 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
         @Setting("default-graveyard-size")
         public int defaultSize = 10;
-    }
-
-    private void loadCitizens() {
-
-        try {
-
-        } catch (Exception e) {
-            RaidCraft.LOGGER.warning("[RCConv] Can't load NPC stuff! Citizens not found!");
-        }
     }
 
     public LocalConfiguration getConfig() {

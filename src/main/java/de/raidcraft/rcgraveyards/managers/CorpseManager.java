@@ -1,18 +1,14 @@
 package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.RaidCraft;
-import de.raidcraft.api.items.CustomItemException;
-import de.raidcraft.api.items.CustomItemStack;
 import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.tasks.GhostReviverTask;
-import de.raidcraft.rcgraveyards.util.EquipmentDamageLevel;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.rcgraveyards.util.ReviveInformation;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
-import de.raidcraft.util.CustomItemUtil;
 import de.raidcraft.util.UUIDUtil;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -119,11 +115,8 @@ public class CorpseManager {
 
         if (!player.isOnline()) return;
 
-        player.getInventory().clear();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
-        restoreInventory(graveyardPlayer, reason);
-        deleteCorpse(player.getUniqueId());
-        graveyardPlayer.setGhost(false);
+        graveyardPlayer.revive(reason);
     }
 
     public void lootCorpse(Player player, UUID corpseId) {
@@ -144,11 +137,7 @@ public class CorpseManager {
 
     public void restoreInventory(GraveyardPlayer graveyardPlayer, ReviveReason reason) {
 
-        double modifier = reason.getDamageLevel().getModifier();
-        if (graveyardPlayer.getLastDeath().wasPvp()) {
-            modifier = EquipmentDamageLevel.VERY_LOW.getModifier();
-        }
-        restoreInventory(graveyardPlayer.getPlayer(), modifier, reason);
+        graveyardPlayer.restoreInventory(reason);
     }
 
     public void restoreInventory(Player player) {
@@ -158,25 +147,7 @@ public class CorpseManager {
 
     public void restoreInventory(Player player, double modifier, ReviveReason reason) {
 
-        List<ItemStack> loot = plugin.getPlayerManager().getDeathInventory(player.getUniqueId(), player.getWorld().getName());
-        for (ItemStack itemStack : loot) {
-            if (itemStack != null && itemStack.getType() != Material.AIR) {
-                if (modifier > 0 && CustomItemUtil.isCustomItem(itemStack)) {
-                    CustomItemStack customItem = RaidCraft.getCustomItem(itemStack);
-                    if (customItem == null) {
-                        continue;
-                    }
-                    try {
-                        customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
-                        customItem.rebuild(player);
-                        itemStack = customItem;
-                    } catch (CustomItemException ignored) {
-                    }
-                } else {
-                    if (reason.isEquipmentOnly()) continue;
-                }
-                PlayerInventoryUtil.putInInventory(player, itemStack);
-            }
-        }
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
+        graveyardPlayer.restoreInventory(modifier, reason);
     }
 }
