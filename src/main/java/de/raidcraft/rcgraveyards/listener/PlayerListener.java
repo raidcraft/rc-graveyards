@@ -22,13 +22,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.Plugin;
 
 import java.lang.reflect.Field;
@@ -284,7 +278,7 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void inHunger(FoodLevelChangeEvent event) {
+    public void onHunger(FoodLevelChangeEvent event) {
 
         if (event.getEntityType() != EntityType.PLAYER) return;
 
@@ -296,6 +290,32 @@ public class PlayerListener implements Listener {
         }
 
         if (graveyardPlayer.isGhost()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event) {
+
+        if(event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL)
+        {
+            return;
+        }
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = event.getPlayer();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
+
+        if (graveyardPlayer == null) {
+            return;
+        }
+
+        if (graveyardPlayer.isGhost()) {
+            return;
+        }
+
+        // cancel all ender pearl teleports 5 seconds after revive
+        if(graveyardPlayer.getLastRevive() > System.currentTimeMillis() -  5000) {
             event.setCancelled(true);
         }
     }

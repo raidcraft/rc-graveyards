@@ -26,6 +26,7 @@ public class GraveyardPlayer {
     private Map<String, Graveyard> graveyards = new HashMap<>();
     private boolean ghost = false;
     private Death lastDeath;
+    private long lastRevive = 0;
 
     public GraveyardPlayer(Player player) {
 
@@ -121,6 +122,7 @@ public class GraveyardPlayer {
         } else {
             player.setFireTicks(0);
             plugin.getGhostManager().setGhost(player, false);
+            lastRevive = System.currentTimeMillis();
             // delete db entries
             RaidCraft.getTable(DeathsTable.class).delete(player);
         }
@@ -130,6 +132,11 @@ public class GraveyardPlayer {
     public Death getLastDeath() {
 
         return lastDeath;
+    }
+
+    public long getLastRevive() {
+
+        return lastRevive;
     }
 
     public void save() {
