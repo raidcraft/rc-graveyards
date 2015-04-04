@@ -69,6 +69,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
         ActionAPI.register(this)
                 .trigger(new GraveyardsPlayerTrigger())
 		        .requirement("player.isAlive", (Player player, ConfigurationSection config) -> !getGhostManager().isGhost(player))
+                .requirement("player.isGhost", (Player player, ConfigurationSection config) -> getGhostManager().isGhost(player))
 		        .action("player.revive", new RevivePlayerAction());
 
         // init managers
