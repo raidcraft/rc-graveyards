@@ -22,16 +22,25 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
-import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
 public class PlayerListener implements Listener {
+
+    private Map<UUID, Location> respawnLocations = new HashMap<>();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -62,6 +71,14 @@ public class PlayerListener implements Listener {
         event.getDrops().clear();
     }
 
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void preRespawn(PlayerRespawnEvent event) {
+
+        if (RaidCraft.getComponent(RCGraveyardsPlugin.class).getConfig().worldGuardRespawnSupport) {
+            respawnLocations.put(event.getPlayer().getUniqueId(), event.getRespawnLocation());
+        }
+    }
+
     // TODO: check if double call not possible
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
@@ -76,25 +93,14 @@ public class PlayerListener implements Listener {
         Location deathLocation = graveyardPlayer.getLastDeath().getLocation();
         if (deathLocation == null) return;
 
+        Location originalLocation = respawnLocations.remove(event.getPlayer().getUniqueId());
+
         // check for world guard respawn plugin if support is enabled
-        if (plugin.getConfig().worldGuardRespawnSupport) {
-            Plugin wgSpawnPointFlagPlugin = Bukkit.getPluginManager().getPlugin("WGSpawnPointFlagPlugin");
-            if (wgSpawnPointFlagPlugin != null) {
-                try {
-                    Field listenerField = wgSpawnPointFlagPlugin.getClass().getField("listener");
-                    listenerField.setAccessible(true);
-                    Object listener = listenerField.get(wgSpawnPointFlagPlugin);
-                    Field respawnLocationsField = listener.getClass().getField("respawnLocations");
-                    respawnLocationsField.setAccessible(true);
-                    Map<String, Location> respawnLocation = (Map<String, Location>) respawnLocationsField.get(listener);
-                    if (respawnLocation.containsKey(event.getPlayer().getName())) {
-                        plugin.getCorpseManager().restoreInventory(event.getPlayer());
-                        return;
-                    }
-                } catch (IllegalAccessException | NoSuchFieldException e) {
-                    e.printStackTrace();
-                }
-            }
+        if (plugin.getConfig().worldGuardRespawnSupport
+                && originalLocation != null
+                && !originalLocation.equals(event.getRespawnLocation())) {
+            plugin.getCorpseManager().restoreInventory(event.getPlayer());
+            return;
         }
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
