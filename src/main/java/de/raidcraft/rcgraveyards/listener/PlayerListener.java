@@ -4,6 +4,7 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
@@ -100,7 +101,8 @@ public class PlayerListener implements Listener {
         if (plugin.getConfig().worldGuardRespawnSupport
                 && originalLocation != null
                 && !originalLocation.equals(event.getRespawnLocation())) {
-            graveyardPlayer.revive(ReviveReason.CUSTOM);
+            graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
+            RaidCraft.getTable(DeathsTable.class).delete(player);
             return;
         }
 
