@@ -7,6 +7,7 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
+import de.raidcraft.rcgraveyards.util.ReviveReason;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -99,7 +100,7 @@ public class PlayerListener implements Listener {
         if (plugin.getConfig().worldGuardRespawnSupport
                 && originalLocation != null
                 && !originalLocation.equals(event.getRespawnLocation())) {
-            plugin.getCorpseManager().restoreInventory(event.getPlayer());
+            graveyardPlayer.revive(ReviveReason.CUSTOM);
             return;
         }
 
