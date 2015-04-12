@@ -43,6 +43,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public final static String HIDDEN_FOR_LIVING_METADATA = "HIDDEN_FOR_LIVING";
     public final static String PLAYER_IS_GHOST_METADATA = "GHOST";
     public final static String NPC_REGISTER_SKELETON = "_skeleton";
+    public static String REGISTER_HOST;
     private LocalConfiguration config;
     private GraveyardManager graveyardManager;
     private PlayerManager playerManager;
@@ -52,6 +53,8 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
     @Override
     public void enable() {
+
+        REGISTER_HOST = getName() + RCGraveyardsPlugin.NPC_REGISTER_SKELETON;
 
         config = configure(new LocalConfiguration(this));
 
