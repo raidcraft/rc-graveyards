@@ -10,6 +10,7 @@ import de.raidcraft.rcgraveyards.util.EquipmentDamageLevel;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
 import de.raidcraft.util.CustomItemUtil;
+import de.raidcraft.util.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -60,11 +61,11 @@ public class GraveyardPlayer {
 
         double distance = 0;
         Graveyard closestGraveyard = null;
-        for (Map.Entry<String, Graveyard> entry : graveyards.entrySet()) {
-            if ((closestGraveyard == null || entry.getValue().getLocation().distance(location) < distance)
-                    && (entry.getValue().getRadius() == 0 || entry.getValue().getRadius() >= distance)) {
-                closestGraveyard = entry.getValue();
-                distance = entry.getValue().getLocation().distance(location);
+        for (Graveyard graveyard : graveyards.values()) {
+            int newDistance = LocationUtil.getBlockDistance(location, graveyard.getLocation());
+            if (closestGraveyard == null || newDistance < distance && (graveyard.getRadius() == 0 || graveyard.getRadius() < newDistance)) {
+                closestGraveyard = graveyard;
+                distance = newDistance;
             }
         }
         return closestGraveyard;
