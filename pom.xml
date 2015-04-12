@@ -48,5 +48,10 @@
             <artifactId>citizens</artifactId>
             <version>2.0.13-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.mewin</groupId>
+            <artifactId>WGCustomFlags</artifactId>
+            <version>1.8.1-beta</version>
+        </dependency>
     </dependencies>
 </project>

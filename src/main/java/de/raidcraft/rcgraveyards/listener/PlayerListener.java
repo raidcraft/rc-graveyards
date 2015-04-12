@@ -1,5 +1,9 @@
 package de.raidcraft.rcgraveyards.listener;
 
+import com.mewin.WGCustomFlags.FlagManager;
+import com.mewin.WGCustomFlags.flags.CustomLocationFlag;
+import com.mewin.util.Util;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
@@ -8,6 +12,7 @@ import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,6 +35,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +47,15 @@ import java.util.UUID;
 public class PlayerListener implements Listener {
 
     private Map<UUID, Location> respawnLocations = new HashMap<>();
+    private WorldGuardPlugin worldGuard;
+
+    public PlayerListener() {
+
+        Plugin worldGuardPlugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
+        if (worldGuardPlugin != null) {
+            worldGuard = (WorldGuardPlugin) worldGuardPlugin;
+        }
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -71,14 +86,6 @@ public class PlayerListener implements Listener {
         event.getDrops().clear();
     }
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void preRespawn(PlayerRespawnEvent event) {
-
-        if (RaidCraft.getComponent(RCGraveyardsPlugin.class).getConfig().worldGuardRespawnSupport) {
-            respawnLocations.put(event.getPlayer().getUniqueId(), event.getRespawnLocation());
-        }
-    }
-
     // TODO: check if double call not possible
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
@@ -93,16 +100,16 @@ public class PlayerListener implements Listener {
         Location deathLocation = graveyardPlayer.getLastDeath().getLocation();
         if (deathLocation == null) return;
 
-        Location originalLocation = respawnLocations.remove(event.getPlayer().getUniqueId());
-
         // check for world guard respawn plugin if support is enabled
-        if (plugin.getConfig().worldGuardRespawnSupport
-                && originalLocation != null
-                && !event.getRespawnLocation().equals(event.getRespawnLocation().getWorld().getSpawnLocation())
-                && !originalLocation.equals(event.getRespawnLocation())) {
-            graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
-            graveyardPlayer.setGhost(false);
-            return;
+        if (plugin.getConfig().worldGuardRespawnSupport && worldGuard != null) {
+            CustomLocationFlag customFlag = (CustomLocationFlag) FlagManager.getCustomFlag("respawn-location");
+            com.sk89q.worldedit.Location flagValue = Util.getFlagValue(worldGuard, deathLocation, customFlag, event.getPlayer());
+            if (flagValue != null) {
+                event.setRespawnLocation(com.sk89q.worldedit.bukkit.BukkitUtil.toLocation(flagValue));
+                graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
+                graveyardPlayer.setGhost(false);
+                return;
+            }
         }
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
