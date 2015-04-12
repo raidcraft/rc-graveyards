@@ -98,6 +98,7 @@ public class PlayerListener implements Listener {
         // check for world guard respawn plugin if support is enabled
         if (plugin.getConfig().worldGuardRespawnSupport
                 && originalLocation != null
+                && !event.getRespawnLocation().equals(event.getRespawnLocation().getWorld().getSpawnLocation())
                 && !originalLocation.equals(event.getRespawnLocation())) {
             graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
             graveyardPlayer.setGhost(false);
