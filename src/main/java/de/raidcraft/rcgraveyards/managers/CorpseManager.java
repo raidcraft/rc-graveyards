@@ -63,13 +63,18 @@ public class CorpseManager {
             RaidCraft.LOGGER.warning("[Graveyards] Cannot delete Corpse: " + corpseId);
             return;
         }
-        NPC_Manager.getInstance().removeNPC(npc, plugin.getName());
+        NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
     }
 
     public void checkReviver(Player player, UUID corpseId) {
 
         if (player.getGameMode() == GameMode.CREATIVE) {
             player.sendMessage(ChatColor.RED + "Interaktion mit der Leiche unterbunden! Du befindest dich im Creativemode!");
+            return;
+        }
+
+        if (!registeredCorpse.containsKey(corpseId)) {
+            NPC_Manager.getInstance().removeNPC(corpseId, RCGraveyardsPlugin.REGISTER_HOST);
             return;
         }
 
