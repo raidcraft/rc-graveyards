@@ -52,7 +52,7 @@ public class Death {
         for (ItemStack itemStack : items) {
             if (itemStack == null || itemStack.getType() == Material.AIR) continue;
 
-            boolean lootable = CustomItemUtil.isEquipment(itemStack);
+            boolean lootable = !CustomItemUtil.isEquipment(itemStack);
             int storedItemId = itemStorage.storeObject(itemStack);
             TStoredItem storedItem = new TStoredItem();
             storedItem.setStorageId(storedItemId);
