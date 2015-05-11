@@ -1,8 +1,10 @@
 package de.raidcraft.rcgraveyards;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.items.CustomItem;
 import de.raidcraft.api.items.CustomItemException;
 import de.raidcraft.api.items.CustomItemStack;
+import de.raidcraft.api.items.ItemType;
 import de.raidcraft.rcgraveyards.events.RCGraveyardPlayerRevivedEvent;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
@@ -10,6 +12,7 @@ import de.raidcraft.rcgraveyards.util.EquipmentDamageLevel;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
 import de.raidcraft.util.CustomItemUtil;
+import de.raidcraft.util.ItemUtils;
 import de.raidcraft.util.LocationUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -128,6 +131,12 @@ public class GraveyardPlayer {
                     if (customItem == null) {
                         continue;
                     }
+                    if (reason.isEquipmentOnly()) {
+                        CustomItem item = customItem.getItem();
+                        if (item.getType() != ItemType.EQUIPMENT && item.getType() != ItemType.ARMOR && item.getType() != ItemType.WEAPON) {
+                            continue;
+                        }
+                    }
                     try {
                         customItem.setCustomDurability(customItem.getCustomDurability() - (int) ((double) customItem.getMaxDurability() * modifier));
                         customItem.rebuild(player);
@@ -135,7 +144,8 @@ public class GraveyardPlayer {
                     } catch (CustomItemException ignored) {
                     }
                 } else {
-                    if (reason.isEquipmentOnly()) continue;
+                    ItemUtils.Item item = ItemUtils.Item.getItemByMaterial(itemStack.getType());
+                    if (reason.isEquipmentOnly() && (item == null || item.getType() != ItemUtils.ItemType.TOOL)) continue;
                 }
                 PlayerInventoryUtil.putInInventory(player, itemStack);
             }
