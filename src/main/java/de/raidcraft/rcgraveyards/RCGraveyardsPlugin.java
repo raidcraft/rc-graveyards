@@ -127,6 +127,10 @@ public class RCGraveyardsPlugin extends BasePlugin {
         public String necromancerConversationName = "graveyard-necromancer";
         @Setting("world-guard-respawn-support")
         public boolean worldGuardRespawnSupport = true;
+        @Setting("loot.min-count")
+        public int minLootCount = 5;
+        @Setting("loot.max-count")
+        public int maxLootCount = 20;
 
         public LocalConfiguration(RCGraveyardsPlugin plugin) {
 
