@@ -37,8 +37,16 @@ public class GraveyardPlayer {
     public GraveyardPlayer(Player player) {
 
         this.player = player;
+
+        // get player graveyards
         for (Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class)
                 .getGraveyardManager().getPlayerGraveyards(player.getUniqueId())) {
+            graveyards.put(graveyard.getName(), graveyard);
+        }
+
+        // get all main graveyards
+        for (Graveyard graveyard : RaidCraft.getComponent(RCGraveyardsPlugin.class)
+                .getGraveyardManager().getMainGraveyards()) {
             graveyards.put(graveyard.getName(), graveyard);
         }
 

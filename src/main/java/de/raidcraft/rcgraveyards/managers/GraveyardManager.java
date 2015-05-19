@@ -134,6 +134,17 @@ public class GraveyardManager {
         return graveyards;
     }
 
+    public List<Graveyard> getMainGraveyards() {
+
+        List<Graveyard> graveyards = new ArrayList<>();
+
+        for (Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
+            if(!entry.getValue().isMain()) continue;
+            graveyards.add(entry.getValue());
+        }
+        return graveyards;
+    }
+
     public List<Graveyard> getGraveyards() {
 
         List<Graveyard> graveyards = new ArrayList<>();
