@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import net.citizensnpcs.trait.CurrentLocation;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -39,9 +40,6 @@ public class CorpseTrait extends Trait {
     private boolean looted;
 
     private String robberId;
-
-    private static String registerHost = RaidCraft.getComponent(RCGraveyardsPlugin.class).getName()
-            + RCGraveyardsPlugin.NPC_REGISTER_SKELETON;
 
     public CorpseTrait() {
 
@@ -83,10 +81,13 @@ public class CorpseTrait extends Trait {
     public static void create(Player player, Location location) {
 
         NPC npc = NPC_Manager.getInstance().createPersistNpc(
-                player.getName(), registerHost);
+                player.getName(), RCGraveyardsPlugin.REGISTER_HOST);
         npc.setBukkitEntityType(EntityType.SKELETON);
         npc.setProtected(true);
         npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
+
+        npc.addTrait(CurrentLocation.class);
+        npc.getTrait(CurrentLocation.class).setLocation(location);
 
         npc.addTrait(CorpseTrait.class);
         npc.getTrait(CorpseTrait.class).setPlayerId(player.getUniqueId());
@@ -94,7 +95,7 @@ public class CorpseTrait extends Trait {
         npc.getTrait(CorpseTrait.class).setLooted(false, null);
 
         npc.spawn(location);
-        NPC_Manager.getInstance().store(registerHost);
+        NPC_Manager.getInstance().store(RCGraveyardsPlugin.REGISTER_HOST);
     }
 
     public void setPlayerId(UUID playerUUID) {

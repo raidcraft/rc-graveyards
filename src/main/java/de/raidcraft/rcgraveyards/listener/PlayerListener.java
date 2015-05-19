@@ -1,12 +1,17 @@
 package de.raidcraft.rcgraveyards.listener;
 
+import com.mewin.WGCustomFlags.FlagManager;
+import com.mewin.WGCustomFlags.flags.CustomLocationFlag;
+import com.mewin.util.Util;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
-import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
+import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
+import de.raidcraft.rcgraveyards.util.ReviveReason;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -22,16 +27,35 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 
-import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
 public class PlayerListener implements Listener {
+
+    private Map<UUID, Location> respawnLocations = new HashMap<>();
+    private WorldGuardPlugin worldGuard;
+
+    public PlayerListener() {
+
+        Plugin worldGuardPlugin = Bukkit.getPluginManager().getPlugin("WorldGuard");
+        if (worldGuardPlugin != null) {
+            worldGuard = (WorldGuardPlugin) worldGuardPlugin;
+        }
+    }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -77,23 +101,14 @@ public class PlayerListener implements Listener {
         if (deathLocation == null) return;
 
         // check for world guard respawn plugin if support is enabled
-        if (plugin.getConfig().worldGuardRespawnSupport) {
-            Plugin wgSpawnPointFlagPlugin = Bukkit.getPluginManager().getPlugin("WGSpawnPointFlagPlugin");
-            if (wgSpawnPointFlagPlugin != null) {
-                try {
-                    Field listenerField = wgSpawnPointFlagPlugin.getClass().getField("listener");
-                    listenerField.setAccessible(true);
-                    Object listener = listenerField.get(wgSpawnPointFlagPlugin);
-                    Field respawnLocationsField = listener.getClass().getField("respawnLocations");
-                    respawnLocationsField.setAccessible(true);
-                    Map<String, Location> respawnLocation = (Map<String, Location>) respawnLocationsField.get(listener);
-                    if (respawnLocation.containsKey(event.getPlayer().getName())) {
-                        plugin.getCorpseManager().restoreInventory(event.getPlayer());
-                        return;
-                    }
-                } catch (IllegalAccessException | NoSuchFieldException e) {
-                    e.printStackTrace();
-                }
+        if (plugin.getConfig().worldGuardRespawnSupport && worldGuard != null) {
+            CustomLocationFlag customFlag = (CustomLocationFlag) FlagManager.getCustomFlag("respawn-location");
+            com.sk89q.worldedit.Location flagValue = Util.getFlagValue(worldGuard, deathLocation, customFlag, event.getPlayer());
+            if (flagValue != null) {
+                event.setRespawnLocation(com.sk89q.worldedit.bukkit.BukkitUtil.toLocation(flagValue));
+                graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
+                graveyardPlayer.setGhost(false);
+                return;
             }
         }
 
@@ -112,7 +127,8 @@ public class PlayerListener implements Listener {
         // create corpse delayed
         if (deathLocation.getY() > 0) {
             // TODO: why delay ghost spawn?
-            Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
+            //Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
+            CorpseTrait.create(player, deathLocation);
         }
     }
 
