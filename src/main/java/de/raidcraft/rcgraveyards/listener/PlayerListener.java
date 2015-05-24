@@ -23,10 +23,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -36,6 +33,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
+import org.spigotmc.event.entity.EntityMountEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -288,6 +286,23 @@ public class PlayerListener implements Listener {
         )) {
             return;
         }
+
+        event.setCancelled(true);
+        player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    public void onMount(EntityMountEvent event)
+    {
+        // check if player
+        if(event.getEntityType() != EntityType.PLAYER) return;
+
+        RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
+        Player player = (Player)event.getEntity();
+        GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
+
+        if (graveyardPlayer == null) return;
+        if (!graveyardPlayer.isGhost()) return;
 
         event.setCancelled(true);
         player.sendMessage(ChatColor.RED + "Du kannst als Geist mit nichts interagieren!");
