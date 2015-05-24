@@ -9,6 +9,7 @@ import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
@@ -126,9 +127,9 @@ public class PlayerListener implements Listener {
         graveyardPlayer.setGhost(true);
         // create corpse delayed
         if (deathLocation.getY() > 0) {
-            // TODO: why delay ghost spawn?
-            //Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
-            CorpseTrait.create(player, deathLocation);
+            // Spawn corpse delayed to wait for correct player object (sometimes player get only updated a few ticks after respawn)
+            Bukkit.getScheduler().runTaskLater(plugin, new CorpseCreateTask(player, deathLocation), 2 * 20);
+            //CorpseTrait.create(player, deathLocation);
         }
     }
 
