@@ -49,8 +49,9 @@ public class DeathsTable extends Table {
 
         delete(player);
         try {
-            String query = "INSERT INTO " + getTableName() + " (player_id, date, pvp, world, x, y, z) " +
+            String query = "INSERT INTO " + getTableName() + " (player, player_id, date, pvp, world, x, y, z) " +
                     "VALUES (" +
+                    "'" + player.getName() + "'" + "," +
                     "'" + player.getUniqueId() + "'" + "," +
                     "'" + DateUtil.getDateString(death.getTimestamp()) + "'" + "," +
                     "'" + ((death.wasPvp()) ? 1 : 0) + "'" + "," +
