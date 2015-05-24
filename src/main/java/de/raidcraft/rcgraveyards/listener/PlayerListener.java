@@ -2,7 +2,6 @@ package de.raidcraft.rcgraveyards.listener;
 
 import com.mewin.WGCustomFlags.FlagManager;
 import com.mewin.WGCustomFlags.flags.CustomLocationFlag;
-import com.mewin.util.Util;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
@@ -104,7 +103,7 @@ public class PlayerListener implements Listener {
         // check for world guard respawn plugin if support is enabled
         if (plugin.getConfig().worldGuardRespawnSupport && worldGuard != null) {
             CustomLocationFlag customFlag = (CustomLocationFlag) FlagManager.getCustomFlag("respawn-location");
-            com.sk89q.worldedit.Location flagValue = Util.getFlagValue(worldGuard, deathLocation, customFlag, event.getPlayer());
+            com.sk89q.worldedit.Location flagValue = worldGuard.getRegionManager(event.getPlayer().getWorld()).getApplicableRegions(deathLocation).queryValue(worldGuard.wrapPlayer(player), customFlag);
             if (flagValue != null) {
                 event.setRespawnLocation(com.sk89q.worldedit.bukkit.BukkitUtil.toLocation(flagValue));
                 graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
