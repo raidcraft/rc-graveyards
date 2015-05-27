@@ -9,11 +9,15 @@ import java.util.UUID;
  */
 public interface PlayerDeathInfo {
 
-    Location getLocation();
+    public Location getLocation();
 
-    long getTimestamp();
+    public long getTimestamp();
 
-    UUID getPlayerUUID();
+    public UUID getPlayerUUID();
 
-    String getPlayerName();
+    public String getPlayerName();
+
+    public void updateLocation(Location location);
+
+    public void updateTimestamp(long timestamp);
 }

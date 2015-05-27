@@ -77,8 +77,8 @@ public class PlayerListener implements Listener {
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
-        graveyardPlayer.getLastDeath().setLocation(player.getLocation());
-        graveyardPlayer.getLastDeath().setTimestamp(System.currentTimeMillis());
+        graveyardPlayer.getLastDeath().updateLocation(player.getLocation());
+        graveyardPlayer.getLastDeath().updateTimestamp(System.currentTimeMillis());
         graveyardPlayer.getLastDeath().saveInventory(event.getDrops());
         graveyardPlayer.save();
         event.getDrops().clear();

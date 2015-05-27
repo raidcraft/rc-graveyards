@@ -24,21 +24,31 @@ public abstract class AbstractPlayerDeathInfo implements PlayerDeathInfo {
 
     @Override
     public Location getLocation() {
-        return null;
+        return location;
     }
 
     @Override
     public long getTimestamp() {
-        return 0;
+        return timestamp;
     }
 
     @Override
     public UUID getPlayerUUID() {
-        return null;
+        return uuid;
     }
 
     @Override
     public String getPlayerName() {
         return playerName;
+    }
+
+    @Override
+    public void updateLocation(Location location) {
+        this.location = location;
+    }
+
+    @Override
+    public void updateTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 }
