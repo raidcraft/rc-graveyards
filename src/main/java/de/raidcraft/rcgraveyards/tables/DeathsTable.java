@@ -125,7 +125,7 @@ public class DeathsTable extends Table {
             while (resultSet.next()) {
 
                 OfflinePlayerDeathInfo deathInfo = new OfflinePlayerDeathInfo(new Location(world, resultSet.getInt("x"), resultSet.getInt("y"), resultSet.getInt("z")),
-                        DateUtil.getTimeStamp(resultSet.getString("date")), UUID.fromString(resultSet.getString("player_id")));
+                        DateUtil.getTimeStamp(resultSet.getString("date")), UUID.fromString(resultSet.getString("player_id")), resultSet.getString("player"));
                 heroDeathInfoList.add(deathInfo);
             }
             resultSet.close();
