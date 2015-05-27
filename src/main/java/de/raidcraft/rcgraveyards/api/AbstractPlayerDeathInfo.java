@@ -1,5 +1,7 @@
 package de.raidcraft.rcgraveyards.api;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.util.UUIDUtil;
 import org.bukkit.Location;
 
 import java.util.UUID;
@@ -19,7 +21,14 @@ public abstract class AbstractPlayerDeathInfo implements PlayerDeathInfo {
         this.location = location;
         this.timestamp = timestamp;
         this.uuid = uuid;
-        this.playerName = playerName;
+
+        if(playerName == null)
+        {
+            this.playerName = UUIDUtil.getNameFromUUID(uuid);
+        }
+        else {
+            this.playerName = playerName;
+        }
     }
 
     @Override
