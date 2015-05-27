@@ -97,7 +97,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
             }
             else {
                 corpseManager.spawnCorpseNPCs();
-                //TODO spawn necromancer
+                graveyardManager.spawnNecromancerNPCs();
             }
         }, 8 * 20l);
     }

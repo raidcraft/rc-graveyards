@@ -91,8 +91,13 @@ public class GraveyardsCommands {
 
             Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getUniqueId());
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
-            NPC_Conservations_Manager.getInstance().spawnPersistNpcConservations(
-                    player.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
+            if(RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
+                NPC_Conservations_Manager.getInstance().spawnPersistNpcConservations(
+                        player.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
+            } else {
+                NPC_Conservations_Manager.getInstance().spawnNonPersistNpcConservations(
+                        player.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
+            }
             sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name + ChatColor.GREEN + " wurde erstellt!");
         }
 
