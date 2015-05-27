@@ -91,8 +91,14 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerEvents(new NPCListener());
         NPC_Manager.getInstance().registerTrait(CorpseTrait.class, RC_Traits.GRAVEYARDS);
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, () -> {
-            NPC_Manager.getInstance().loadNPCs(this.getName());
-            NPC_Manager.getInstance().loadNPCs(this.getName() + NPC_REGISTER_SKELETON);
+            if(SAVE_NPCS_EXTERNAL) {
+                NPC_Manager.getInstance().loadNPCs(this.getName());
+                NPC_Manager.getInstance().loadNPCs(this.getName() + NPC_REGISTER_SKELETON);
+            }
+            else {
+                corpseManager.spawnCorpseNPCs();
+                //TODO spawn necromancer
+            }
         }, 8 * 20l);
     }
 

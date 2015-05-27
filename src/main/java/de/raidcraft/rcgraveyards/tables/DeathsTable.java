@@ -116,20 +116,23 @@ public class DeathsTable extends Table {
 
     public List<OfflinePlayerDeathInfo> getDeaths(World world) {
 
-        List<OfflinePlayerDeathInfo> heroDeathInfoList = new ArrayList<>();
+        List<OfflinePlayerDeathInfo> deathInfoList = new ArrayList<>();
         try {
             ResultSet resultSet = executeQuery(
                     "SELECT * FROM " + getTableName()
                             + " WHERE world = '" + world.getName() + "'");
 
             while (resultSet.next()) {
+                if(resultSet.getString("player_id").isEmpty() || resultSet.getString("player_id") == "") {
+                    continue;
+                }
 
                 OfflinePlayerDeathInfo deathInfo = new OfflinePlayerDeathInfo(new Location(world, resultSet.getInt("x"), resultSet.getInt("y"), resultSet.getInt("z")),
                         DateUtil.getTimeStamp(resultSet.getString("date")), UUID.fromString(resultSet.getString("player_id")), resultSet.getString("player"));
-                heroDeathInfoList.add(deathInfo);
+                deathInfoList.add(deathInfo);
             }
             resultSet.close();
-            return heroDeathInfoList;
+            return deathInfoList;
         } catch (SQLException e) {
             e.printStackTrace();
         }

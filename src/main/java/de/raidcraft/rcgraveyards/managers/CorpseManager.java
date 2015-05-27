@@ -37,10 +37,6 @@ public class CorpseManager {
         this.plugin = plugin;
 
         Bukkit.getScheduler().runTaskTimer(plugin, delayingReviver, 20, 20);
-
-        if(!RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
-            spawnCorpseNPCs();
-        }
     }
 
     public void reload() {
@@ -54,11 +50,13 @@ public class CorpseManager {
         }
     }
 
-    private void spawnCorpseNPCs() {
+    public void spawnCorpseNPCs() {
 
         if(!RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
             for(World world : Bukkit.getWorlds()) {
-                for (OfflinePlayerDeathInfo deathInfo : RaidCraft.getTable(DeathsTable.class).getDeaths(world))
+                List<OfflinePlayerDeathInfo> deathInfoList = RaidCraft.getTable(DeathsTable.class).getDeaths(world);
+                RaidCraft.LOGGER.info("[RCGraveyards] Spawn " + deathInfoList.size() + " corpses for world: '" + world.getName() + "'");
+                for (OfflinePlayerDeathInfo deathInfo : deathInfoList)
                 {
                     //spawn npc
                     CorpseTrait.create(deathInfo.getPlayerName(), deathInfo.getPlayerUUID(), deathInfo.getLocation());
