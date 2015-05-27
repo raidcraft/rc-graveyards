@@ -25,7 +25,7 @@ public class NPCListener implements Listener {
 
         CorpseTrait trait = event.getNPC().getTrait(CorpseTrait.class);
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
-                .checkReviver(event.getClicker(), trait.getPlayerId());
+                .checkReviver(event.getClicker(), trait.getPlayerId(), event.getNPC());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -35,7 +35,7 @@ public class NPCListener implements Listener {
 
         CorpseTrait trait = event.getNPC().getTrait(CorpseTrait.class);
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
-                .checkReviver(event.getClicker(), trait.getPlayerId());
+                .checkReviver(event.getClicker(), trait.getPlayerId(), event.getNPC());
     }
 
     @EventHandler

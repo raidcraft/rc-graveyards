@@ -36,6 +36,7 @@ public class GraveyardManager {
         sortedGraveyards.clear();
         graveyardsByName.clear();
 
+        // cache all existing graveyards
         for (World world : Bukkit.getWorlds()) {
             List<Graveyard> graveyards = RaidCraft.getTable(GraveyardsTable.class).getAll(world.getName());
             for (Graveyard graveyard : graveyards) {
@@ -72,6 +73,7 @@ public class GraveyardManager {
                 }
             }
         }
+
         RaidCraft.LOGGER.info("[RCG] Loaded " + graveyardsByName.size() + " graveyards!");
     }
 

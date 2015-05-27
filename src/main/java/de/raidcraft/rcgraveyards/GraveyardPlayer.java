@@ -5,6 +5,7 @@ import de.raidcraft.api.items.CustomItem;
 import de.raidcraft.api.items.CustomItemException;
 import de.raidcraft.api.items.CustomItemStack;
 import de.raidcraft.api.items.ItemType;
+import de.raidcraft.rcgraveyards.deathinfo.HeroDeathInfo;
 import de.raidcraft.rcgraveyards.events.RCGraveyardPlayerRevivedEvent;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
@@ -35,7 +36,7 @@ public class GraveyardPlayer {
     private Player player;
     private Map<String, Graveyard> graveyards = new HashMap<>();
     private boolean ghost = false;
-    private Death lastDeath;
+    private HeroDeathInfo lastHeroDeathInfo;
     private long lastRevive = 0;
 
     public GraveyardPlayer(Player player) {
@@ -55,9 +56,9 @@ public class GraveyardPlayer {
         }
 
         // load from database
-        lastDeath = RaidCraft.getTable(DeathsTable.class).getDeath(player);
-        if (lastDeath == null) {
-            lastDeath = new Death(player);
+        lastHeroDeathInfo = RaidCraft.getTable(DeathsTable.class).getDeath(player);
+        if (lastHeroDeathInfo == null) {
+            lastHeroDeathInfo = new HeroDeathInfo(player);
         } else {
             setGhost(true);
         }
@@ -187,7 +188,7 @@ public class GraveyardPlayer {
                 @Override
                 public void run() {
 
-                    player.setCompassTarget(lastDeath.getLocation());
+                    player.setCompassTarget(lastHeroDeathInfo.getLocation());
                 }
             }, 1);
 
@@ -204,9 +205,9 @@ public class GraveyardPlayer {
         plugin.getPlayerManager().updatePlayerVisibility();
     }
 
-    public Death getLastDeath() {
+    public HeroDeathInfo getLastDeath() {
 
-        return lastDeath;
+        return lastHeroDeathInfo;
     }
 
     public long getLastRevive() {
@@ -216,6 +217,6 @@ public class GraveyardPlayer {
 
     public void save() {
 
-        RaidCraft.getTable(DeathsTable.class).addDeath(lastDeath, player);
+        RaidCraft.getTable(DeathsTable.class).addDeath(lastHeroDeathInfo, player);
     }
 }

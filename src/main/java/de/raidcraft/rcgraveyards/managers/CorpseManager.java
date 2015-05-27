@@ -2,19 +2,19 @@ package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.npc.NPC_Manager;
+import de.raidcraft.rcgraveyards.deathinfo.HeroDeathInfo;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.deathinfo.OfflinePlayerDeathInfo;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
+import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tasks.GhostReviverTask;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.rcgraveyards.util.ReviveInformation;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
 import de.raidcraft.util.UUIDUtil;
 import net.citizensnpcs.api.npc.NPC;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,6 +37,34 @@ public class CorpseManager {
         this.plugin = plugin;
 
         Bukkit.getScheduler().runTaskTimer(plugin, delayingReviver, 20, 20);
+
+        if(!RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
+            spawnCorpseNPCs();
+        }
+    }
+
+    public void reload() {
+
+        if(!RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
+            // delete all corpse npcs
+            NPC_Manager.getInstance().removeAllNPCs(RCGraveyardsPlugin.REGISTER_HOST);
+
+            // spawn all corpse npcs
+            spawnCorpseNPCs();
+        }
+    }
+
+    private void spawnCorpseNPCs() {
+
+        if(!RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
+            for(World world : Bukkit.getWorlds()) {
+                for (OfflinePlayerDeathInfo deathInfo : RaidCraft.getTable(DeathsTable.class).getDeaths(world))
+                {
+                    //spawn npc
+                    CorpseTrait.create(deathInfo.getPlayerName(), deathInfo.getPlayerUUID(), deathInfo.getLocation());
+                }
+            }
+        }
     }
 
     public void registerCorpse(NPC npc) {
@@ -56,40 +84,39 @@ public class CorpseManager {
         registeredCorpse.remove(trait.getPlayerId());
     }
 
-    public void deleteCorpse(UUID corpseId) {
+    public void deleteCorpse(UUID playerId) {
 
-        NPC npc = registeredCorpse.remove(corpseId);
+        NPC npc = registeredCorpse.remove(playerId);
         if (npc == null) {
-            RaidCraft.LOGGER.warning("[Graveyards] Cannot delete Corpse: " + corpseId);
+            RaidCraft.LOGGER.warning("[Graveyards] Cannot delete Corpse: " + playerId);
             return;
         }
         NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
     }
 
-    public void checkReviver(Player player, UUID corpseId) {
+    public void checkReviver(Player player, UUID playerId, NPC npc) {
 
         if (player.getGameMode() == GameMode.CREATIVE) {
             player.sendMessage(ChatColor.RED + "Interaktion mit der Leiche unterbunden! Du befindest dich im Creativemode!");
             return;
         }
 
-        if (!registeredCorpse.containsKey(corpseId)) {
-            NPC_Manager.getInstance().removeNPC(corpseId, RCGraveyardsPlugin.REGISTER_HOST);
+        if (!registeredCorpse.containsKey(playerId)) {
+            NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
             return;
         }
 
         boolean ghost = plugin.getGhostManager().isGhost(player);
-        NPC npc = registeredCorpse.get(corpseId);
         boolean looted = npc.getTrait(CorpseTrait.class).isLooted();
         UUID robberId = npc.getTrait(CorpseTrait.class).getRobberId();
-        long lastDeath = plugin.getPlayerManager().getLastDeath(corpseId, npc.getEntity().getWorld().getName());
+        long lastDeath = plugin.getPlayerManager().getLastDeath(playerId, npc.getEntity().getWorld().getName());
 
         if (lastDeath == 0) {
-            deleteCorpse(corpseId);
+            deleteCorpse(playerId);
             return;
         }
 
-        if (player.getUniqueId().equals(corpseId)) {
+        if (player.getUniqueId().equals(playerId)) {
 
             ReviveReason reason = ReviveReason.FOUND_CORPSE;
 
@@ -112,7 +139,7 @@ public class CorpseManager {
         } else if (looted) {
             player.sendMessage(ChatColor.RED + "Diese Leiche wurde bereits von " + UUIDUtil.getNameFromUUID(robberId) + " ausgeraubt!");
         } else {
-            lootCorpse(player, corpseId);
+            lootCorpse(player, playerId);
         }
     }
 

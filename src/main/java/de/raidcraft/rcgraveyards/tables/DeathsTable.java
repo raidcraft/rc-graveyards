@@ -2,14 +2,18 @@ package de.raidcraft.rcgraveyards.tables;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.database.Table;
-import de.raidcraft.rcgraveyards.Death;
+import de.raidcraft.rcgraveyards.deathinfo.HeroDeathInfo;
+import de.raidcraft.rcgraveyards.deathinfo.OfflinePlayerDeathInfo;
 import de.raidcraft.util.DateUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -45,7 +49,7 @@ public class DeathsTable extends Table {
         }
     }
 
-    public void addDeath(Death death, Player player) {
+    public void addDeath(HeroDeathInfo heroDeathInfo, Player player) {
 
         delete(player);
         try {
@@ -53,12 +57,12 @@ public class DeathsTable extends Table {
                     "VALUES (" +
                     "'" + player.getName() + "'" + "," +
                     "'" + player.getUniqueId() + "'" + "," +
-                    "'" + DateUtil.getDateString(death.getTimestamp()) + "'" + "," +
-                    "'" + ((death.wasPvp()) ? 1 : 0) + "'" + "," +
-                    "'" + death.getLocation().getWorld().getName() + "'" + "," +
-                    "'" + death.getLocation().getBlockX() + "'" + "," +
-                    "'" + death.getLocation().getBlockY() + "'" + "," +
-                    "'" + death.getLocation().getBlockZ() + "'" +
+                    "'" + DateUtil.getDateString(heroDeathInfo.getTimestamp()) + "'" + "," +
+                    "'" + ((heroDeathInfo.wasPvp()) ? 1 : 0) + "'" + "," +
+                    "'" + heroDeathInfo.getLocation().getWorld().getName() + "'" + "," +
+                    "'" + heroDeathInfo.getLocation().getBlockX() + "'" + "," +
+                    "'" + heroDeathInfo.getLocation().getBlockY() + "'" + "," +
+                    "'" + heroDeathInfo.getLocation().getBlockZ() + "'" +
                     ");";
 
             executeUpdate(query);
@@ -68,7 +72,7 @@ public class DeathsTable extends Table {
         }
     }
 
-    public Death getDeath(Player player) {
+    public HeroDeathInfo getDeath(Player player) {
 
         try {
             ResultSet resultSet = executeQuery(
@@ -78,11 +82,11 @@ public class DeathsTable extends Table {
 
             while (resultSet.next()) {
 
-                Death death = new Death(player,
+                HeroDeathInfo heroDeathInfo = new HeroDeathInfo(player,
                         new Location(player.getWorld(), resultSet.getInt("x"), resultSet.getInt("y"), resultSet.getInt("z")),
                         DateUtil.getTimeStamp(resultSet.getString("date")));
                 resultSet.close();
-                return death;
+                return heroDeathInfo;
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -108,6 +112,28 @@ public class DeathsTable extends Table {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public List<OfflinePlayerDeathInfo> getDeaths(World world) {
+
+        List<OfflinePlayerDeathInfo> heroDeathInfoList = new ArrayList<>();
+        try {
+            ResultSet resultSet = executeQuery(
+                    "SELECT * FROM " + getTableName()
+                            + " WHERE world = '" + world.getName() + "'");
+
+            while (resultSet.next()) {
+
+                OfflinePlayerDeathInfo deathInfo = new OfflinePlayerDeathInfo(new Location(world, resultSet.getInt("x"), resultSet.getInt("y"), resultSet.getInt("z")),
+                        DateUtil.getTimeStamp(resultSet.getString("date")), UUID.fromString(resultSet.getString("player_id")));
+                heroDeathInfoList.add(deathInfo);
+            }
+            resultSet.close();
+            return heroDeathInfoList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 
     public Location getDeathLocation(UUID player, World world) {

@@ -1,7 +1,10 @@
-package de.raidcraft.rcgraveyards;
+package de.raidcraft.rcgraveyards.deathinfo;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.storage.ItemStorage;
+import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.api.AbstractPlayerDeathInfo;
+import de.raidcraft.rcgraveyards.api.PlayerDeathInfo;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
 import de.raidcraft.skills.SkillsPlugin;
 import de.raidcraft.skills.api.combat.AttackSource;
@@ -13,37 +16,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Philip Urban
  */
-public class Death {
+public class HeroDeathInfo extends AbstractPlayerDeathInfo {
 
     private Hero hero;
-    private Location location;
-    private long timestamp;
 
-    public Death(Player player) {
+    public HeroDeathInfo(Player player) {
 
+        super(null, 0, player.getUniqueId(), player.getName());
         this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
-        this.location = null;
     }
 
-    public Death(Player player, Location location, long timestamp) {
+    public HeroDeathInfo(Player player, Location location, long timestamp) {
 
+        super(location, timestamp, player.getUniqueId(), player.getName());
         this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
-        this.location = location;
-        this.timestamp = timestamp;
-    }
-
-    public long getTimestamp() {
-
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-
-        this.timestamp = timestamp;
     }
 
     public void saveInventory(List<ItemStack> items) {
@@ -66,15 +57,5 @@ public class Death {
     public boolean wasPvp() {
 
         return (hero.getLastDamageCause() != null && hero.getLastDamageCause().getAttackSource() == AttackSource.HERO);
-    }
-
-    public Location getLocation() {
-
-        return location;
-    }
-
-    public void setLocation(Location location) {
-
-        this.location = location;
     }
 }

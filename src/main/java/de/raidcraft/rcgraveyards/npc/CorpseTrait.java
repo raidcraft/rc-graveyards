@@ -78,10 +78,18 @@ public class CorpseTrait extends Trait {
         }
     }
 
-    public static void create(Player player, Location location) {
+    public static void create(String playerName, UUID uuid, Location location)
+    {
+        NPC npc;
+        if(RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
+            npc = NPC_Manager.getInstance().createPersistNpc(
+                    playerName, RCGraveyardsPlugin.REGISTER_HOST);
+        }
+        else {
+            npc = NPC_Manager.getInstance().createNonPersistNpc(
+                    playerName, RCGraveyardsPlugin.REGISTER_HOST);
+        }
 
-        NPC npc = NPC_Manager.getInstance().createPersistNpc(
-                player.getName(), RCGraveyardsPlugin.REGISTER_HOST);
         npc.setBukkitEntityType(EntityType.SKELETON);
         npc.setProtected(true);
         npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
@@ -90,12 +98,19 @@ public class CorpseTrait extends Trait {
         npc.getTrait(CurrentLocation.class).setLocation(location);
 
         npc.addTrait(CorpseTrait.class);
-        npc.getTrait(CorpseTrait.class).setPlayerId(player.getUniqueId());
-        npc.getTrait(CorpseTrait.class).setPlayerName(player.getName());
+        npc.getTrait(CorpseTrait.class).setPlayerId(uuid);
+        npc.getTrait(CorpseTrait.class).setPlayerName(playerName);
         npc.getTrait(CorpseTrait.class).setLooted(false, null);
 
         npc.spawn(location);
-        NPC_Manager.getInstance().store(RCGraveyardsPlugin.REGISTER_HOST);
+        if(RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
+            NPC_Manager.getInstance().store(RCGraveyardsPlugin.REGISTER_HOST);
+        }
+    }
+
+    public static void create(Player player, Location location) {
+
+        create(player.getName(), player.getUniqueId(), location);
     }
 
     public void setPlayerId(UUID playerUUID) {
