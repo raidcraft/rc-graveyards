@@ -77,6 +77,9 @@ public class GraveyardManager {
         }
 
         RaidCraft.LOGGER.info("[RCG] Loaded " + graveyardsByName.size() + " graveyards!");
+
+        despawnNecromancerNPCs();
+        spawnNecromancerNPCs();
     }
 
     public void spawnNecromancerNPCs() {
@@ -85,6 +88,10 @@ public class GraveyardManager {
             NPC_Conservations_Manager.getInstance().spawnNonPersistNpcConservations(
                     graveyard.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
         }
+    }
+
+    public void despawnNecromancerNPCs() {
+        NPC_Manager.getInstance().removeAllNPCs(plugin.getName());
     }
 
     public Graveyard getGraveyard(String name) {
