@@ -92,6 +92,7 @@ public class CorpseTrait extends Trait {
 
         npc.setBukkitEntityType(EntityType.SKELETON);
         npc.setProtected(true);
+        npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
         npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
 
         npc.addTrait(CurrentLocation.class);
