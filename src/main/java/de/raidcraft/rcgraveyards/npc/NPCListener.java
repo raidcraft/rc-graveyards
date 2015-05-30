@@ -46,9 +46,6 @@ public class NPCListener implements Listener {
             return;
         }
 
-        // workaround: citizens only respawn player npcs so we have to change the entitytype each spawn
-        event.getNPC().setBukkitEntityType(EntityType.SKELETON);
-
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
                 .registerCorpse(event.getNPC());
     }
@@ -59,9 +56,6 @@ public class NPCListener implements Listener {
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
             return;
         }
-
-        // workaround: citizens only respawn player npcs so we have to change the entitytype each spawn
-        event.getNPC().setBukkitEntityType(EntityType.PLAYER);
 
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
                 .unregisterCorpse(event.getNPC());

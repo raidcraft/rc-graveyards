@@ -12,6 +12,7 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Equipment;
+import net.citizensnpcs.api.trait.trait.Spawned;
 import net.citizensnpcs.trait.CurrentLocation;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -87,9 +88,12 @@ public class CorpseTrait extends Trait {
         }
         else {
             npc = NPC_Manager.getInstance().createNonPersistNpc(
-                    playerName, RCGraveyardsPlugin.REGISTER_HOST);
+                    playerName, RCGraveyardsPlugin.REGISTER_HOST, EntityType.SKELETON);
         }
 
+        npc.setBukkitEntityType(EntityType.SKELETON);
+        npc.addTrait(Spawned.class);
+        npc.getTrait(Spawned.class).setSpawned(true);
         npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
         npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
 
