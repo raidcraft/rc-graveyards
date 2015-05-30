@@ -8,6 +8,7 @@ import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.event.NPCSpawnEvent;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -45,6 +46,9 @@ public class NPCListener implements Listener {
             return;
         }
 
+        // workaround: citizens only respawn player npcs so we have to change the entitytype each spawn
+        event.getNPC().setBukkitEntityType(EntityType.SKELETON);
+
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
                 .registerCorpse(event.getNPC());
     }
@@ -55,6 +59,9 @@ public class NPCListener implements Listener {
         if (!event.getNPC().hasTrait(CorpseTrait.class)) {
             return;
         }
+
+        // workaround: citizens only respawn player npcs so we have to change the entitytype each spawn
+        event.getNPC().setBukkitEntityType(EntityType.PLAYER);
 
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
                 .unregisterCorpse(event.getNPC());
