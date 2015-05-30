@@ -84,10 +84,13 @@ public class CorpseTrait extends Trait {
         if(RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
             npc = NPC_Manager.getInstance().createPersistNpc(
                     playerName, RCGraveyardsPlugin.REGISTER_HOST);
+            npc.setBukkitEntityType(EntityType.SKELETON);
         }
         else {
+//            npc = NPC_Manager.getInstance().createNonPersistNpc(
+//                    playerName, RCGraveyardsPlugin.REGISTER_HOST, EntityType.SKELETON);
             npc = NPC_Manager.getInstance().createNonPersistNpc(
-                    playerName, RCGraveyardsPlugin.REGISTER_HOST, EntityType.SKELETON);
+                    playerName, RCGraveyardsPlugin.REGISTER_HOST);
         }
 
         npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
