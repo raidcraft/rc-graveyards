@@ -106,6 +106,7 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public void reload() {
 
         getConfig().reload();
+        corpseManager.reload();
         graveyardManager.reload();
     }
 
