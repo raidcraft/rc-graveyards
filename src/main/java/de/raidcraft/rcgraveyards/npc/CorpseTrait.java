@@ -87,11 +87,9 @@ public class CorpseTrait extends Trait {
         }
         else {
             npc = NPC_Manager.getInstance().createNonPersistNpc(
-                    playerName, RCGraveyardsPlugin.REGISTER_HOST);
+                    playerName, RCGraveyardsPlugin.REGISTER_HOST, EntityType.SKELETON);
         }
 
-        npc.setBukkitEntityType(EntityType.SKELETON);
-        npc.setProtected(true);
         npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
         npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
 

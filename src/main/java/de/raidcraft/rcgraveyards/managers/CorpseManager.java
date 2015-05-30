@@ -70,7 +70,8 @@ public class CorpseManager {
         CorpseTrait trait = npc.getTrait(CorpseTrait.class);
         // player is not death
         if (plugin.getPlayerManager().getLastDeath(trait.getPlayerId(), npc.getEntity().getWorld().getName()) == 0) {
-            npc.destroy();
+            RaidCraft.LOGGER.warning("[RCGraveyards] Removed corpse of not death player '" + trait.getPlayerName() + "'");
+            NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
             return;
         }
         registeredCorpse.put(trait.getPlayerId(), npc);
