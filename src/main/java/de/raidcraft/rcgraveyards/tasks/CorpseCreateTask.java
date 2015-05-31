@@ -1,5 +1,8 @@
 package de.raidcraft.rcgraveyards.tasks;
 
+import de.raidcraft.RaidCraft;
+import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.api.PlayerDeathInfo;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -9,18 +12,16 @@ import org.bukkit.entity.Player;
  */
 public class CorpseCreateTask implements Runnable {
 
-    Player player;
-    Location location;
+    PlayerDeathInfo deathInfo;
 
-    public CorpseCreateTask(Player player, Location location) {
+    public CorpseCreateTask(PlayerDeathInfo deathInfo) {
 
-        this.player = player;
-        this.location = location;
+        this.deathInfo = deathInfo;
     }
 
     public void run() {
 
-        if (location.getY() < 0) return;
-        CorpseTrait.create(player, location);
+        if (deathInfo.getLocation().getY() < 0) return;
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().spawnCorpseNPC(deathInfo);
     }
 }

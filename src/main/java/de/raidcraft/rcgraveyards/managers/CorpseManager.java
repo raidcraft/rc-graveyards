@@ -2,9 +2,9 @@ package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.npc.NPC_Manager;
-import de.raidcraft.rcgraveyards.deathinfo.HeroDeathInfo;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.rcgraveyards.api.PlayerDeathInfo;
 import de.raidcraft.rcgraveyards.deathinfo.OfflinePlayerDeathInfo;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
@@ -18,10 +18,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Philip Urban
@@ -30,6 +27,8 @@ public class CorpseManager {
 
     private RCGraveyardsPlugin plugin;
     private Map<UUID, NPC> registeredCorpse = new HashMap<>();
+    private Map<ChunkHash, List<PlayerDeathInfo>> chunkDeathInfoCache = new HashMap<>();
+
     public final GhostReviverTask delayingReviver = new GhostReviverTask();
 
     public CorpseManager(RCGraveyardsPlugin plugin) {
@@ -42,6 +41,9 @@ public class CorpseManager {
     public void reload() {
 
         if(!RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
+            // clear cache
+            registeredCorpse.clear();
+            chunkDeathInfoCache.clear();
             // delete all corpse npcs
             NPC_Manager.getInstance().removeAllNPCs(RCGraveyardsPlugin.REGISTER_HOST);
 
@@ -55,14 +57,25 @@ public class CorpseManager {
         if(!RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
             for(World world : Bukkit.getWorlds()) {
                 List<OfflinePlayerDeathInfo> deathInfoList = RaidCraft.getTable(DeathsTable.class).getDeaths(world);
-                RaidCraft.LOGGER.info("[RCGraveyards] Spawn " + deathInfoList.size() + " corpses for world: '" + world.getName() + "'");
-                for (OfflinePlayerDeathInfo deathInfo : deathInfoList)
-                {
-                    //spawn npc
-                    CorpseTrait.create(deathInfo.getPlayerName(), deathInfo.getPlayerUUID(), deathInfo.getLocation());
+                if(deathInfoList.size() > 0) {
+                    RaidCraft.LOGGER.info("[RCGraveyards] Spawn " + deathInfoList.size() + " corpses for world: '" + world.getName() + "'");
+                    for (OfflinePlayerDeathInfo deathInfo : deathInfoList) {
+                        spawnCorpseNPC(deathInfo);
+                    }
                 }
             }
         }
+    }
+
+    public void spawnCorpseNPC(PlayerDeathInfo deathInfo) {
+        //spawn npc
+        CorpseTrait.create(deathInfo.getPlayerName(), deathInfo.getPlayerUUID(), deathInfo.getLocation());
+        // cache npcs to respawn
+        ChunkHash chunkHash = new ChunkHash(deathInfo.getLocation().getChunk().getX(), deathInfo.getLocation().getChunk().getZ());
+        if(!chunkDeathInfoCache.containsKey(chunkHash)) {
+            chunkDeathInfoCache.put(chunkHash, new ArrayList<>());
+        }
+        chunkDeathInfoCache.get(chunkHash).add(deathInfo);
     }
 
     public void registerCorpse(NPC npc) {
@@ -185,5 +198,53 @@ public class CorpseManager {
 
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
         graveyardPlayer.restoreInventory(modifier, reason);
+    }
+
+    public void spawnChunkCorpses(Chunk chunk) {
+
+        // get deaths for this chunk
+        ChunkHash chunkHash = new ChunkHash(chunk);
+        if(!chunkDeathInfoCache.containsKey(chunkHash)) return;
+        List<PlayerDeathInfo> chunkDeaths = chunkDeathInfoCache.get(chunkHash);
+        for(PlayerDeathInfo deathInfo : chunkDeaths) {
+            //spawn npc
+            CorpseTrait.create(deathInfo.getPlayerName(), deathInfo.getPlayerUUID(), deathInfo.getLocation());
+        }
+    }
+
+    public class ChunkHash {
+
+        private int x;
+        private int z;
+
+        public ChunkHash(int x, int z) {
+            this.x = x;
+            this.z = z;
+        }
+
+        public ChunkHash(Chunk chunk) {
+            this.x = chunk.getX();
+            this.z = chunk.getZ();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ChunkHash that = (ChunkHash) o;
+
+            if (x != that.x) return false;
+            if (z != that.z) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = x;
+            result = 31 * result + z;
+            return result;
+        }
     }
 }

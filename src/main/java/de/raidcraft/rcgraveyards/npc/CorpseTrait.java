@@ -79,7 +79,7 @@ public class CorpseTrait extends Trait {
         }
     }
 
-    public static void create(String playerName, UUID uuid, Location location)
+    public static NPC create(String playerName, UUID uuid, Location location)
     {
         NPC npc;
         if(RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
@@ -109,11 +109,13 @@ public class CorpseTrait extends Trait {
         if(RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
             NPC_Manager.getInstance().store(RCGraveyardsPlugin.REGISTER_HOST);
         }
+
+        return npc;
     }
 
-    public static void create(Player player, Location location) {
+    public static NPC create(Player player, Location location) {
 
-        create(player.getName(), player.getUniqueId(), location);
+        return create(player.getName(), player.getUniqueId(), location);
     }
 
     public void setPlayerId(UUID playerUUID) {

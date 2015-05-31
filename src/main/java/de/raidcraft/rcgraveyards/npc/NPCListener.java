@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.world.ChunkLoadEvent;
 
 /**
  * Author: Philip
@@ -59,6 +60,12 @@ public class NPCListener implements Listener {
 
         RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager()
                 .unregisterCorpse(event.getNPC());
+    }
+
+    @EventHandler
+    public void onChunkLoad(ChunkLoadEvent event) {
+
+        RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().spawnChunkCorpses(event.getChunk());
     }
 
     private boolean checkClickEvent(NPCClickEvent event) {

@@ -76,7 +76,7 @@ public class GraveyardManager {
             }
         }
 
-        RaidCraft.LOGGER.info("[RCG] Loaded " + graveyardsByName.size() + " graveyards!");
+        RaidCraft.LOGGER.info("[RCGraveyards] Loaded " + graveyardsByName.size() + " graveyards!");
 
         despawnNecromancerNPCs();
         spawnNecromancerNPCs();
