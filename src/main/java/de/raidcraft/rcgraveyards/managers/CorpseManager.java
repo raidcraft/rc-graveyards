@@ -105,6 +105,17 @@ public class CorpseManager {
         }
         CorpseTrait trait = npc.getTrait(CorpseTrait.class);
         RaidCraft.LOGGER.info("[RCGraveyards] Removed corpse of revived player '" + trait.getPlayerName() + "'");
+        // remove from cache
+        ChunkHash chunkHash = new ChunkHash(npc.getStoredLocation().getChunk().getX(), npc.getStoredLocation().getChunk().getZ());
+        if(chunkDeathInfoCache.containsKey(chunkHash)) {
+            for(PlayerDeathInfo deathInfo : chunkDeathInfoCache.get(chunkHash)) {
+                if(deathInfo.getPlayerUUID().equals(playerId)) {
+                    chunkDeathInfoCache.get(chunkHash).remove(deathInfo);
+                    break;
+                }
+            }
+        }
+        // despawn npc
         NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
     }
 
