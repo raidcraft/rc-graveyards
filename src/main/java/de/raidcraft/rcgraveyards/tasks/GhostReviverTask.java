@@ -52,16 +52,20 @@ public class GhostReviverTask implements Runnable {
             int delay = info.getReviveDelay();
             if (delay > 10) continue;
             if (delay <= 0) {
-                entry.getKey().sendMessage(ChatColor.GREEN + "Du bist wieder lebendig.");
+                entry.getKey().sendMessage(ChatColor.DARK_GREEN + "** " + ChatColor.GREEN + "Du bist wieder lebendig!" + ChatColor.DARK_GREEN + " **");
                 if (info.isLooted() && !info.getReason().isEquipmentOnly()) {
-                    entry.getKey().sendMessage(ChatColor.GREEN + "Deine Leiche wurde jedoch von "
-                            + ChatColor.YELLOW + UUIDUtil.getNameFromUUID(info.getRobberId()) + ChatColor.GREEN + " ausgeraubt!");
+                    entry.getKey().sendMessage(ChatColor.DARK_GREEN + "** " + ChatColor.RED + "Deine Leiche wurde jedoch von "
+                            + ChatColor.YELLOW + UUIDUtil.getNameFromUUID(info.getRobberId()) + ChatColor.GREEN + " ausgeraubt!" + ChatColor.DARK_GREEN + " **");
                 }
                 RaidCraft.getComponent(RCGraveyardsPlugin.class).getCorpseManager().reviveGhost(entry.getKey(), info.getReason());
                 ghosts.remove(entry.getKey());
                 continue;
             }
-            entry.getKey().sendMessage(ChatColor.GREEN + "* " + delay);
+            ChatColor color;
+            if(delay > 6) color = ChatColor.GREEN;
+            else if(delay > 3) color = ChatColor.GOLD;
+            else color = ChatColor.DARK_RED;
+            entry.getKey().sendMessage(ChatColor.DARK_GREEN + "** " + color + delay + ChatColor.DARK_GREEN + " **");
         }
     }
 }
