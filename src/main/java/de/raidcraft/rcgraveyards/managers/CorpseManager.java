@@ -70,7 +70,7 @@ public class CorpseManager {
         CorpseTrait trait = npc.getTrait(CorpseTrait.class);
         // player is not death
         if (plugin.getPlayerManager().getLastDeath(trait.getPlayerId(), npc.getEntity().getWorld().getName()) == 0) {
-            RaidCraft.LOGGER.warning("[RCGraveyards] Removed corpse of not death player '" + trait.getPlayerName() + "'");
+            RaidCraft.LOGGER.warning("[RCGraveyards] Removed corpse on spawn of not dead player '" + trait.getPlayerName() + "'");
             NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
             return;
         }
@@ -90,6 +90,8 @@ public class CorpseManager {
             RaidCraft.LOGGER.warning("[Graveyards] Cannot delete Corpse: " + playerId);
             return;
         }
+        CorpseTrait trait = npc.getTrait(CorpseTrait.class);
+        RaidCraft.LOGGER.info("[RCGraveyards] Removed corpse of revived player '" + trait.getPlayerName() + "'");
         NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
     }
 
@@ -100,7 +102,10 @@ public class CorpseManager {
             return;
         }
 
+        CorpseTrait trait = npc.getTrait(CorpseTrait.class);
+
         if (!registeredCorpse.containsKey(playerId)) {
+            RaidCraft.LOGGER.warning("[RCGraveyards] Removed corpse on click of not dead player '" + trait.getPlayerName() + "'");
             NPC_Manager.getInstance().removeNPC(npc, RCGraveyardsPlugin.REGISTER_HOST);
             return;
         }
