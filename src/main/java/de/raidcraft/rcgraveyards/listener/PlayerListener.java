@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -295,6 +296,7 @@ public class PlayerListener implements Listener {
     {
         // check if player
         if(event.getEntityType() != EntityType.PLAYER) return;
+        if (event.getMount() instanceof Boat) return;
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player)event.getEntity();
