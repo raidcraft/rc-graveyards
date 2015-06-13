@@ -35,9 +35,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.material.Button;
-import org.bukkit.material.Door;
-import org.bukkit.material.Lever;
 import org.bukkit.plugin.Plugin;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -285,17 +282,33 @@ public class PlayerListener implements Listener {
         }
 
         // accept doors
-        if(event.getClickedBlock() != null && event.getClickedBlock() instanceof Door) {
+        if(event.getClickedBlock() != null && (
+                event.getClickedBlock().getType() == Material.ACACIA_DOOR ||
+                event.getClickedBlock().getType() == Material.BIRCH_DOOR ||
+                event.getClickedBlock().getType() == Material.DARK_OAK_DOOR ||
+                event.getClickedBlock().getType() == Material.JUNGLE_DOOR ||
+                event.getClickedBlock().getType() == Material.SPRUCE_DOOR ||
+                event.getClickedBlock().getType() == Material.TRAP_DOOR ||
+                event.getClickedBlock().getType() == Material.WOOD_DOOR
+
+        )) {
             return;
         }
 
         // accept buttons
-        if(event.getClickedBlock() != null && event.getClickedBlock() instanceof Button) {
+        if(event.getClickedBlock() != null && (
+                event.getClickedBlock().getType() == Material.STONE_BUTTON ||
+                event.getClickedBlock().getType() == Material.WOOD_BUTTON
+
+        )) {
             return;
         }
 
         // accept levers
-        if(event.getClickedBlock() != null && event.getClickedBlock() instanceof Lever) {
+        if(event.getClickedBlock() != null && (
+                event.getClickedBlock().getType() == Material.LEVER
+
+        )) {
             return;
         }
 
