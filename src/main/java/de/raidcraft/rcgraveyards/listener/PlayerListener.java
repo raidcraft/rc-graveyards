@@ -35,6 +35,9 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.material.Button;
+import org.bukkit.material.Door;
+import org.bukkit.material.Lever;
 import org.bukkit.plugin.Plugin;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -280,12 +283,19 @@ public class PlayerListener implements Listener {
                 return;
             }
         }
-        if (event.getClickedBlock() != null
-                && (event.getClickedBlock().getType() == Material.WOOD_DOOR
-                || event.getClickedBlock().getType() == Material.WOOD_BUTTON
-                || event.getClickedBlock().getType() == Material.STONE_BUTTON
-                || event.getClickedBlock().getType() == Material.LEVER
-        )) {
+
+        // accept doors
+        if(event.getClickedBlock() != null && event.getClickedBlock() instanceof Door) {
+            return;
+        }
+
+        // accept buttons
+        if(event.getClickedBlock() != null && event.getClickedBlock() instanceof Button) {
+            return;
+        }
+
+        // accept levers
+        if(event.getClickedBlock() != null && event.getClickedBlock() instanceof Lever) {
             return;
         }
 
@@ -298,7 +308,7 @@ public class PlayerListener implements Listener {
     {
         // check if player
         if(event.getEntityType() != EntityType.PLAYER) return;
-        if (event.getMount() instanceof Boat) return;
+        if (event.getMount().getType() == EntityType.BOAT) return;
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         Player player = (Player)event.getEntity();
