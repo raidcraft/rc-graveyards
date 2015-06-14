@@ -283,13 +283,14 @@ public class PlayerListener implements Listener {
 
         // accept doors
         if(event.getClickedBlock() != null && (
+                event.getClickedBlock().getType() == Material.DARK_OAK_DOOR ||
                 event.getClickedBlock().getType() == Material.ACACIA_DOOR ||
                 event.getClickedBlock().getType() == Material.BIRCH_DOOR ||
                 event.getClickedBlock().getType() == Material.DARK_OAK_DOOR ||
                 event.getClickedBlock().getType() == Material.JUNGLE_DOOR ||
                 event.getClickedBlock().getType() == Material.SPRUCE_DOOR ||
                 event.getClickedBlock().getType() == Material.TRAP_DOOR ||
-                event.getClickedBlock().getType() == Material.WOOD_DOOR
+                event.getClickedBlock().getType() == Material.WOODEN_DOOR
 
         )) {
             return;
