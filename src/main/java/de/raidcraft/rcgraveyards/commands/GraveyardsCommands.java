@@ -126,7 +126,7 @@ public class GraveyardsCommands {
                 desc = "Warp to graveyard",
                 min = 1
         )
-        @CommandPermissions("rcgraveyards.admin")
+        @CommandPermissions("rcgraveyards.warp")
         public void warp(CommandContext context, CommandSender sender) throws CommandException {
 
             if (sender instanceof ConsoleCommandSender) {
