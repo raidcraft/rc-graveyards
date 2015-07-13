@@ -5,5 +5,4 @@ author: Strasse36
 website: www.raid-craft.de
 depend: [RaidCraft-API, RCSkills]
 softdepend: [Dynmap, Citizens]
-softdepend: [RCConversations2]
 database: true
