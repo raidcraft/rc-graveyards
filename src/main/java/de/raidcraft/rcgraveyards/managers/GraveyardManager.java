@@ -2,7 +2,6 @@ package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.npc.NPC_Manager;
-import de.raidcraft.rcconversations.npc.NPC_Conservations_Manager;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
@@ -85,8 +84,8 @@ public class GraveyardManager {
     public void spawnNecromancerNPCs() {
 
         for(Graveyard graveyard : graveyardsByName.values()) {
-            NPC_Conservations_Manager.getInstance().spawnNonPersistNpcConservations(
-                    graveyard.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
+            //NPC_Conservations_Manager.getInstance().spawnNonPersistNpcConservations(
+            //        graveyard.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
         }
     }
 
