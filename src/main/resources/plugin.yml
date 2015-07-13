@@ -4,5 +4,6 @@ version: ${project.version}#${build.number}
 author: Strasse36
 website: www.raid-craft.de
 depend: [RaidCraft-API, RCSkills]
-softdepend: [Dynmap, RCConversations, Citizens]
+softdepend: [Dynmap, Citizens]
+softdepend: [RCConversations2]
 database: true

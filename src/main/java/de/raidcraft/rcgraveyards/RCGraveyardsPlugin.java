@@ -6,13 +6,9 @@ import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
 import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.api.npc.RC_Traits;
-import de.raidcraft.rcconversations.actions.ActionManager;
 import de.raidcraft.rcgraveyards.actions.RevivePlayerAction;
 import de.raidcraft.rcgraveyards.commands.GhostsCommand;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
-import de.raidcraft.rcgraveyards.conversations.CheckGraveyardCompetenceAction;
-import de.raidcraft.rcgraveyards.conversations.CheckIfGhostAction;
-import de.raidcraft.rcgraveyards.conversations.ReviveGhostAction;
 import de.raidcraft.rcgraveyards.listener.MobListener;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
 import de.raidcraft.rcgraveyards.managers.CorpseManager;
@@ -66,9 +62,9 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerCommands(GraveyardsCommands.class);
         registerCommands(GhostsCommand.class);
 
-        ActionManager.registerAction(new ReviveGhostAction());
-        ActionManager.registerAction(new CheckGraveyardCompetenceAction());
-        ActionManager.registerAction(new CheckIfGhostAction());
+//        ActionManager.registerAction(new ReviveGhostAction());
+//        ActionManager.registerAction(new CheckGraveyardCompetenceAction());
+//        ActionManager.registerAction(new CheckIfGhostAction());
 
         ActionAPI.register(this)
                 .trigger(new GraveyardsPlayerTrigger())
