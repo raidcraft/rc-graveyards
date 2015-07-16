@@ -10,12 +10,12 @@ import java.util.UUID;
 @Getter
 public class ReviveInformation {
 
-    private int reviveDelay;
+    private long reviveDelay;
     private boolean looted;
     private UUID robberId;
     private ReviveReason reason;
 
-    public ReviveInformation(int reviveDelay, boolean looted, UUID robberId, ReviveReason reason) {
+    public ReviveInformation(long reviveDelay, boolean looted, UUID robberId, ReviveReason reason) {
 
         this.reviveDelay = reviveDelay;
         this.looted = looted;

@@ -4,11 +4,13 @@ import de.raidcraft.api.BasePlugin;
 import de.raidcraft.api.action.ActionAPI;
 import de.raidcraft.api.config.ConfigurationBase;
 import de.raidcraft.api.config.Setting;
+import de.raidcraft.api.conversations.Conversations;
 import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.api.npc.RC_Traits;
 import de.raidcraft.rcgraveyards.actions.RevivePlayerAction;
 import de.raidcraft.rcgraveyards.commands.GhostsCommand;
 import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
+import de.raidcraft.rcgraveyards.conversations.GraveyardConversation;
 import de.raidcraft.rcgraveyards.listener.MobListener;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
 import de.raidcraft.rcgraveyards.managers.CorpseManager;
@@ -18,14 +20,13 @@ import de.raidcraft.rcgraveyards.managers.GraveyardManager;
 import de.raidcraft.rcgraveyards.managers.PlayerManager;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.npc.NPCListener;
+import de.raidcraft.rcgraveyards.requirements.IsGhostRequirement;
 import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
 import de.raidcraft.rcgraveyards.trigger.GraveyardsPlayerTrigger;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,15 +63,13 @@ public class RCGraveyardsPlugin extends BasePlugin {
         registerCommands(GraveyardsCommands.class);
         registerCommands(GhostsCommand.class);
 
-//        ActionManager.registerAction(new ReviveGhostAction());
-//        ActionManager.registerAction(new CheckGraveyardCompetenceAction());
-//        ActionManager.registerAction(new CheckIfGhostAction());
-
         ActionAPI.register(this)
                 .trigger(new GraveyardsPlayerTrigger())
-		        .requirement("player.isAlive", (Player player, ConfigurationSection config) -> !getGhostManager().isGhost(player))
-                .requirement("player.isGhost", (Player player, ConfigurationSection config) -> getGhostManager().isGhost(player))
-		        .action("player.revive", new RevivePlayerAction());
+                .global()
+                .action(new RevivePlayerAction())
+                .requirement(new IsGhostRequirement());
+
+        Conversations.registerConversationType("graveyard-necromancer", GraveyardConversation.class);
 
         // init managers
         graveyardManager = new GraveyardManager(this);

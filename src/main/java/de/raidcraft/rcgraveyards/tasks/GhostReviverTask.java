@@ -49,7 +49,7 @@ public class GhostReviverTask implements Runnable {
 
             ReviveInformation info = entry.getValue();
             info.decreaseReviveDelay();
-            int delay = info.getReviveDelay();
+            long delay = info.getReviveDelay();
             if (delay > 10) continue;
             if (delay <= 0) {
                 entry.getKey().sendMessage(ChatColor.DARK_GREEN + "** " + ChatColor.GREEN + "Du bist wieder lebendig!" + ChatColor.DARK_GREEN + " **");
