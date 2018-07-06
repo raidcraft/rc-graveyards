@@ -1,10 +1,6 @@
 package de.raidcraft.rcgraveyards.commands;
 
-import com.sk89q.minecraft.util.commands.Command;
-import com.sk89q.minecraft.util.commands.CommandContext;
-import com.sk89q.minecraft.util.commands.CommandException;
-import com.sk89q.minecraft.util.commands.CommandPermissions;
-import com.sk89q.minecraft.util.commands.NestedCommand;
+import com.sk89q.minecraft.util.commands.*;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
@@ -32,7 +28,7 @@ public class GraveyardsCommands {
             desc = "Main Command"
     )
     @NestedCommand(NestedCommands.class)
-    public void rcg(CommandContext context, CommandSender sender) throws CommandException {
+    public void rcg(CommandContext context, CommandSender sender) {
 
     }
 
@@ -50,7 +46,7 @@ public class GraveyardsCommands {
                 desc = "Reload plugin"
         )
         @CommandPermissions("rcgraveyards.admin")
-        public void reload(CommandContext context, CommandSender sender) throws CommandException {
+        public void reload(CommandContext context, CommandSender sender) {
 
             RaidCraft.getComponent(RCGraveyardsPlugin.class).reload();
             sender.sendMessage(ChatColor.GREEN + "RCGraveyards wurde neugeladen!");
@@ -60,7 +56,8 @@ public class GraveyardsCommands {
                 aliases = {"create"},
                 desc = "Create graveyard",
                 min = 1,
-                flags = "m"
+                flags = "m",
+                help = "<name> [radius]\n-m: Muss nicht entdeckt werden (Hauptfriedhof)"
         )
         @CommandPermissions("rcgraveyards.admin")
         public void create(CommandContext context, CommandSender sender) throws CommandException {
@@ -90,13 +87,6 @@ public class GraveyardsCommands {
 
             Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getUniqueId());
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
-//            if(RCGraveyardsPlugin.SAVE_NPCS_EXTERNAL) {
-//                NPC_Conservations_Manager.getInstance().spawnPersistNpcConservations(
-//                        player.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
-//            } else {
-//                NPC_Conservations_Manager.getInstance().spawnNonPersistNpcConservations(
-//                        player.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
-//            }
             sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name + ChatColor.GREEN + " wurde erstellt!");
         }
 
@@ -151,7 +141,7 @@ public class GraveyardsCommands {
                 desc = "List all graveyards"
         )
         @CommandPermissions("rcgraveyards.admin")
-        public void list(CommandContext context, CommandSender sender) throws CommandException {
+        public void list(CommandContext context, CommandSender sender) {
 
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
             Player player = (Player) sender;
@@ -178,7 +168,7 @@ public class GraveyardsCommands {
                 desc = "Test command"
         )
         @CommandPermissions("rcgraveyards.admin")
-        public void test(CommandContext context, CommandSender sender) throws CommandException {
+        public void test(CommandContext context, CommandSender sender) {
 
             RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
             Player player = (Player) sender;
@@ -195,7 +185,7 @@ public class GraveyardsCommands {
                 aliases = {"discovered", "explored", "visited"},
                 desc = "Show all discovered Graveyards"
         )
-        public void discovered(CommandContext context, CommandSender sender) throws CommandException {
+        public void discovered(CommandContext context, CommandSender sender) {
 
             Player player = (Player) sender;
             String list = "";

@@ -33,8 +33,8 @@ public class ItemStackTable extends Table {
             executeUpdate(
                     "CREATE TABLE `" + getTableName() + "` (\n" +
                             "`id` INT NOT NULL AUTO_INCREMENT ,\n" +
-                            "`player` VARCHAR( 32 ) ,\n" +
-                            "`player_id` VARCHAR( 40 ) NOT NULL ,\n" +
+                            "`player` VARCHAR( 128 ) ,\n" +
+                            "`player_id` VARCHAR( 128 ) NOT NULL ,\n" +
                             "`world` VARCHAR ( 32 ) NOT NULL ,\n" +
                             "`material` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`durability` INT( 11 ) NOT NULL ,\n" +

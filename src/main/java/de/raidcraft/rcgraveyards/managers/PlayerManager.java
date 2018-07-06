@@ -15,12 +15,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Philip Urban
@@ -45,7 +40,8 @@ public class PlayerManager {
         players.remove(player.getUniqueId());
     }
 
-    public GraveyardPlayer getGraveyardPlayer(UUID player) {
+    public GraveyardPlayer
+    getGraveyardPlayer(UUID player) {
         return players.get(player);
     }
 

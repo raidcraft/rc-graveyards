@@ -1,7 +1,5 @@
 package de.raidcraft.rcgraveyards.listener;
 
-import com.mewin.WGCustomFlags.FlagManager;
-import com.mewin.WGCustomFlags.flags.CustomLocationFlag;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.Graveyard;
@@ -10,12 +8,10 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
 import de.raidcraft.rcgraveyards.util.LocationUtil;
 import de.raidcraft.rcgraveyards.util.MovementChecker;
-import de.raidcraft.rcgraveyards.util.ReviveReason;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Boat;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -27,14 +23,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.Plugin;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -102,16 +91,16 @@ public class PlayerListener implements Listener {
         if (deathLocation == null) return;
 
         // check for world guard respawn plugin if support is enabled
-        if (plugin.getConfig().worldGuardRespawnSupport && worldGuard != null) {
-            CustomLocationFlag customFlag = (CustomLocationFlag) FlagManager.getCustomFlag("respawn-location");
-            com.sk89q.worldedit.Location flagValue = worldGuard.getRegionManager(event.getPlayer().getWorld()).getApplicableRegions(deathLocation).queryValue(worldGuard.wrapPlayer(player), customFlag);
-            if (flagValue != null) {
-                event.setRespawnLocation(com.sk89q.worldedit.bukkit.BukkitUtil.toLocation(flagValue));
-                graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
-                graveyardPlayer.setGhost(false);
-                return;
-            }
-        }
+//        if (plugin.getConfig().worldGuardRespawnSupport && worldGuard != null) {
+//            CustomLocationFlag customFlag = (CustomLocationFlag) FlagManager.getCustomFlag("respawn-location");
+//            com.sk89q.worldedit.Location flagValue = worldGuard.getRegionManager(event.getPlayer().getWorld()).getApplicableRegions(deathLocation).queryValue(worldGuard.wrapPlayer(player), customFlag);
+//            if (flagValue != null) {
+//                event.setRespawnLocation(com.sk89q.worldedit.bukkit.BukkitUtil.toLocation(flagValue));
+//                graveyardPlayer.restoreInventory(ReviveReason.CUSTOM);
+//                graveyardPlayer.setGhost(false);
+//                return;
+//            }
+//        }
 
         Graveyard graveyard = graveyardPlayer.getClosestGraveyard(deathLocation);
         if (graveyard == null) return;
@@ -229,7 +218,7 @@ public class PlayerListener implements Listener {
 
             if (graveyardPlayer.isGhost()) event.setCancelled(true);
         } else if (event.getEntity() instanceof Player && event.getDamager() instanceof Monster) {
-            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(((Player) event.getEntity()).getUniqueId());
+            GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(event.getEntity().getUniqueId());
             if (graveyardPlayer == null || !graveyardPlayer.isGhost()) {
                 return;
             }

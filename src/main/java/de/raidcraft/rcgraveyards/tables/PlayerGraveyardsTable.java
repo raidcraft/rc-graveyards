@@ -28,9 +28,9 @@ public class PlayerGraveyardsTable extends Table {
             getConnection().prepareStatement(
                     "CREATE TABLE `" + getTableName() + "` (" +
                             "`id` INT NOT NULL AUTO_INCREMENT, " +
-                            "`player` VARCHAR( 32 ), " +
-                            "`player_id` VARCHAR( 32 ) NOT NULL, " +
-                            "`graveyard` VARCHAR( 32 ) NOT NULL, " +
+                            "`player` VARCHAR( 128 ), " +
+                            "`player_id` VARCHAR( 128 ) NOT NULL, " +
+                            "`graveyard` VARCHAR( 128 ) NOT NULL, " +
                             "`discovered` VARCHAR ( 32 ) NOT NULL, " +
                             "PRIMARY KEY ( `id` )" +
                             ")"

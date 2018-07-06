@@ -30,17 +30,17 @@ public class GraveyardsTable extends Table {
             getConnection().prepareStatement(
                     "CREATE TABLE `" + getTableName() + "` (" +
                             "`id` INT NOT NULL AUTO_INCREMENT, " +
-                            "`name` VARCHAR( 64 ) NOT NULL, " +
-                            "`world` VARCHAR ( 32 ) NOT NULL ,\n" +
+                            "`name` VARCHAR( 128 ) NOT NULL, " +
+                            "`world` VARCHAR ( 128 ) NOT NULL ,\n" +
                             "`x` INT( 11 ) NOT NULL ,\n" +
                             "`y` INT( 11 ) NOT NULL ,\n" +
                             "`z` INT( 11 ) NOT NULL ,\n" +
                             "`size` INT( 11 ) NOT NULL ,\n" +
                             "`main` TINYINT( 1 ) NOT NULL, " +
                             "`radius` INT( 11 ) NOT NULL ,\n" +
-                            "`creator` VARCHAR ( 32 ) , " +
-                            "`creator_id` VARCHAR ( 40 ) NOT NULL, " +
-                            "`created` VARCHAR ( 32 ) NOT NULL, " +
+                            "`creator` VARCHAR ( 128 ) , " +
+                            "`creator_id` VARCHAR ( 128 ) NOT NULL, " +
+                            "`created` VARCHAR ( 128 ) NOT NULL, " +
                             "PRIMARY KEY ( `id` )" +
                             ")"
             ).execute();

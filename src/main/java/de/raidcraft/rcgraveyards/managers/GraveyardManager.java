@@ -1,6 +1,7 @@
 package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.RaidCraft;
+import de.raidcraft.api.conversations.Conversations;
 import de.raidcraft.api.npc.NPC_Manager;
 import de.raidcraft.rcgraveyards.Graveyard;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
@@ -10,11 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Philip Urban
@@ -84,9 +81,14 @@ public class GraveyardManager {
     public void spawnNecromancerNPCs() {
 
         for(Graveyard graveyard : graveyardsByName.values()) {
-            //NPC_Conservations_Manager.getInstance().spawnNonPersistNpcConservations(
-            //        graveyard.getLocation(), "Geisterheiler", plugin.getName(), plugin.getConfig().necromancerConversationName);
+            spawnNecromancerNPC(graveyard);
         }
+    }
+
+    private void spawnNecromancerNPC(Graveyard graveyard) {
+        Location location = graveyard.getLocation();
+        location.setY(location.getY() + 1.5D);
+        Conversations.spawnConversationHost(plugin.getName(), "Geisterheiler", plugin.getConfig().necromancerConversationName, location);
     }
 
     public void despawnNecromancerNPCs() {

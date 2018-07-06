@@ -7,13 +7,13 @@ import de.raidcraft.api.npc.RC_Traits;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import lombok.Getter;
 import lombok.Setter;
-import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.citizensnpcs.api.trait.trait.Spawned;
 import net.citizensnpcs.trait.CurrentLocation;
+import net.citizensnpcs.trait.LookClose;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
@@ -95,7 +95,7 @@ public class CorpseTrait extends Trait {
         npc.addTrait(Spawned.class);
         npc.getTrait(Spawned.class).setSpawned(true);
         npc.data().set(NPC.DEFAULT_PROTECTED_METADATA, true);
-        npc.addTrait(CitizensAPI.getTraitFactory().getTraitClass("lookclose"));
+        npc.addTrait(LookClose.class);
 
         npc.addTrait(CurrentLocation.class);
         npc.getTrait(CurrentLocation.class).setLocation(location);

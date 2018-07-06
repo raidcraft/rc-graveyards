@@ -5,7 +5,6 @@ import de.raidcraft.api.database.Table;
 import de.raidcraft.rcgraveyards.deathinfo.HeroDeathInfo;
 import de.raidcraft.rcgraveyards.deathinfo.OfflinePlayerDeathInfo;
 import de.raidcraft.util.DateUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -33,11 +32,11 @@ public class DeathsTable extends Table {
             executeUpdate(
                     "CREATE TABLE `" + getTableName() + "` (\n" +
                             "`id` INT NOT NULL AUTO_INCREMENT ,\n" +
-                            "`player` VARCHAR( 32 ) ,\n" +
-                            "`player_id` VARCHAR( 32 ) NOT NULL ,\n" +
+                            "`player` VARCHAR( 128) ,\n" +
+                            "`player_id` VARCHAR( 128 ) NOT NULL ,\n" +
                             "`date` VARCHAR( 32 ) NOT NULL ,\n" +
                             "`pvp` TINYINT NOT NULL , \n" +
-                            "`world` VARCHAR ( 32 ) NOT NULL ,\n" +
+                            "`world` VARCHAR ( 128 ) NOT NULL ,\n" +
                             "`x` INT( 11 ) NOT NULL ,\n" +
                             "`y` INT( 11 ) NOT NULL ,\n" +
                             "`z` INT( 11 ) NOT NULL ,\n" +
