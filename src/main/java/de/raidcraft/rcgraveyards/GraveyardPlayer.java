@@ -23,10 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Philip Urban
@@ -132,8 +129,10 @@ public class GraveyardPlayer {
 
     public void restoreInventory(double modifier, ReviveReason reason) {
 
-        List<ItemStack> loot = RaidCraft.getComponent(RCGraveyardsPlugin.class).getPlayerManager().getDeathInventory(player.getUniqueId(), player.getWorld().getName());
-        for (ItemStack itemStack : loot) {
+        Set<Map.Entry<Integer, ItemStack>> entries = RaidCraft.getComponent(RCGraveyardsPlugin.class).getPlayerManager()
+                .getDeathInventory(player.getUniqueId(), player.getWorld().getName()).entrySet();
+        for (Map.Entry<Integer, ItemStack> entry : entries) {
+            ItemStack itemStack = entry.getValue();
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 if (modifier > 0 && CustomItemUtil.isCustomItem(itemStack)) {
                     CustomItemStack customItem = RaidCraft.getCustomItem(itemStack);
@@ -156,7 +155,7 @@ public class GraveyardPlayer {
                     ItemUtils.Item item = ItemUtils.Item.getItemByMaterial(itemStack.getType());
                     if (reason.isEquipmentOnly() && (item == null || item.getType() != ItemUtils.ItemType.TOOL)) continue;
                 }
-                PlayerInventoryUtil.putInInventory(player, itemStack);
+                PlayerInventoryUtil.putInInventory(player, itemStack, entry.getKey());
             }
         }
     }

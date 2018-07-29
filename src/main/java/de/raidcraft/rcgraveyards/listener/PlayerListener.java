@@ -71,7 +71,7 @@ public class PlayerListener implements Listener {
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
         graveyardPlayer.getLastDeath().updateLocation(player.getLocation());
         graveyardPlayer.getLastDeath().updateTimestamp(System.currentTimeMillis());
-        graveyardPlayer.getLastDeath().saveInventory(event.getDrops());
+        graveyardPlayer.getLastDeath().saveInventory(player.getInventory());
         graveyardPlayer.save();
         event.getDrops().clear();
     }

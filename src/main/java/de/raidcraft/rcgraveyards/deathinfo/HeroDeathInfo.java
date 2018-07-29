@@ -4,7 +4,6 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.storage.ItemStorage;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.api.AbstractPlayerDeathInfo;
-import de.raidcraft.rcgraveyards.api.PlayerDeathInfo;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
 import de.raidcraft.skills.SkillsPlugin;
 import de.raidcraft.skills.api.combat.AttackSource;
@@ -13,10 +12,8 @@ import de.raidcraft.util.CustomItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-import java.util.UUID;
 
 /**
  * @author Philip Urban
@@ -37,16 +34,18 @@ public class HeroDeathInfo extends AbstractPlayerDeathInfo {
         this.hero = RaidCraft.getComponent(SkillsPlugin.class).getCharacterManager().getHero(player);
     }
 
-    public void saveInventory(List<ItemStack> items) {
+    public void saveInventory(Inventory inventory) {
 
         ItemStorage itemStorage = new ItemStorage("graveyards");
-        for (ItemStack itemStack : items) {
+        for (int i = 0; i < inventory.getContents().length; i++) {
+            ItemStack itemStack = inventory.getContents()[i];
             if (itemStack == null || itemStack.getType() == Material.AIR) continue;
 
             boolean lootable = !CustomItemUtil.isEquipment(itemStack);
             int storedItemId = itemStorage.storeObject(itemStack);
             TStoredItem storedItem = new TStoredItem();
             storedItem.setStorageId(storedItemId);
+            storedItem.setPosition(i);
             storedItem.setPlayerId(hero.getPlayer().getUniqueId());
             storedItem.setWorld(hero.getPlayer().getWorld().getName());
             storedItem.setLootable(lootable);

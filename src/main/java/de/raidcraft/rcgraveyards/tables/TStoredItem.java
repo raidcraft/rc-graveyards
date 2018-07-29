@@ -20,6 +20,7 @@ public class TStoredItem {
     @Id
     private int id;
     private int storageId;
+    private int position;
     private boolean lootable;
     private UUID playerId;
     private String world;

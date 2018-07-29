@@ -21,4 +21,7 @@ public class PlayerInventoryUtil {
         player.updateInventory();
     }
 
+    public static void putInInventory(Player player, ItemStack itemStack, int position) {
+        player.getInventory().setItem(position, itemStack);
+    }
 }

@@ -115,10 +115,10 @@ public class PlayerManager {
         return items;
     }
 
-    public List<ItemStack> getDeathInventory(UUID corpseId, String world) {
+    public Map<Integer, ItemStack> getDeathInventory(UUID corpseId, String world) {
 
         ItemStorage itemStorage = new ItemStorage("graveyards");
-        List<ItemStack> items = new ArrayList<>();
+        Map<Integer, ItemStack> items = new HashMap<>();
         List<TStoredItem> storedItems = RaidCraft.getDatabase(RCGraveyardsPlugin.class)
                 .find(TStoredItem.class).where().ieq("player_id", corpseId.toString()).ieq("world", world).findList();
 
@@ -130,7 +130,7 @@ public class PlayerManager {
             } catch (StorageException e) {
                 continue;
             }
-            items.add(item);
+            items.put(storedItem.getPosition(), item);
             RaidCraft.getDatabase(RCGraveyardsPlugin.class).delete(storedItem);
         }
         return items;
