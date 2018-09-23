@@ -19,7 +19,7 @@ public class RevivePlayerAction implements Action<Player> {
             value = "player.revive",
             desc = "Revives the given player with the given reason. The reason influenced the damage done to the items.",
             conf = {
-                    "delay: 15s",
+                    "delay: 0s",
                     "reason: CUSTOM/NECROMANCER(25%)/COMMAND/FOUND_CORPSE(10%)"
             },
             aliases = "REVIVE_GHOST"
@@ -27,7 +27,7 @@ public class RevivePlayerAction implements Action<Player> {
     @Override
     public void accept(Player player, ConfigurationSection config) {
 
-        long delay = TimeUtil.parseTimeAsTicks(config.getString("delay", "15s"));
+        long delay = TimeUtil.parseTimeAsTicks(config.getString("delay", "0"));
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
