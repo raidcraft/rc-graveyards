@@ -13,17 +13,10 @@ import de.raidcraft.rcgraveyards.commands.GraveyardsCommands;
 import de.raidcraft.rcgraveyards.conversations.GraveyardConversation;
 import de.raidcraft.rcgraveyards.listener.MobListener;
 import de.raidcraft.rcgraveyards.listener.PlayerListener;
-import de.raidcraft.rcgraveyards.managers.CorpseManager;
-import de.raidcraft.rcgraveyards.managers.DynmapManager;
-import de.raidcraft.rcgraveyards.managers.GhostManager;
-import de.raidcraft.rcgraveyards.managers.GraveyardManager;
-import de.raidcraft.rcgraveyards.managers.PlayerManager;
+import de.raidcraft.rcgraveyards.managers.*;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.npc.NPCListener;
 import de.raidcraft.rcgraveyards.requirements.IsGhostRequirement;
-import de.raidcraft.rcgraveyards.tables.DeathsTable;
-import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
-import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.tables.TStoredItem;
 import de.raidcraft.rcgraveyards.trigger.GraveyardsPlayerTrigger;
 import org.bukkit.Bukkit;
@@ -56,9 +49,10 @@ public class RCGraveyardsPlugin extends BasePlugin {
 
         config = configure(new LocalConfiguration(this));
 
-        registerTable(GraveyardsTable.class, new GraveyardsTable());
-        registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
-        registerTable(DeathsTable.class, new DeathsTable());
+        // TODO: refactor to ORM ebean
+//        registerTable(GraveyardsTable.class, new GraveyardsTable());
+//        registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
+//        registerTable(DeathsTable.class, new DeathsTable());
 
         registerCommands(GraveyardsCommands.class);
         registerCommands(GhostsCommand.class);
