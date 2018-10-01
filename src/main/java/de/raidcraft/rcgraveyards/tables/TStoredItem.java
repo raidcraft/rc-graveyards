@@ -14,7 +14,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name = "rcgraveyards_items")
+@Table(name = "rc_graveyards_items")
 public class TStoredItem {
 
     @Id

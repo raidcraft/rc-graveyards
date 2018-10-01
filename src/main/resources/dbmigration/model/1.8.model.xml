@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="rc_graveyards_items" pkName="pk_rc_graveyards_items">
+            <column name="id" type="integer" primaryKey="true"/>
+            <column name="storage_id" type="integer" notnull="true"/>
+            <column name="position" type="integer" notnull="true"/>
+            <column name="lootable" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="player_id" type="uuid"/>
+            <column name="world" type="varchar"/>
+        </createTable>
+    </changeSet>
+</migration>
