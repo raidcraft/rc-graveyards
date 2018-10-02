@@ -97,7 +97,7 @@ public class PlayerManager {
             table.addEntry(new GenericRDSValue<>(storedItem));
         }
         table.setCount(RDSRandom.getIntValue(plugin.getConfig().minLootCount, plugin.getConfig().maxLootCount));
-        for (RDSObject object : table.getResult()) {
+        for (RDSObject object : table.loot()) {
             if (object instanceof GenericRDSValue) {
                 Optional<TStoredItem> value = ((GenericRDSValue<TStoredItem>) object).getValue();
                 if (value.isPresent()) {
