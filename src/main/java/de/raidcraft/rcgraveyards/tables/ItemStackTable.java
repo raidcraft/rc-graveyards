@@ -106,7 +106,7 @@ public class ItemStackTable extends Table {
 
             while (resultSet.next()) {
                 ItemStack itemStack = new ItemStack(
-                        Material.getMaterial(resultSet.getString("material")),
+                        Material.matchMaterial(resultSet.getString("material")),
                         resultSet.getInt("amount"),
                         resultSet.getShort("durability")
                 );
