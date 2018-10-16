@@ -2,6 +2,7 @@ package de.raidcraft.rcgraveyards.managers;
 
 import de.raidcraft.RaidCraft;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
+import de.raidcraft.util.EntityMetaData;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -102,11 +103,11 @@ public class GhostManager implements Listener, de.raidcraft.api.player.GhostMana
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
         if (isGhost) {
             ghosts.add(player.getUniqueId());
-            player.setMetadata(RCGraveyardsPlugin.PLAYER_IS_GHOST_METADATA, new FixedMetadataValue(plugin, true));
+            player.setMetadata(EntityMetaData.GHOST, new FixedMetadataValue(plugin, true));
             addPotionEffects(player);
         } else {
             ghosts.remove(player.getUniqueId());
-            player.removeMetadata(RCGraveyardsPlugin.PLAYER_IS_GHOST_METADATA, plugin);
+            player.removeMetadata(EntityMetaData.GHOST, plugin);
             removePotionEffects(player);
             resetFakes(player);
         }
