@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class GhostManager implements Listener {
+public class GhostManager implements Listener, de.raidcraft.api.player.GhostManager {
 
     private static final long UPDATE_DELAY = 20L;
 
@@ -24,6 +24,7 @@ public class GhostManager implements Listener {
     public GhostManager(Plugin plugin) {
 
         createTask(plugin);
+        RaidCraft.registerComponent(de.raidcraft.api.player.GhostManager.class, this);
         // TODO: finish packet hiding
         //        ProtocolLibrary.getProtocolManager().addPacketListener(
         //            new PacketAdapter(plugin, ConnectionSide.SERVER_SIDE, Packets.Server.ENTITY_METADATA) {
@@ -79,6 +80,7 @@ public class GhostManager implements Listener {
      *
      * @return TRUE if it is, FALSE otherwise.
      */
+    @Override
     public boolean isGhost(Player player) {
 
         return player != null && ghosts.contains(player.getUniqueId());
