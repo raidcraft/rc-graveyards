@@ -6,3 +6,4 @@ website: www.raid-craft.de
 depend: [RaidCraft-API, RCSkills]
 softdepend: [Dynmap, Citizens]
 database: true
+api-version: 1.13
