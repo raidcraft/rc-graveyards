@@ -258,44 +258,52 @@ public class PlayerListener implements Listener {
             }
         }
         // boat placing
-        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.BOAT) {
+        if (event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.ACACIA_BOAT) {
             if (event.getAction() == Action.RIGHT_CLICK_AIR || (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
-                    event.getClickedBlock().getType() != Material.WATER && event.getClickedBlock().getType() != Material.STATIONARY_WATER)) {
+                    event.getClickedBlock().getType() != Material.WATER && event.getClickedBlock().getType() != Material.WATER)) {
                 event.setCancelled(true);
                 player.sendMessage(ChatColor.RED + "Du musst das Boot auf dem Wasser platzieren!");
                 return;
             } else if (event.getAction() == Action.RIGHT_CLICK_BLOCK &&
-                    (event.getClickedBlock().getType() == Material.WATER || event.getClickedBlock().getType() == Material.STATIONARY_WATER)) {
+                    (event.getClickedBlock().getType() == Material.WATER || event.getClickedBlock().getType() == Material.WATER)) {
                 return;
             }
         }
 
         // accept doors
-        if(event.getClickedBlock() != null && (
+        if (event.getClickedBlock() != null && (
                 event.getClickedBlock().getType() == Material.DARK_OAK_DOOR ||
-                event.getClickedBlock().getType() == Material.ACACIA_DOOR ||
-                event.getClickedBlock().getType() == Material.BIRCH_DOOR ||
-                event.getClickedBlock().getType() == Material.DARK_OAK_DOOR ||
-                event.getClickedBlock().getType() == Material.JUNGLE_DOOR ||
-                event.getClickedBlock().getType() == Material.SPRUCE_DOOR ||
-                event.getClickedBlock().getType() == Material.TRAP_DOOR ||
-                event.getClickedBlock().getType() == Material.WOODEN_DOOR
+                        event.getClickedBlock().getType() == Material.ACACIA_DOOR ||
+                        event.getClickedBlock().getType() == Material.BIRCH_DOOR ||
+                        event.getClickedBlock().getType() == Material.DARK_OAK_DOOR ||
+                        event.getClickedBlock().getType() == Material.JUNGLE_DOOR ||
+                        event.getClickedBlock().getType() == Material.SPRUCE_DOOR ||
+                        event.getClickedBlock().getType() == Material.ACACIA_TRAPDOOR ||
+                        event.getClickedBlock().getType() == Material.BIRCH_TRAPDOOR ||
+                        event.getClickedBlock().getType() == Material.DARK_OAK_TRAPDOOR ||
+                        event.getClickedBlock().getType() == Material.JUNGLE_TRAPDOOR ||
+                        event.getClickedBlock().getType() == Material.SPRUCE_TRAPDOOR
 
         )) {
             return;
         }
 
         // accept buttons
-        if(event.getClickedBlock() != null && (
+        if (event.getClickedBlock() != null && (
                 event.getClickedBlock().getType() == Material.STONE_BUTTON ||
-                event.getClickedBlock().getType() == Material.WOOD_BUTTON
+                        event.getClickedBlock().getType() == Material.ACACIA_BUTTON ||
+                        event.getClickedBlock().getType() == Material.BIRCH_BUTTON ||
+                        event.getClickedBlock().getType() == Material.DARK_OAK_BUTTON ||
+                        event.getClickedBlock().getType() == Material.JUNGLE_BUTTON ||
+                        event.getClickedBlock().getType() == Material.OAK_BUTTON ||
+                        event.getClickedBlock().getType() == Material.SPRUCE_BUTTON
 
         )) {
             return;
         }
 
         // accept levers
-        if(event.getClickedBlock() != null && (
+        if (event.getClickedBlock() != null && (
                 event.getClickedBlock().getType() == Material.LEVER
 
         )) {
@@ -307,14 +315,13 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
-    public void onMount(EntityMountEvent event)
-    {
+    public void onMount(EntityMountEvent event) {
         // check if player
-        if(event.getEntityType() != EntityType.PLAYER) return;
+        if (event.getEntityType() != EntityType.PLAYER) return;
         if (event.getMount().getType() == EntityType.BOAT) return;
 
         RCGraveyardsPlugin plugin = RaidCraft.getComponent(RCGraveyardsPlugin.class);
-        Player player = (Player)event.getEntity();
+        Player player = (Player) event.getEntity();
         GraveyardPlayer graveyardPlayer = plugin.getPlayerManager().getGraveyardPlayer(player.getUniqueId());
 
         if (graveyardPlayer == null) return;
@@ -344,8 +351,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event) {
 
-        if(event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL)
-        {
+        if (event.getCause() != PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
             return;
         }
 
@@ -362,7 +368,7 @@ public class PlayerListener implements Listener {
         }
 
         // cancel all ender pearl teleports 5 seconds after revive
-        if(graveyardPlayer.getLastRevive() > System.currentTimeMillis() -  5000) {
+        if (graveyardPlayer.getLastRevive() > System.currentTimeMillis() - 5000) {
             event.setCancelled(true);
         }
     }

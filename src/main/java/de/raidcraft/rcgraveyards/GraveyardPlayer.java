@@ -192,7 +192,7 @@ public class GraveyardPlayer {
             }, 1);
 
             PlayerInventoryUtil.putInInventory(player, new ItemStack(Material.ENDER_PEARL, 64));
-            PlayerInventoryUtil.putInInventory(player, new ItemStack(Material.BOAT, 2));
+            PlayerInventoryUtil.putInInventory(player, new ItemStack(Material.ACACIA_BOAT, 2));
             save();
         } else {
             player.setFireTicks(0);
