@@ -7,7 +7,6 @@ import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.api.PlayerDeathInfo;
 import de.raidcraft.rcgraveyards.deathinfo.OfflinePlayerDeathInfo;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
-import de.raidcraft.rcgraveyards.tables.DeathsTable;
 import de.raidcraft.rcgraveyards.tasks.GhostReviverTask;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.rcgraveyards.util.ReviveInformation;

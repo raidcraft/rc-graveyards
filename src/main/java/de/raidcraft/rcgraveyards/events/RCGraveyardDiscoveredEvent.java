@@ -1,6 +1,6 @@
 package de.raidcraft.rcgraveyards.events;
 
-import de.raidcraft.rcgraveyards.Graveyard;
+import de.raidcraft.rcgraveyards.api.Graveyard;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.bukkit.entity.Player;

@@ -1,6 +1,6 @@
 package de.raidcraft.rcgraveyards.managers;
 
-import de.raidcraft.rcgraveyards.Graveyard;
+import de.raidcraft.rcgraveyards.api.Graveyard;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.dynmap.DynmapAPI;

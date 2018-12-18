@@ -2,10 +2,10 @@ package de.raidcraft.rcgraveyards.commands;
 
 import com.sk89q.minecraft.util.commands.*;
 import de.raidcraft.RaidCraft;
-import de.raidcraft.rcgraveyards.Graveyard;
+import de.raidcraft.rcgraveyards.ConfiguredGraveyard;
+import de.raidcraft.rcgraveyards.api.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
-import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.reference.Colors;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -85,7 +85,7 @@ public class GraveyardsCommands {
                 radius = context.getInteger(2);
             }
 
-            Graveyard graveyard = new Graveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getUniqueId());
+            Graveyard graveyard = new ConfiguredGraveyard(name, player.getLocation(), size, context.hasFlag('m'), radius, player.getUniqueId());
             plugin.getGraveyardManager().registerNewGraveyard(graveyard);
             sender.sendMessage(ChatColor.GREEN + "Friedhof " + ChatColor.YELLOW + name + ChatColor.GREEN + " wurde erstellt!");
         }

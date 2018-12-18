@@ -17,7 +17,10 @@ import de.raidcraft.rcgraveyards.managers.*;
 import de.raidcraft.rcgraveyards.npc.CorpseTrait;
 import de.raidcraft.rcgraveyards.npc.NPCListener;
 import de.raidcraft.rcgraveyards.requirements.IsGhostRequirement;
-import de.raidcraft.rcgraveyards.tables.TStoredItem;
+import de.raidcraft.rcgraveyards.tables.TGraveyard;
+import de.raidcraft.rcgraveyards.tables.TPlayerDeath;
+import de.raidcraft.rcgraveyards.tables.TPlayerGraveyard;
+import de.raidcraft.rcgraveyards.tables.TPlayerRespawn;
 import de.raidcraft.rcgraveyards.trigger.GraveyardsPlayerTrigger;
 import org.bukkit.Bukkit;
 
@@ -48,11 +51,6 @@ public class RCGraveyardsPlugin extends BasePlugin {
         REGISTER_HOST = getName() + RCGraveyardsPlugin.NPC_REGISTER_SKELETON;
 
         config = configure(new LocalConfiguration(this));
-
-        // TODO: refactor to ORM ebean
-//        registerTable(GraveyardsTable.class, new GraveyardsTable());
-//        registerTable(PlayerGraveyardsTable.class, new PlayerGraveyardsTable());
-//        registerTable(DeathsTable.class, new DeathsTable());
 
         registerCommands(GraveyardsCommands.class);
         registerCommands(GhostsCommand.class);
@@ -108,7 +106,10 @@ public class RCGraveyardsPlugin extends BasePlugin {
     public List<Class<?>> getDatabaseClasses() {
 
         List<Class<?>> databases = new ArrayList<>();
-        databases.add(TStoredItem.class);
+        databases.add(TGraveyard.class);
+        databases.add(TPlayerDeath.class);
+        databases.add(TPlayerGraveyard.class);
+        databases.add(TPlayerRespawn.class);
         return databases;
     }
 

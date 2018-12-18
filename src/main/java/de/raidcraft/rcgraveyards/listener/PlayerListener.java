@@ -2,7 +2,7 @@ package de.raidcraft.rcgraveyards.listener;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import de.raidcraft.RaidCraft;
-import de.raidcraft.rcgraveyards.Graveyard;
+import de.raidcraft.rcgraveyards.api.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.tasks.CorpseCreateTask;
@@ -137,7 +137,7 @@ public class PlayerListener implements Listener {
         if (graveyardPlayer == null) {
             return;
         }
-        if (graveyardPlayer.knowGraveyard(graveyard)) {
+        if (graveyardPlayer.hasDiscovered(graveyard)) {
             return;
         }
 

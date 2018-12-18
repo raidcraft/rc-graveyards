@@ -6,7 +6,8 @@ import de.raidcraft.api.conversations.conversation.ConversationTemplate;
 import de.raidcraft.api.conversations.host.ConversationHost;
 import de.raidcraft.conversations.conversations.PlayerConversation;
 import de.raidcraft.conversations.hosts.NPCHost;
-import de.raidcraft.rcgraveyards.Graveyard;
+import de.raidcraft.rcgraveyards.ConfiguredGraveyard;
+import de.raidcraft.rcgraveyards.api.Graveyard;
 import de.raidcraft.rcgraveyards.GraveyardPlayer;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import lombok.Data;
@@ -21,7 +22,7 @@ import org.bukkit.entity.Player;
 public class GraveyardConversation extends PlayerConversation {
 
     private Graveyard playerGraveyard;
-    private Graveyard necroGraveyard;
+    private ConfiguredGraveyard necroGraveyard;
 
     public GraveyardConversation(Player player, ConversationTemplate conversationTemplate, ConversationHost conversationHost) {
 

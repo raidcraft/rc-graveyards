@@ -5,10 +5,9 @@ import de.raidcraft.api.items.CustomItem;
 import de.raidcraft.api.items.CustomItemException;
 import de.raidcraft.api.items.CustomItemStack;
 import de.raidcraft.api.items.ItemType;
+import de.raidcraft.rcgraveyards.api.Graveyard;
 import de.raidcraft.rcgraveyards.deathinfo.HeroDeathInfo;
 import de.raidcraft.rcgraveyards.events.RCGraveyardPlayerRevivedEvent;
-import de.raidcraft.rcgraveyards.tables.DeathsTable;
-import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import de.raidcraft.rcgraveyards.util.EquipmentDamageLevel;
 import de.raidcraft.rcgraveyards.util.PlayerInventoryUtil;
 import de.raidcraft.rcgraveyards.util.ReviveReason;
@@ -72,7 +71,7 @@ public class GraveyardPlayer {
         Graveyard closestGraveyard = null;
         for (Graveyard graveyard : graveyards.values()) {
             int newDistance = LocationUtil.getBlockDistance(location, graveyard.getLocation());
-            if (closestGraveyard == null || newDistance < distance && (graveyard.getRadius() == 0 || graveyard.getRadius() < newDistance)) {
+            if (closestGraveyard == null || newDistance < distance && (graveyard.getRespawnRadius() == 0 || graveyard.getRespawnRadius() < newDistance)) {
                 closestGraveyard = graveyard;
                 distance = newDistance;
             }
@@ -85,7 +84,7 @@ public class GraveyardPlayer {
         return getClosestGraveyard(getLastDeath().getLocation());
     }
 
-    public boolean knowGraveyard(Graveyard graveyard) {
+    public boolean hasDiscovered(Graveyard graveyard) {
 
         return graveyards.containsKey(graveyard.getName());
     }

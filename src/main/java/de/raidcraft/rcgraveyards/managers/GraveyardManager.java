@@ -3,10 +3,9 @@ package de.raidcraft.rcgraveyards.managers;
 import de.raidcraft.RaidCraft;
 import de.raidcraft.api.conversations.Conversations;
 import de.raidcraft.api.npc.NPC_Manager;
-import de.raidcraft.rcgraveyards.Graveyard;
+import de.raidcraft.rcgraveyards.ConfiguredGraveyard;
+import de.raidcraft.rcgraveyards.api.Graveyard;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
-import de.raidcraft.rcgraveyards.tables.GraveyardsTable;
-import de.raidcraft.rcgraveyards.tables.PlayerGraveyardsTable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -41,15 +40,15 @@ public class GraveyardManager {
                 graveyardsByName.put(graveyard.getName().toLowerCase(), graveyard);
 
                 int x, y, z;
-                int xDiff = graveyard.getSize();
-                int yDiff = graveyard.getSize();
-                int zDiff = graveyard.getSize();
+                int xDiff = graveyard.getDiscoveryRadius();
+                int yDiff = graveyard.getDiscoveryRadius();
+                int zDiff = graveyard.getDiscoveryRadius();
                 for (int i = 0; i <= xDiff; i++) {
-                    x = (graveyard.getLocation().getBlockX() - graveyard.getSize() / 2) + i;
+                    x = (graveyard.getLocation().getBlockX() - graveyard.getDiscoveryRadius() / 2) + i;
                     for (int j = 0; j <= yDiff; j++) {
-                        y = (graveyard.getLocation().getBlockY() - graveyard.getSize() / 2) + j;
+                        y = (graveyard.getLocation().getBlockY() - graveyard.getDiscoveryRadius() / 2) + j;
                         for (int k = 0; k <= zDiff; k++) {
-                            z = (graveyard.getLocation().getBlockZ() - graveyard.getSize() / 2) + k;
+                            z = (graveyard.getLocation().getBlockZ() - graveyard.getDiscoveryRadius() / 2) + k;
 
                             if (!sortedGraveyards.containsKey(world.getName())) {
                                 sortedGraveyards.put(world.getName(), new HashMap<Integer, Map<Integer, Map<Integer, Graveyard>>>());
@@ -60,7 +59,7 @@ public class GraveyardManager {
                             }
 
                             if (!sortedGraveyards.get(world.getName()).get(x).containsKey(y)) {
-                                sortedGraveyards.get(world.getName()).get(x).put(y, new HashMap<Integer, Graveyard>());
+                                sortedGraveyards.get(world.getName()).get(x).put(y, new HashMap<Integer, ConfiguredGraveyard>());
                             }
 
                             if (!sortedGraveyards.get(world.getName()).get(x).get(y).containsKey(z)) {
@@ -119,14 +118,14 @@ public class GraveyardManager {
         return null;
     }
 
-    public Graveyard getClosestGraveyard(Location location) {
+    public ConfiguredGraveyard getClosestGraveyard(Location location) {
 
         double distance = 0;
-        Graveyard closestGraveyard = null;
+        ConfiguredGraveyard closestGraveyard = null;
         for (Map.Entry<String, Graveyard> entry : graveyardsByName.entrySet()) {
             double newDistance = entry.getValue().getLocation().distance(location);
             if (closestGraveyard == null || newDistance < distance
-                    && (entry.getValue().getRadius() == 0 || entry.getValue().getRadius() >= newDistance)) {
+                    && (entry.getValue().getRespawnRadius() == 0 || entry.getValue().getRespawnRadius() >= newDistance)) {
                 closestGraveyard = entry.getValue();
                 distance = entry.getValue().getLocation().distance(location);
             }

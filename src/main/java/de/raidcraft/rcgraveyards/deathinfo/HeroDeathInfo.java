@@ -4,7 +4,6 @@ import de.raidcraft.RaidCraft;
 import de.raidcraft.api.storage.ItemStorage;
 import de.raidcraft.rcgraveyards.RCGraveyardsPlugin;
 import de.raidcraft.rcgraveyards.api.AbstractPlayerDeathInfo;
-import de.raidcraft.rcgraveyards.tables.TStoredItem;
 import de.raidcraft.skills.SkillsPlugin;
 import de.raidcraft.skills.api.combat.AttackSource;
 import de.raidcraft.skills.api.hero.Hero;
